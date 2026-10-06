@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>برنامه‌نویسی عامل‌محور · Agentic Coding</title>
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <style>
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(217,119,87,0.12), transparent 55%),
+        linear-gradient(180deg, #faf9f5 0%, #f3f1e8 100%);
+      color: #141413;
+    }
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+    .mark {
+      width: 40px; height: 40px;
+      background: #d97757;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.35;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      color: #5c5a52;
+      font-size: 1.1rem;
+      margin: 0 0 32px;
+      max-width: 42rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    a.card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border: 1px solid #d9d6c8;
+      border-radius: 12px;
+      padding: 22px 20px;
+      box-shadow: 0 1px 0 rgba(20,20,19,0.04), 0 10px 24px rgba(20,20,19,0.06);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    a.card-link:hover {
+      transform: translateY(-2px);
+      border-color: #d97757;
+    }
+    a.card-link h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      color: #141413;
+    }
+    a.card-link p {
+      margin: 0;
+      color: #5c5a52;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #b85a3d;
+      background: rgba(217,119,87,0.12);
+      border: 1px solid rgba(217,119,87,0.35);
+    }
+    .links {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 22px;
+      color: #5c5a52;
+      font-size: 0.95rem;
+    }
+    .links a { color: #6a9bcc; }
+    .kbd {
+      direction: ltr;
+      display: inline-block;
+      padding: 1px 7px;
+      border: 1px solid #d9d6c8;
+      border-radius: 6px;
+      background: #f3f1e8;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.85em;
+    }
+    footer {
+      margin-top: 40px;
+      color: #b0aea5;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="mark" aria-hidden="true"></div>
+    <h1>برنامه‌نویسی عامل‌محور<br/><span style="color:#d97757">Agentic Coding</span></h1>
+    <p class="sub">اسلایدها و راهنمای جلسه: Spec، Rule، Skill، Context، Harness و جریان تیم از نیازمندی تا تست.</p>
+
+    <div class="grid">
+      <a class="card-link" href="slides.html">
+        <span class="tag">ارائه</span>
+        <h2>اسلایدها (HTML)</h2>
+        <p>۵۰ اسلاید تعاملی. کلیدها: <span class="kbd">Space</span> بعدی، <span class="kbd">N</span> یادداشت سخنران، <span class="kbd">F</span> تمام‌صفحه.</p>
+      </a>
+      <a class="card-link" href="handbook.html">
+        <span class="tag">مطالعه</span>
+        <h2>راهنمای جامع (HTML)</h2>
+        <p>توضیح کامل، چک‌لیست نوشتن Spec/Rule/Skill، FAQ، واژه‌نامه و منابع.</p>
+      </a>
+      <a class="card-link" href="slides.pdf">
+        <span class="tag">PDF</span>
+        <h2>دانلود اسلایدها</h2>
+        <p>نسخه PDF برای ارائه آفلاین یا چاپ.</p>
+      </a>
+      <a class="card-link" href="handbook.pdf">
+        <span class="tag">PDF</span>
+        <h2>دانلود راهنما</h2>
+        <p>نسخه PDF برای اشتراک‌گذاری بعد از جلسه.</p>
+      </a>
+    </div>
+
+    <div class="links">
+      <a href="https://github.com/mohammadrezatahmasebi/ai-agentic-meeting">ریپو روی GitHub</a>
+      <a href="samples/">نمونه‌ها و قالب‌ها</a>
+      <a href="README.md">README</a>
+    </div>
+
+    <footer>mohammadrezatahmasebi/ai-agentic-meeting</footer>
+  </main>
+</body>
+</html>

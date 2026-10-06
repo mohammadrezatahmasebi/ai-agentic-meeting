@@ -10,16 +10,19 @@ Spec، Rule، Skill، توسعه مبتنی بر Spec (دیدگاه martinfowler
 
 | فایل | توضیح |
 |---|---|
-| [`slides.pdf`](slides.pdf) | اسلایدها (۴۹ اسلاید، ۱۶:۹) |
-| [`handbook.pdf`](handbook.pdf) | راهنمای جامع (A4): توضیح کامل، چک‌لیست‌ها، FAQ، واژه‌نامه، منابع |
-| `slides.html` | نسخه قابل ارائه در مرورگر با یادداشت سخنران |
-| `handbook.html` | نسخه HTML راهنما |
+| **سایت آنلاین** | https://mohammadrezatahmasebi.github.io/ai-agentic-meeting/ |
+| [`slides.html`](slides.html) | اسلایدهای تعاملی در مرورگر |
+| [`handbook.html`](handbook.html) | راهنمای جامع HTML |
+| [`slides.pdf`](slides.pdf) | اسلایدها (PDF، ۱۶:۹) |
+| [`handbook.pdf`](handbook.pdf) | راهنما (PDF، A4) |
 | [`samples/`](samples) | فایل‌های نمونه .NET قابل کپی در پروژه |
 | [`samples/templates/`](samples/templates) | قالب نوشتن Spec، Rule، Skill و درخت تصمیم |
 
 ## ارائه با مرورگر
 
-`slides.html` را در Chrome باز کنید:
+آنلاین: [اسلایدها](https://mohammadrezatahmasebi.github.io/ai-agentic-meeting/slides.html) · [راهنما](https://mohammadrezatahmasebi.github.io/ai-agentic-meeting/handbook.html)
+
+یا `slides.html` را محلی در Chrome باز کنید:
 
 - `←` یا `Space`: اسلاید بعدی · `→`: قبلی
 - `N`: نمایش یادداشت سخنران
