@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>راهنمای جامع برنامه‌نویسی عامل‌محور، Spec، Rule، Skill و تیم</title>
+<title>Agentic Coding Handbook، Spec، Rule، Skill و تیم</title>
 <link rel="stylesheet" href="assets/css/theme.css" />
 <style>
   @page { size: A4; margin: 16mm 14mm 18mm; }
@@ -116,8 +116,8 @@
 <!-- ================= COVER ================= -->
 <section class="cover">
   <span class="badge" style="width:max-content">Handbook · نسخه ۱.۰ · مهر ۱۴۰۵</span>
-  <h1 style="margin-top:16px">راهنمای جامع برنامه‌نویسی عامل‌محور</h1>
-  <div class="sub">Spec، Rule، Skill و ارکستراسیون تیم نرم‌افزار با عامل‌های هوش مصنوعی</div>
+  <h1 style="margin-top:16px">Agentic Coding Handbook</h1>
+  <div class="sub">Spec, Rule, Skill, Context, Harness &amp; team orchestration</div>
   <div class="meta">از نیازمندی کسب‌وکار ← Product Owner ← Tech Lead ← Developer ← Tester<br/>
   Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit<br/>
   <span class="ltr" style="direction:ltr">github.com/mohammadrezatahmasebi/ai-agentic-meeting</span></div>
@@ -128,17 +128,17 @@
   <h2 class="no-break">فهرست</h2>
   <ol>
     <li><a href="#ch1">چرا الان؟ داده‌ها و پارادوکس بهره‌وری</a></li>
-    <li><a href="#ch2">مفاهیم پایه: LLM، عامل، Context، Harness</a></li>
-    <li><a href="#ch3">چهار artifact: Spec، Rule، Skill و مستندات کسب‌وکار</a></li>
+    <li><a href="#ch2">Core concepts: LLM, Agent, Context, Harness</a></li>
+    <li><a href="#ch3">Four artifacts: Spec, Rule, Skill, Business Doc</a></li>
     <li><a href="#ch4">توسعه مبتنی بر Spec، دیدگاه martinfowler.com</a></li>
-    <li><a href="#ch5">راهنمای عملی نوشتن Spec، Rule و Skill</a></li>
-    <li><a href="#ch6">تیم از A تا Z: نقش‌ها و ارکستراسیون</a></li>
-    <li><a href="#ch7">مقایسه ابزارها و ساختار پوشه</a></li>
-    <li><a href="#ch8">چطور با عامل صحبت کنیم + ضدالگوها</a></li>
-    <li><a href="#ch9">نقشه راه ۳۰/۶۰/۹۰ روزه</a></li>
-    <li><a href="#ch10">پرسش‌های پرتکرار (FAQ)</a></li>
-    <li><a href="#ch11">واژه‌نامه</a></li>
-    <li><a href="#ch12">منابع</a></li>
+    <li><a href="#ch5">How to write Spec, Rule, Skill</a></li>
+    <li><a href="#ch6">Team A to Z: roles &amp; orchestration</a></li>
+    <li><a href="#ch7">Tools comparison &amp; folder structure</a></li>
+    <li><a href="#ch8">How to talk to agents + anti-patterns</a></li>
+    <li><a href="#ch9">30/60/90 roadmap</a></li>
+    <li><a href="#ch10">FAQ</a></li>
+    <li><a href="#ch11">Glossary</a></li>
+    <li><a href="#ch12">References</a></li>
     <li><a href="#appx">پیوست: فایل‌های نمونه کامل</a></li>
   </ol>
   <div class="callout info">
@@ -164,7 +164,7 @@
 </div>
 
 <!-- ================= CH2 ================= -->
-<h2 id="ch2">۲. مفاهیم پایه: LLM، عامل، Context، Harness</h2>
+<h2 id="ch2">۲. Core concepts: LLM, Agent, Context, Harness</h2>
 
 <h3>۲.۱ تفاوت LLM، دستیار کدنویسی و عامل</h3>
 <table class="compare">
@@ -177,11 +177,11 @@
 </table>
 <p>جمله کلیدی: <b>Agent = Model + Harness</b> (Birgitta Böckeler، martinfowler.com). یعنی «کدام مدل بهتر است» فقط نیمی از سؤال است؛ نیم دیگر این است که دور مدل چه ساخته‌اید.</p>
 
-<h3>۲.۲ حلقه عامل</h3>
+<h3>۲.۲ Agent Loop</h3>
 <p>عامل در یک حلقه کار می‌کند: <b>هدف</b> را دریافت می‌کند، <b>برنامه</b> می‌ریزد، <b>ابزار</b> اجرا می‌کند (خواندن/جستجو/ویرایش فایل، ترمینال، تست، مرورگر)، <b>نتیجه</b> را مشاهده می‌کند و تا رسیدن به هدف تکرار می‌کند.</p>
 <div class="callout warn"><b>هشدار:</b> اگر معیار موفقیت قطعی (تست، build، lint) ندهید، عامل خودش به کار خودش نمره می‌دهد. ارزیابی خود مدل از «تمام شد» کم‌اعتمادترین سیگنال در حلقه است؛ نتیجه تست قابل‌اعتمادترین.</div>
 
-<h3>۲.۲ب Context چیست؟ (تعریف ساده)</h3>
+<h3>۲.۲ب What is Context?</h3>
 <div class="callout">
   <b>Context</b> = همه اطلاعاتی که مدل <b>همین لحظه</b> می‌تواند ببیند و بر اساس آن‌ها تصمیم بگیرد یا کد بنویسد.
 </div>
@@ -196,7 +196,7 @@
 </ul>
 <p><b>Context Window</b> ظرفیت محدود این «میز کار» است. وقتی پر شود، بخش‌هایی از اطلاعات قدیم یا کم‌اولویت ممکن است از دسترس خارج شوند. به همین دلیل context شلوغ یا بی‌ربط کیفیت را پایین می‌آورد. کار تیم این است که محتوای باارزش را عمداً روی میز نگه دارد و بقیه را بیرون بگذارد، این همان <b>مهندسی زمینه</b> است.</p>
 
-<h3>۲.۳ مهندسی زمینه (Context Engineering)</h3>
+<h3>۲.۳ Context Engineering</h3>
 <div class="quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»، Bharani Subramaniam، در مقاله «Context Engineering for Coding Agents» نوشته Birgitta Böckeler، martinfowler.com، فوریه ۲۰۲۶</div>
 <p>پنجره context محدود است و هر چیز بی‌ربط کیفیت را پایین می‌آورد. ابزارهای پیکربندی context در عامل‌ها:</p>
 <ul>
@@ -208,10 +208,10 @@
   <li><b>خود کدبیس</b>، Böckeler تأکید می‌کند که طراحی کد هم بخشی از context است؛ کد تمیز و یکدست، خروجی بهتر عامل.</li>
 </ul>
 
-<h3>۲.۴ مهار (Harness): راهنماها و حسگرها</h3>
+<h3>۲.۴ Harness: Guides &amp; Sensors</h3>
 <p>در مقاله «Harness engineering for coding agent users» در martinfowler.com، Harness هر چیزی در عامل است جز خود مدل. Harness بیرونی که ما می‌سازیم دو هدف دارد: بالا بردن احتمال درست انجام دادن کار در بار اول، و ایجاد حلقه بازخوردی که تا حد ممکن خطاها را قبل از رسیدن به انسان اصلاح کند.</p>
 <div class="grid-2">
-  <div class="card"><h4>راهنماها (Guides)، قبل از عمل</h4><ul class="small"><li>AGENTS.md و Rules</li><li>Spec و معیار پذیرش</li><li>Skills</li><li>ADR و اسناد معماری</li><li>نمونه کد خوب در ریپو</li></ul></div>
+  <div class="card"><h4>راهنماها (Guides)، قبل از عمل</h4><ul class="small"><li>AGENTS.md و Rules</li><li>Spec و Acceptance Criteria</li><li>Skills</li><li>ADR و اسناد معماری</li><li>نمونه کد خوب در ریپو</li></ul></div>
   <div class="card"><h4>حسگرها (Sensors)، بعد از عمل</h4><ul class="small"><li>Build / Compiler</li><li>Unit و Integration Test</li><li>Linter و Formatter</li><li>تست‌های معماری (مثلاً NetArchTest)</li><li>عامل بازبین read-only</li></ul></div>
 </div>
 
@@ -223,16 +223,16 @@
 </ul>
 
 <!-- ================= CH3 ================= -->
-<h2 id="ch3">۳. چهار artifact: Spec، Rule، Skill و مستندات کسب‌وکار</h2>
+<h2 id="ch3">۳. Four artifacts: Spec, Rule, Skill, Business Doc</h2>
 <img class="chapter-img" src="assets/img/spec-rule-skill.jpg" alt="Spec Rule Skill Docs" />
 <p>مهم‌ترین مفهوم این راهنما: این چهار مورد <b>چیزهای متفاوتی هستند</b> و قاطی کردن آن‌ها رایج‌ترین اشتباه تیم‌هاست.</p>
 
 <table class="compare">
   <tr><th>Artifact</th><th>چیست</th><th>عمر</th><th>کی بارگذاری می‌شود</th><th>مالک</th></tr>
-  <tr><td><span class="pill spec">Spec</span></td><td>توصیف <b>این فیچر/تغییر</b>: هدف، داستان کاربر، معیار پذیرش، Non-goals، لبه‌ها</td><td>به ازای فیچر</td><td>فقط هنگام کار روی همان فیچر</td><td>PO + Tech Lead</td></tr>
+  <tr><td><span class="pill spec">Spec</span></td><td>توصیف <b>این فیچر/تغییر</b>: هدف، داستان کاربر، Acceptance Criteria، Non-goals، لبه‌ها</td><td>به ازای فیچر</td><td>فقط هنگام کار روی همان فیچر</td><td>PO + Tech Lead</td></tr>
   <tr><td><span class="pill rule">Rule</span></td><td>سیاست <b>دائمی</b> پروژه: معماری، نام‌گذاری، تست، امنیت، دستورهای build</td><td>طولانی</td><td>همیشه / با glob / به درخواست عامل</td><td>Tech Lead</td></tr>
   <tr><td><span class="pill skill">Skill</span></td><td><b>رویه</b> قابل‌استفاده مجدد: چطور یک نوع کار را انجام دهیم</td><td>طولانی</td><td>در صورت نیاز، وقتی کار با description جور شود</td><td>Tech Lead + ارشدها</td></tr>
-  <tr><td><span class="pill doc">Business Doc</span></td><td>دانش دامنه: واژه‌نامه، روایت فرایند، BRD، قوانین کسب‌وکار</td><td>طولانی</td><td>خودکار نه؛ از Spec لینک یا در references یک Skill</td><td>PO / تحلیلگر</td></tr>
+  <tr><td><span class="pill doc">Business Doc</span></td><td>دانش دامنه: Glossary، روایت فرایند، BRD، قوانین کسب‌وکار</td><td>طولانی</td><td>خودکار نه؛ از Spec لینک یا در references یک Skill</td><td>PO / تحلیلگر</td></tr>
 </table>
 
 <div class="callout">
@@ -244,7 +244,7 @@
 </div>
 
 <h3>۳.۱ Spec چیست؟</h3>
-<p>Spec قرارداد بین کسب‌وکار، تیم فنی و عامل است، <b>قبل</b> از نوشتن کد. در محل <code>specs/NNN-feature/spec.md</code> قرار می‌گیرد، در git نسخه‌بندی می‌شود و در PR بازبینی می‌شود. مهم‌ترین بخش آن <b>معیار پذیرش قابل تست</b> است؛ همین معیارها بعداً تست می‌شوند و حسگر عامل را تشکیل می‌دهند.</p>
+<p>Spec قرارداد بین کسب‌وکار، تیم فنی و عامل است، <b>قبل</b> از نوشتن کد. در محل <code>specs/NNN-feature/spec.md</code> قرار می‌گیرد، در git نسخه‌بندی می‌شود و در PR بازبینی می‌شود. مهم‌ترین بخش آن <b>Acceptance Criteria قابل تست</b> است؛ همین معیارها بعداً تست می‌شوند و حسگر عامل را تشکیل می‌دهند.</p>
 
 <h3>۳.۲ Rule چیست؟</h3>
 <p>Rule دستورالعمل دائمی است که عامل در تقریباً هر ویرایش مرتبط رعایت می‌کند. چون Rule ها همیشه (یا با هر فایل منطبق) در context بارگذاری می‌شوند، <b>هر کلمه اضافه هزینه دائمی دارد</b>. پس کوتاه، دستوری و دائمی بنویسید. محل‌ها: <code>AGENTS.md</code>، <code>.cursor/rules/*.mdc</code>، <code>CLAUDE.md</code>، <code>.github/copilot-instructions.md</code>.</p>
@@ -265,8 +265,8 @@
   <p><b>مثال:</b> «اقساط معوق بیش از ۳۰ روز باید پیگیری شوند.»</p>
   <ul>
     <li>✓ در <b>مستند دامنه</b> (<code>docs/domain/installments.md</code>)، حقیقت برای انسان‌ها</li>
-    <li>✓ در <b>Spec</b> فیچر مربوط، به‌شکل معیار پذیرش Given/When/Then</li>
-    <li>✓ اختیاری: در <code>references/</code> یک Skill، اگر عامل‌ها مکرر به واژه‌نامه دامنه نیاز دارند</li>
+    <li>✓ در <b>Spec</b> فیچر مربوط، به‌شکل Acceptance Criteria Given/When/Then</li>
+    <li>✓ اختیاری: در <code>references/</code> یک Skill، اگر عامل‌ها مکرر به Glossary دامنه نیاز دارند</li>
     <li>✗ در <code>.cursor/rules</code> یا <code>AGENTS.md</code>، <b>مگر</b> اینکه قرارداد دائمی کدنویسی باشد، مثل «فیلدهای پولی همیشه <code>decimal</code>»</li>
   </ul>
 </div>
@@ -284,11 +284,11 @@
 
 <table class="compare">
   <tr><th>جمله</th><th>کجا؟</th></tr>
-  <tr><td>اقساط معوق بیش از ۳۰ روز follow-up شوند</td><td><span class="pill doc">Doc</span> + <span class="pill spec">Spec</span> (معیار پذیرش)</td></tr>
+  <tr><td>اقساط معوق بیش از ۳۰ روز follow-up شوند</td><td><span class="pill doc">Doc</span> + <span class="pill spec">Spec</span> (Acceptance Criteria)</td></tr>
   <tr><td>Domain نباید به Infrastructure وابسته باشد</td><td><span class="pill rule">Rule</span></td></tr>
   <tr><td>مراحل افزودن فیچر CQRS با MediatR</td><td><span class="pill skill">Skill</span></td></tr>
   <tr><td>در این اسپرینت endpoint پیگیری اقساط بساز</td><td><span class="pill spec">Spec</span></td></tr>
-  <tr><td>واژه‌نامه: قسط، بیمه‌نامه، فروشنده، معوق</td><td><span class="pill doc">Doc</span></td></tr>
+  <tr><td>Glossary: قسط، بیمه‌نامه، فروشنده، معوق</td><td><span class="pill doc">Doc</span></td></tr>
   <tr><td>رمز و connection string هرگز در کد</td><td><span class="pill rule">Rule</span> (+ Hook برای اسکن secret)</td></tr>
 </table>
 
@@ -297,7 +297,7 @@
   <tr><th></th><th>Rules</th><th>Skills</th></tr>
   <tr><td>هدف</td><td>استاندارد و قرارداد کدنویسی</td><td>آموزش قابلیت یا گردش‌کار تخصصی</td></tr>
   <tr><td>بارگذاری</td><td>همیشه یا با glob (کل متن)</td><td>در صورت نیاز، تدریجی</td></tr>
-  <tr><td>محتوا</td><td>فقط دستورالعمل</td><td>دستورالعمل + اسکریپت + مثال + منابع</td></tr>
+  <tr><td>محتوا</td><td>فقط دستورالعمل</td><td>دستورالعمل + اسکریپت + مثال + References</td></tr>
   <tr><td>طول</td><td>کوتاه</td><td>می‌تواند مفصل باشد</td></tr>
   <tr><td>قابلیت حمل</td><td>فرمت متفاوت به ازای هر ابزار</td><td>استاندارد باز واحد</td></tr>
   <tr><td>نشانه جابه‌جایی</td><td>Rule شبیه آموزش گام‌به‌گام شد ← Skill کن</td><td>Skill همیشه لازم و کوتاه است ← Rule کن</td></tr>
@@ -343,7 +343,7 @@
 <h3>۴.۶ SDD چطور به تیم ما کمک می‌کند</h3>
 <ol>
   <li><b>هم‌راستایی زودهنگام:</b> PO و Tech Lead قبل از مصرف توکن و وقت توسعه توافق می‌کنند.</li>
-  <li><b>دروازه کیفیت:</b> معیار پذیرش ← تست ← حسگر خودکار عامل.</li>
+  <li><b>دروازه کیفیت:</b> Acceptance Criteria ← تست ← حسگر خودکار عامل.</li>
   <li><b>کاهش دوباره‌کاری:</b> کمتر «عامل چیز اشتباهی ساخت».</li>
   <li><b>تحویل صریح بین نقش‌ها:</b> BRD ← Spec ← Plan ← Tasks ← کد ← تست.</li>
   <li><b>بازبینی بهتر:</b> بازبین در برابر Spec چک می‌کند، نه حافظه یا حدس.</li>
@@ -369,14 +369,14 @@
 </ul>
 
 <!-- ================= CH5 ================= -->
-<h2 id="ch5">۵. راهنمای عملی نوشتن Spec، Rule و Skill</h2>
+<h2 id="ch5">۵. How to write Spec, Rule, Skill</h2>
 
 <h3>۵.۱ نوشتن <span class="pill spec">Spec</span></h3>
 <h4>قالب حداقلی</h4>
 <ol>
   <li><b>هدف</b>، یک پاراگراف درباره نتیجه</li>
   <li><b>داستان‌های کاربر</b>، «به‌عنوان ... می‌خواهم ... تا ...»</li>
-  <li><b>معیار پذیرش</b>، Given/When/Then یا چک‌لیست؛ <u>قابل تست</u></li>
+  <li><b>Acceptance Criteria</b>، Given/When/Then یا چک‌لیست؛ <u>قابل تست</u></li>
   <li><b>خارج از محدوده</b>، جلوی کار اضافه عامل را می‌گیرد</li>
   <li><b>قوانین دامنه مرتبط</b>، نقل کوتاه یا لینک به <code>docs/domain</code></li>
   <li><b>لبه‌ها و خطاها</b></li>
@@ -385,10 +385,10 @@
 </ol>
 <h4>چک‌لیست کیفیت</h4>
 <ul>
-  <li>☐ هر معیار پذیرش با یک تست یا دمو قابل اثبات است</li>
+  <li>☐ هر Acceptance Criteria با یک تست یا دمو قابل اثبات است</li>
   <li>☐ معماری مفصل اینجا نیست (برود در plan.md یا ADR)</li>
   <li>☐ اندازه یک PR یا اپیک کوتاه است</li>
-  <li>☐ واژه‌ها با واژه‌نامه کسب‌وکار یکی است</li>
+  <li>☐ واژه‌ها با Glossary کسب‌وکار یکی است</li>
   <li>☐ Non-goals صریح است</li>
   <li>☐ بعد از merge، برای فیچر مهم نگه داشته و به‌روز می‌شود</li>
 </ul>
@@ -461,14 +461,14 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 <p><b>جریان:</b> تحلیلگر/PO مستندات <code>docs/domain</code> را نگه می‌دارد ← برای هر فیچر معیارهای پذیرش استخراج و در <code>spec.md</code> نوشته می‌شود ← عامل با Spec + Rules + Skills کار می‌کند.</p>
 
 <!-- ================= CH6 ================= -->
-<h2 id="ch6">۶. تیم از A تا Z: نقش‌ها و ارکستراسیون</h2>
+<h2 id="ch6">۶. Team A to Z: roles &amp; orchestration</h2>
 <img class="chapter-img" src="assets/img/team-flow.jpg" alt="Team flow" />
 
 <h3>۶.۱ جریان کامل</h3>
 <table class="compare">
   <tr><th>نقش</th><th>ورودی</th><th>کار با عامل</th><th>خروجی</th></tr>
   <tr><td>کسب‌وکار</td><td>مسئله / فرصت</td><td>خلاصه‌سازی جلسات، پیش‌نویس BRD</td><td><code>docs/domain</code>، BRD</td></tr>
-  <tr><td>Product Owner</td><td>BRD</td><td>تبدیل به داستان کاربر، پیشنهاد معیار پذیرش و لبه‌ها، ساخت تیکت Jira با MCP، کشف ابهام</td><td><code>spec.md</code> تأییدشده</td></tr>
+  <tr><td>Product Owner</td><td>BRD</td><td>تبدیل به داستان کاربر، پیشنهاد Acceptance Criteria و لبه‌ها، ساخت تیکت Jira با MCP، کشف ابهام</td><td><code>spec.md</code> تأییدشده</td></tr>
   <tr><td>Tech Lead</td><td>Spec</td><td>Plan Mode برای طراحی، نگهداری Rules/Skills، تقسیم Tasks، طراحی Harness</td><td><code>plan.md</code>، <code>tasks.md</code>، Rules، Skills، ADR</td></tr>
   <tr><td>Developer</td><td>Plan + Tasks</td><td>Explore ← Plan ← Implement ← Verify ← Review</td><td>Pull Request</td></tr>
   <tr><td>Tester / QA</td><td>Spec + PR</td><td>تبدیل AC به test case، تولید تست integration/E2E، یافتن لبه‌های پوشش‌نیافته، تست UI با عامل مرورگر</td><td>گزارش PASS/FAIL، شکاف‌های Spec</td></tr>
@@ -477,7 +477,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 <h3>۶.۲ هر نقش چه سؤالی از عامل بپرسد</h3>
 <div class="grid-2">
   <div class="card"><h4>Product Owner</h4><ul class="small">
-    <li>«از این BRD داستان‌های کاربر و معیار پذیرش Given/When/Then استخراج کن.»</li>
+    <li>«از این BRD داستان‌های کاربر و Acceptance Criteria Given/When/Then استخراج کن.»</li>
     <li>«چه لبه‌ها و حالت خطایی در این Spec جا افتاده؟»</li>
     <li>«تناقض‌های این Spec با docs/domain/installments.md را پیدا کن.»</li>
   </ul></div>
@@ -492,7 +492,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
     <li>«با یک subagent بازبین بی‌طرف diff را بررسی کن.»</li>
   </ul></div>
   <div class="card"><h4>Tester</h4><ul class="small">
-    <li>«برای هر معیار پذیرش spec.md یک test case و تست integration بنویس.»</li>
+    <li>«برای هر Acceptance Criteria spec.md یک test case و تست integration بنویس.»</li>
     <li>«چه سناریوهایی در Spec نیامده ولی در کد ممکن است؟»</li>
     <li>«این فرم را در مرورگر تست کن و گزارش بده.»</li>
   </ul></div>
@@ -538,7 +538,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 </table>
 
 <!-- ================= CH7 ================= -->
-<h2 id="ch7">۷. مقایسه ابزارها و ساختار پوشه</h2>
+<h2 id="ch7">۷. Tools comparison &amp; folder structure</h2>
 <h3>۷.۱ ماتریس ابزارها (۲۰۲۶)</h3>
 <table class="compare">
   <tr><th>ابزار</th><th>رابط</th><th>مدل‌ها</th><th>نقطه قوت</th><th>مناسب برای</th></tr>
@@ -591,13 +591,13 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 <p>مهم‌تر از انتخاب ابزار: Harness شما (AGENTS.md، Specs، Skills، تست‌ها) بین ابزارها <b>قابل انتقال</b> است و شما را به یک فروشنده وابسته نمی‌کند.</p>
 
 <!-- ================= CH8 ================= -->
-<h2 id="ch8">۸. چطور با عامل صحبت کنیم + ضدالگوها</h2>
+<h2 id="ch8">۸. How to talk to agents + anti-patterns</h2>
 <h3>۸.۱ آناتومی پرامپت خوب</h3>
 <ol>
   <li><b>هدف:</b> چه نتیجه‌ای؟ (نه فقط «درستش کن»)</li>
   <li><b>Context:</b> Spec، فایل‌های مرتبط، کد مشابه موجود، تیکت</li>
   <li><b>محدودیت‌ها:</b> چه چیزی تغییر نکند، Non-goals، الگوی موجود</li>
-  <li><b>تأیید:</b> چطور بفهمیم درست است؟ تست، build، معیار پذیرش</li>
+  <li><b>تأیید:</b> چطور بفهمیم درست است؟ تست، build، Acceptance Criteria</li>
   <li><b>خروجی:</b> Plan؟ PR؟ خلاصه؟ قالب مشخص</li>
   <li><b>حالت:</b> اول Plan Mode، بعد اجرا</li>
 </ol>
@@ -611,8 +611,8 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 ۲. در Plan Mode فایل‌ها و ترتیب را پیشنهاد بده و صبر کن تا تأیید کنم.<br/>
 ۳. از Skill <code>dotnet-cqrs-feature</code> پیروی کن.<br/>
 ۴. به Domain و جدول‌های موجود دست نزن؛ ارسال پیامک خارج از محدوده است.<br/>
-۵. هر معیار پذیرش ۱ تا ۴ باید یک unit test داشته باشد؛ <code>dotnet test</code> سبز.<br/>
-۶. در پایان خلاصه تغییرات و نگاشت معیار پذیرش به تست بده.</div>
+۵. هر Acceptance Criteria ۱ تا ۴ باید یک unit test داشته باشد؛ <code>dotnet test</code> سبز.<br/>
+۶. در پایان خلاصه تغییرات و نگاشت Acceptance Criteria به تست بده.</div>
 
 <h3>۸.۳ ترفندهای کاربردی</h3>
 <ul>
@@ -636,21 +636,21 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 </table>
 
 <!-- ================= CH9 ================= -->
-<h2 id="ch9">۹. نقشه راه ۳۰/۶۰/۹۰ روزه</h2>
+<h2 id="ch9">۹. 30/60/90 roadmap</h2>
 <table class="compare">
   <tr><th>بازه</th><th>اقدامات</th><th>معیار موفقیت</th></tr>
   <tr><td><b>۳۰ روز</b></td><td>AGENTS.md برای ۲ سرویس پایلوت؛ ۲ Rule (معماری، تست)؛ آموزش Plan Mode و subagent؛ ثبت داده پایه</td><td>همه اعضای پایلوت حداقل ۵ تسک با Plan Mode</td></tr>
-  <tr><td><b>۶۰ روز</b></td><td>۳ Skill مشترک (CQRS، migration، تست)؛ اولین فیچر کامل با Spec؛ subagent بازبین قبل از PR؛ Hook برای build/test</td><td>یک فیچر end-to-end با Spec و معیار پذیرش پوشش‌داده‌شده</td></tr>
+  <tr><td><b>۶۰ روز</b></td><td>۳ Skill مشترک (CQRS، migration، تست)؛ اولین فیچر کامل با Spec؛ subagent بازبین قبل از PR؛ Hook برای build/test</td><td>یک فیچر end-to-end با Spec و Acceptance Criteria پوشش‌داده‌شده</td></tr>
   <tr><td><b>۹۰ روز</b></td><td>SDD برای همه فیچرهای جدید؛ spec-anchored برای ماژول‌های اصلی؛ کتابخانه Skill تیمی؛ بازنگری داده‌ها</td><td>مقایسه lead time، نرخ باگ و دوباره‌کاری با پایه</td></tr>
 </table>
 <p><b>نقش‌ها:</b> Champion (پیشگام و پاسخ‌گوی سؤالات)، Tech Lead (مالک Harness)، Manager (حمایت، بودجه و اندازه‌گیری).</p>
 <p><b>چه چیزی اندازه بگیریم:</b> lead time تا merge، نرخ باگ پس از انتشار، تعداد دور بازبینی PR، درصد فیچرهای دارای Spec، رضایت تیم. یادآوری METR: احساس سرعت با سرعت واقعی یکی نیست.</p>
 
 <!-- ================= CH10 FAQ ================= -->
-<h2 id="ch10">۱۰. پرسش‌های پرتکرار (FAQ)</h2>
+<h2 id="ch10">۱۰. FAQ</h2>
 <div class="faq">
   <div class="item"><h4>۱. آیا AI جای توسعه‌دهندگان را می‌گیرد؟</h4><p>نقش را تغییر می‌دهد، نه حذف. تمرکز از تایپ کد به طراحی، نوشتن Spec، ساخت Harness و بازبینی می‌رود. مسئولیت و مالکیت کد با انسان است.</p></div>
-  <div class="item"><h4>۲. قوانین کسب‌وکار Rule هستند یا Skill یا Spec؟</h4><p>معمولاً هیچ‌کدام از Rule و Skill. جای اصلی‌شان مستندات دامنه است و در هر فیچر به‌شکل معیار پذیرش در Spec می‌آیند. Rule فقط برای قراردادهای دائمی کدنویسی است.</p></div>
+  <div class="item"><h4>۲. قوانین کسب‌وکار Rule هستند یا Skill یا Spec؟</h4><p>معمولاً هیچ‌کدام از Rule و Skill. جای اصلی‌شان مستندات دامنه است و در هر فیچر به‌شکل Acceptance Criteria در Spec می‌آیند. Rule فقط برای قراردادهای دائمی کدنویسی است.</p></div>
   <div class="item"><h4>۳. BRD را داخل AGENTS.md بگذاریم؟</h4><p>خیر. BRD در <code>docs/</code>؛ خلاصه قابل تست مربوط به هر فیچر در Spec. AGENTS.md باید کوتاه بماند.</p></div>
   <div class="item"><h4>۴. Spec-first یا spec-anchored؟</h4><p>با spec-first شروع کنید. برای ماژول‌های اصلی و پرتغییر، Spec را بعد از merge نگه دارید و با هر تغییر به‌روز کنید (spec-anchored). Spec-as-source فعلاً آزمایشی است.</p></div>
   <div class="item"><h4>۵. چه کسی مالک Spec، Rule و Skill است؟</h4><p>Spec: PO + Tech Lead. Rule: Tech Lead. Skill: Tech Lead و توسعه‌دهندگان ارشد. Doc: PO/تحلیلگر. همه در git و با PR بازبینی می‌شوند.</p></div>
@@ -670,7 +670,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 </div>
 
 <!-- ================= CH11 GLOSSARY ================= -->
-<h2 id="ch11">۱۱. واژه‌نامه</h2>
+<h2 id="ch11">۱۱. Glossary</h2>
 <table class="compare">
   <tr><th>اصطلاح</th><th>معادل/توضیح فارسی</th></tr>
   <tr><td>Agent</td><td>عامل: مدل + ابزار + حلقه تصمیم</td></tr>
@@ -684,7 +684,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
   <tr><td>Rule</td><td>قانون دائمی پروژه برای عامل</td></tr>
   <tr><td>Skill</td><td>مهارت: رویه قابل بارگذاری در صورت نیاز</td></tr>
   <tr><td>Progressive Disclosure</td><td>بارگذاری تدریجی</td></tr>
-  <tr><td>Acceptance Criteria (AC)</td><td>معیار پذیرش</td></tr>
+  <tr><td>Acceptance Criteria (AC)</td><td>Acceptance Criteria</td></tr>
   <tr><td>SDD</td><td>توسعه مبتنی بر Spec</td></tr>
   <tr><td>Spec-first / anchored / as-source</td><td>Spec اول / Spec لنگرانداخته / Spec به‌عنوان منبع</td></tr>
   <tr><td>Vibe Coding</td><td>کدنویسی حسی بدون ساختار</td></tr>
@@ -700,7 +700,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 </table>
 
 <!-- ================= CH12 REFS ================= -->
-<h2 id="ch12">۱۲. منابع</h2>
+<h2 id="ch12">۱۲. References</h2>
 <h3>martinfowler.com / Thoughtworks</h3>
 <ul class="refs">
   <li>Birgitta Böckeler، <a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl</a></li>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>برنامه‌نویسی عامل‌محور (Agentic Coding)، از نیازمندی تا تست</title>
+<title>Agentic Coding — از نیازمندی تا تست</title>
 <link rel="stylesheet" href="assets/css/theme.css" />
 <style>
   @page { size: 1280px 720px; margin: 0; }
@@ -189,8 +189,8 @@
 <section class="slide cover">
   <div class="titlebox">
     <span class="badge">جلسه فنی تیم · ۶۰ دقیقه</span>
-    <h1 style="margin-top:22px">برنامه‌نویسی عامل‌محور<br/><span class="accent">Agentic Coding</span></h1>
-    <div class="subtitle">از نیازمندی کسب‌وکار تا تست، با Spec، Rule و Skill</div>
+    <h1 style="margin-top:22px"><span class="accent">Agentic Coding</span><br/><span style="font-size:0.55em;font-weight:600;color:#5c5a52">از نیازمندی تا تست</span></h1>
+    <div class="subtitle">از Business Requirement تا Test با Spec، Rule و Skill</div>
     <p class="muted small">Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit</p>
   </div>
   <aside class="notes">سلام و خوش‌آمد. امروز درباره این صحبت می‌کنیم که چطور با عامل‌های هوش مصنوعی به‌صورت تیمی و منظم نرم‌افزار بسازیم؛ نه فقط «چت کردن با AI». تمرکز اصلی: Spec، Rule و Skill و اینکه هر نقش تیم چطور از عامل‌ها استفاده کند.</aside>
@@ -198,15 +198,15 @@
 
 <!-- ============ 2. AGENDA ============ -->
 <section class="slide">
-  <h2>دستور جلسه</h2>
+  <h2>Agenda</h2>
   <div class="content">
     <div class="grid-2">
-      <div class="card"><h3>۱. چرا الان؟</h3><p class="muted">داده‌ها، تکامل ابزارها، پارادوکس بهره‌وری</p></div>
-      <div class="card"><h3>۲. مفاهیم پایه</h3><p class="muted">LLM، Agent، Context، Harness، Spec / Rule / Skill</p></div>
-      <div class="card"><h3>۳. توسعه مبتنی بر Spec</h3><p class="muted">دیدگاه Martin Fowler / Birgitta Böckeler و نحوه نوشتن</p></div>
-      <div class="card"><h3>۴. تیم از A تا Z</h3><p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester</p></div>
-      <div class="card"><h3>۵. مقایسه ابزارها</h3><p class="muted">کدام ابزار برای کدام کار، ساختار پوشه‌ها</p></div>
-      <div class="card"><h3>۶. عمل و پرسش‌ها</h3><p class="muted">نحوه صحبت با عامل، ضدالگوها، نقشه راه، FAQ</p></div>
+      <div class="card"><h3>۱. Why now?</h3><p class="muted">Data, tool evolution, productivity paradox</p></div>
+      <div class="card"><h3>۲. Core Concepts</h3><p class="muted">LLM, Agent, Context, Harness, Spec / Rule / Skill</p></div>
+      <div class="card"><h3>۳. Spec-Driven Development</h3><p class="muted">Martin Fowler site / Böckeler + how to write Specs</p></div>
+      <div class="card"><h3>۴. Team A to Z</h3><p class="muted">Business ← PO ← Tech Lead ← Developer ← Tester</p></div>
+      <div class="card"><h3>۵. Tools Comparison</h3><p class="muted">Which tool for which job, folder structure</p></div>
+      <div class="card"><h3>۶. Practice &amp; FAQ</h3><p class="muted">How to talk to agents, anti-patterns, roadmap</p></div>
     </div>
   </div>
   <aside class="notes">شش بخش داریم. بخش ۲ و ۳ قلب ارائه است: تفاوت Spec و Rule و Skill و اینکه مستندات کسب‌وکار کجا قرار می‌گیرد.</aside>
@@ -214,7 +214,7 @@
 
 <!-- ============ 3. HOOK ============ -->
 <section class="slide">
-  <h2>پارادوکس بهره‌وری <span class="en">The Productivity Paradox</span></h2>
+  <h2>Productivity Paradox</h2>
   <div class="content">
     <div class="row">
       <div class="card">
@@ -237,7 +237,7 @@
 
 <!-- ============ 4. EVOLUTION ============ -->
 <section class="slide">
-  <h2>تکامل ابزارها <span class="en">From Autocomplete to Agent Teams</span></h2>
+  <h2>From Autocomplete to Agent Teams</h2>
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 300" xmlns="http://www.w3.org/2000/svg">
@@ -281,7 +281,7 @@
 <section class="slide divider">
   <div class="inner">
     <div class="num">02</div>
-    <h1>مفاهیم پایه</h1>
+    <h1>Core Concepts</h1>
     <p class="muted">LLM، Agent، Context Engineering، Harness و چهار artifact اصلی</p>
   </div>
   <aside class="notes">قبل از ابزارها باید زبان مشترک داشته باشیم.</aside>
@@ -289,7 +289,7 @@
 
 <!-- ============ 6. LLM vs ASSISTANT vs AGENT ============ -->
 <section class="slide">
-  <h2>LLM، دستیار کدنویسی، عامل، تفاوت چیست؟</h2>
+  <h2>LLM vs Coding Assistant vs Agent</h2>
   <div class="content">
     <table class="compare">
       <tr><th style="width:18%"></th><th>LLM (مدل زبانی)</th><th>دستیار کدنویسی AI</th><th>عامل کدنویسی (Agent)</th></tr>
@@ -306,7 +306,7 @@
 
 <!-- ============ 7. AGENT LOOP ============ -->
 <section class="slide">
-  <h2>حلقه عامل <span class="en">The Agent Loop</span></h2>
+  <h2>Agent Loop</h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <div class="svg-wrap" style="flex:1.2">
@@ -348,7 +348,7 @@
 
 <!-- ============ 7b. WHAT IS CONTEXT ============ -->
 <section class="slide">
-  <h2>Context چیست؟ <span class="en">What the model can see</span></h2>
+  <h2>What is Context?</h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <div style="flex:1.05">
@@ -370,7 +370,7 @@
 
 <!-- ============ 8. CONTEXT ENGINEERING ============ -->
 <section class="slide">
-  <h2>مهندسی زمینه <span class="en">Context Engineering</span></h2>
+  <h2>Context Engineering</h2>
   <div class="content">
     <div class="big-quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»<br/><span class="small muted">- Bharani Subramaniam، نقل‌شده در مقاله Birgitta Böckeler، martinfowler.com (فوریه ۲۰۲۶)</span></div>
     <div class="grid-3">
@@ -387,25 +387,25 @@
 
 <!-- ============ 9. HARNESS ============ -->
 <section class="slide">
-  <h2>مهار عامل: راهنماها و حسگرها <span class="en">Harness: Guides &amp; Sensors</span></h2>
+  <h2>Harness: Guides &amp; Sensors</h2>
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 410" xmlns="http://www.w3.org/2000/svg">
         <defs><marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker></defs>
         <rect x="790" y="30" width="320" height="280" rx="16" fill="#ffffff" stroke="#d97757"/>
-        <text x="950" y="72" text-anchor="middle" fill="#d97757" font-size="24" font-weight="700">راهنماها (قبل از عمل)</text>
+        <text x="950" y="72" text-anchor="middle" fill="#d97757" font-size="24" font-weight="700">Guides (before)</text>
         <g fill="#141413" font-size="19" text-anchor="middle">
           <text x="950" y="118">AGENTS.md / Rules</text>
-          <text x="950" y="155">Spec + معیار پذیرش</text>
+          <text x="950" y="155">Spec + Acceptance Criteria</text>
           <text x="950" y="192">Skills</text>
           <text x="950" y="229">ADR / معماری</text>
-          <text x="950" y="266">نمونه کد خوب</text>
+          <text x="950" y="266">Good code samples</text>
         </g>
         <rect x="435" y="100" width="260" height="140" rx="70" fill="#f3f1e8" stroke="#d97757" stroke-width="3"/>
         <text x="565" y="162" text-anchor="middle" fill="#141413" font-size="26" font-weight="700">عامل</text>
         <text x="565" y="196" text-anchor="middle" fill="#5c5a52" font-size="17">Model</text>
         <rect x="20" y="30" width="320" height="280" rx="16" fill="#ffffff" stroke="#788c5d"/>
-        <text x="180" y="72" text-anchor="middle" fill="#788c5d" font-size="24" font-weight="700">حسگرها (بعد از عمل)</text>
+        <text x="180" y="72" text-anchor="middle" fill="#788c5d" font-size="24" font-weight="700">Sensors (after)</text>
         <g fill="#141413" font-size="19" text-anchor="middle">
           <text x="180" y="118">Build / Compiler</text>
           <text x="180" y="155">Unit + Integration Tests</text>
@@ -422,12 +422,12 @@
       </svg>
     </div>
   </div>
-  <aside class="notes">از مقاله Harness Engineering در martinfowler.com: هدف این است که احتمال درست انجام دادن بار اول بالا برود و یک حلقه بازخورد خودکار خطاها را قبل از رسیدن به انسان بگیرد. راهنماها قبل از عمل، حسگرها بعد از عمل.</aside>
+  <aside class="notes">از مقاله Harness Engineering در martinfowler.com: هدف این است که احتمال درست انجام دادن بار اول بالا برود و یک feedback loop خودکار خطاها را قبل از رسیدن به انسان بگیرد. راهنماها قبل از عمل، حسگرها بعد از عمل.</aside>
 </section>
 
 <!-- ============ 10. FOUR ARTIFACTS ============ -->
 <section class="slide">
-  <h2>چهار artifact که نباید قاطی شوند</h2>
+  <h2>Four Artifacts: Spec / Rule / Skill / Doc</h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <img class="img-full" src="assets/img/spec-rule-skill.jpg" alt="Spec Rule Skill Docs" style="flex:1; max-width:520px"/>
@@ -445,11 +445,11 @@
 
 <!-- ============ 11. WHAT IS A SPEC ============ -->
 <section class="slide">
-  <h2><span class="pill spec">Spec</span> چیست؟ <span class="en">Specification</span></h2>
+  <h2>What is a <span class="pill spec">Spec</span>?</h2>
   <div class="content">
     <div class="row">
       <div>
-        <p>توصیف <b>یک فیچر یا تغییر مشخص</b>: هدف، داستان کاربر، معیار پذیرش، خارج از محدوده، لبه‌ها.</p>
+        <p>توصیف <b>یک فیچر یا تغییر مشخص</b>: هدف، داستان کاربر، Acceptance Criteria، خارج از محدوده، لبه‌ها.</p>
         <ul class="small">
           <li><b>عمر:</b> برای یک فیچر/تسک (در حالت spec-anchored نگه داشته می‌شود)</li>
           <li><b>کی بارگذاری می‌شود:</b> فقط وقتی روی همان فیچر کار می‌شود</li>
@@ -465,12 +465,12 @@
       </div>
     </div>
   </div>
-  <aside class="notes">Spec قرارداد بین کسب‌وکار، فنی و عامل است. معیار پذیرش باید قابل تست باشد؛ همین معیارها بعداً حسگرهای عامل می‌شوند.</aside>
+  <aside class="notes">Spec قرارداد بین کسب‌وکار، فنی و عامل است. Acceptance Criteria باید قابل تست باشد؛ همین معیارها بعداً حسگرهای عامل می‌شوند.</aside>
 </section>
 
 <!-- ============ 12. WHAT IS A RULE ============ -->
 <section class="slide">
-  <h2><span class="pill rule">Rule</span> چیست؟ <span class="en">Rules / Instructions</span></h2>
+  <h2>What is a <span class="pill rule">Rule</span>?</h2>
   <div class="content">
     <div class="row">
       <div>
@@ -498,7 +498,7 @@
 
 <!-- ============ 13. WHAT IS A SKILL ============ -->
 <section class="slide">
-  <h2><span class="pill skill">Skill</span> چیست؟ <span class="en">Agent Skills (agentskills.io)</span></h2>
+  <h2>What is a <span class="pill skill">Skill</span>? <span class="en">agentskills.io</span></h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <div>
@@ -530,19 +530,19 @@
 
 <!-- ============ 14. BUSINESS DOCS ============ -->
 <section class="slide">
-  <h2><span class="pill doc">Business Doc</span>، و چرا «قانون کسب‌وکار» ≠ Rule عامل</h2>
+  <h2><span class="pill doc">Business Doc</span> ≠ Agent <span class="pill rule">Rule</span></h2>
   <div class="content">
     <div class="row">
       <div>
-        <p>مستندات کسب‌وکار = دانش دامنه برای انسان‌ها (و گاهی عامل): واژه‌نامه، روایت فرایند، BRD، نقشه فرایند.</p>
+        <p>مستندات کسب‌وکار = دانش دامنه برای انسان‌ها (و گاهی عامل): Glossary، روایت فرایند، BRD، نقشه فرایند.</p>
         <p class="small">به‌طور خودکار بارگذاری <b>نمی‌شود</b>؛ از Spec به آن لینک بدهید یا خلاصه‌اش را در Skill/references بگذارید.</p>
         <p class="small muted">محل پیشنهادی: <code>docs/domain/glossary.md</code>، <code>docs/domain/installments.md</code></p>
       </div>
       <div class="card doc">
-        <h3>قانون کسب‌وکار: «اقساط معوق بیش از ۳۰ روز باید پیگیری شوند»</h3>
+        <h3>Business rule: «اقساط معوق بیش از ۳۰ روز باید پیگیری شوند»</h3>
         <ul class="small">
           <li>✓ در <b>مستند دامنه</b> (حقیقت برای انسان)</li>
-          <li>✓ در <b>Spec</b> فیچر مربوطه، به‌شکل معیار پذیرش</li>
+          <li>✓ در <b>Spec</b> فیچر مربوطه، به‌شکل Acceptance Criteria</li>
           <li>✓ اختیاری: در <b>references یک Skill</b> اگر مکرر لازم است</li>
           <li class="warn">✗ در <code>.cursor/rules</code>، مگر قرارداد دائمی کدنویسی باشد</li>
         </ul>
@@ -554,7 +554,7 @@
 
 <!-- ============ 15. DECISION TREE ============ -->
 <section class="slide">
-  <h2>درخت تصمیم: این متن را کجا بگذارم؟</h2>
+  <h2>Decision Tree: Spec / Rule / Skill / Doc؟</h2>
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 470" xmlns="http://www.w3.org/2000/svg">
@@ -601,7 +601,7 @@
 
 <!-- ============ 16. SKILLS vs RULES ============ -->
 <section class="slide">
-  <h2>Skills در برابر Rules</h2>
+  <h2>Skills vs Rules</h2>
   <div class="content">
     <table class="compare">
       <tr><th style="width:20%"></th><th><span class="pill rule">Rules</span></th><th><span class="pill skill">Skills</span></th></tr>
@@ -619,7 +619,7 @@
 
 <!-- ============ 17. MCP / SUBAGENTS / HOOKS ============ -->
 <section class="slide">
-  <h2>MCP، Subagent و Hook</h2>
+  <h2>MCP, Subagent &amp; Hook</h2>
   <div class="content">
     <div class="grid-3">
       <div class="card">
@@ -647,7 +647,7 @@
 <section class="slide divider">
   <div class="inner">
     <div class="num">03</div>
-    <h1>توسعه مبتنی بر Spec</h1>
+    <h1>Spec-Driven Development</h1>
     <p class="muted">Spec-Driven Development، دیدگاه martinfowler.com و نحوه نوشتن Spec، Rule و Skill</p>
   </div>
   <aside class="notes">حالا به بحث داغ این روزها می‌رسیم: SDD.</aside>
@@ -655,7 +655,7 @@
 
 <!-- ============ 19. WHY SPECS ============ -->
 <section class="slide">
-  <h2>چرا Spec؟ Vibe Coding در برابر کار ساختاریافته</h2>
+  <h2>Why Spec? Vibe Coding vs Structured</h2>
   <div class="content">
     <div class="row">
       <div class="card" style="border-color:rgba(191,60,60,0.5)">
@@ -663,7 +663,7 @@
         <ul class="small">
           <li>پرامپت ← کد ← امید!</li>
           <li>عامل «چیز اشتباهی» را درست می‌سازد</li>
-          <li>هیچ معیار پذیرشی برای بازبینی نیست</li>
+          <li>هیچ Acceptance Criteriaی برای بازبینی نیست</li>
           <li>دانش در تاریخچه چت گم می‌شود</li>
           <li>برای نمونه اولیه خوب؛ برای محصول پرریسک</li>
         </ul>
@@ -673,7 +673,7 @@
         <ul class="small">
           <li>نیازمندی ← Spec ← Plan ← Tasks ← کد</li>
           <li>هم‌راستایی PO و فنی <b>قبل</b> از مصرف توکن</li>
-          <li>معیار پذیرش = حسگر عامل</li>
+          <li>Acceptance Criteria = حسگر عامل</li>
           <li>Spec در ریپو می‌ماند و نسخه‌بندی می‌شود</li>
           <li>بازبینی در برابر Spec، نه حافظه</li>
         </ul>
@@ -686,7 +686,7 @@
 
 <!-- ============ 20. BOCKELER 3 LEVELS ============ -->
 <section class="slide">
-  <h2>سه سطح SDD از نگاه Birgitta Böckeler <span class="en">martinfowler.com</span></h2>
+  <h2>SDD Levels (Böckeler) <span class="en">martinfowler.com</span></h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <div style="flex:1.1">
@@ -712,11 +712,11 @@
 
 <!-- ============ 21. HOW SDD HELPS US ============ -->
 <section class="slide">
-  <h2>SDD چطور به تیم ما کمک می‌کند؟</h2>
+  <h2>How SDD Helps the Team</h2>
   <div class="content">
     <div class="grid-3">
       <div class="card"><h3>🎯 هم‌راستایی</h3><p>PO و Tech Lead قبل از کد توافق می‌کنند</p></div>
-      <div class="card"><h3>✅ دروازه کیفیت</h3><p>معیار پذیرش ← تست ← حسگر عامل</p></div>
+      <div class="card"><h3>✅ Quality gate</h3><p>Acceptance Criteria ← تست ← حسگر عامل</p></div>
       <div class="card"><h3>🔁 کاهش دوباره‌کاری</h3><p>کمتر «عامل چیز اشتباه ساخت»</p></div>
       <div class="card"><h3>🤝 تحویل شفاف</h3><p>BRD ← Spec ← Plan ← Tasks ← کد ← تست</p></div>
       <div class="card"><h3>🔍 بازبینی بهتر</h3><p>Reviewer در برابر Spec چک می‌کند</p></div>
@@ -728,11 +728,11 @@
 
 <!-- ============ 22. KIRO / SPECKIT / TESSL ============ -->
 <section class="slide">
-  <h2>سه ابزار SDD کنار هم</h2>
+  <h2>Kiro / Spec Kit / Tessl</h2>
   <div class="content">
     <table class="compare">
       <tr><th style="width:16%"></th><th>Kiro (AWS)</th><th>Spec Kit (GitHub)</th><th>Tessl</th></tr>
-      <tr><td><b>نوع</b></td><td>IDE عامل‌محور</td><td>CLI + slash command در ابزار شما</td><td>فریم‌ورک + رجیستری Skill</td></tr>
+      <tr><td><b>نوع</b></td><td>IDE agentic</td><td>CLI + slash command در ابزار شما</td><td>فریم‌ورک + رجیستری Skill</td></tr>
       <tr><td><b>جریان</b></td><td>Requirements ← Design ← Tasks</td><td>Constitution ← Specify ← Plan ← Tasks ← Implement</td><td>Spec ← کد تولیدی</td></tr>
       <tr><td><b>سطح (Böckeler)</b></td><td>سبک، spec-first</td><td>قابل سفارشی‌ترین، عملاً spec-first</td><td>تنها هدف‌گذاری spec-anchored / as-source</td></tr>
       <tr><td><b>ابزارهای پشتیبان</b></td><td>خود Kiro</td><td>~۳۰ عامل: Copilot، Claude، Cursor، ...</td><td>Claude Code، Codex، Gemini، ...</td></tr>
@@ -745,7 +745,7 @@
 
 <!-- ============ 23. SPEC KIT FLOW ============ -->
 <section class="slide">
-  <h2>جریان Spec Kit <span class="en">github/spec-kit</span></h2>
+  <h2>Spec Kit Flow <span class="en">github/spec-kit</span></h2>
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 260" xmlns="http://www.w3.org/2000/svg">
@@ -782,18 +782,18 @@
           <line x1="470" y1="105" x2="447" y2="105"/>
           <line x1="245" y1="105" x2="222" y2="105"/>
         </g>
-        <text x="795" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ دروازه انسانی: PO + TL تأیید</text>
-        <text x="345" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ دروازه انسانی: TL تأیید Plan/Tasks</text>
+        <text x="795" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ Human gate: PO + TL تأیید</text>
+        <text x="345" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ Human gate: TL تأیید Plan/Tasks</text>
       </svg>
     </div>
     <p class="small">نمونه کامل در ریپو: <code>samples/specs/001-installment-followup/</code> (spec.md, plan.md, tasks.md)</p>
   </div>
-  <aside class="notes">Spec Kit این مراحل را با slash command در Cursor یا Copilot یا Claude اجرا می‌کند. دو دروازه انسانی مهم داریم: تأیید Spec و تأیید Plan. بعد از آن عامل می‌تواند با آزادی بیشتری پیاده کند.</aside>
+  <aside class="notes">Spec Kit این مراحل را با slash command در Cursor یا Copilot یا Claude اجرا می‌کند. دو Human gate مهم داریم: تأیید Spec و تأیید Plan. بعد از آن عامل می‌تواند با آزادی بیشتری پیاده کند.</aside>
 </section>
 
 <!-- ============ 24. HOW TO WRITE A SPEC ============ -->
 <section class="slide">
-  <h2>چگونه <span class="pill spec">Spec</span> خوب بنویسیم</h2>
+  <h2>How to Write a Good <span class="pill spec">Spec</span></h2>
   <div class="content">
     <div class="row">
       <div class="card spec">
@@ -801,7 +801,7 @@
         <ol class="small" style="padding-right:24px; margin:0">
           <li>هدف (یک پاراگراف)</li>
           <li>داستان‌های کاربر</li>
-          <li><b>معیار پذیرش قابل تست</b> (Given/When/Then)</li>
+          <li><b>Acceptance Criteria قابل تست</b> (Given/When/Then)</li>
           <li>خارج از محدوده (Non-goals)</li>
           <li>قوانین دامنه مرتبط (لینک به docs)</li>
           <li>لبه‌ها و خطاها</li>
@@ -815,23 +815,23 @@
           <li>☐ هر معیار با تست یا دمو قابل اثبات است</li>
           <li>☐ معماری مفصل اینجا نیست (برود در Plan / ADR)</li>
           <li>☐ اندازه یک PR یا اپیک کوتاه</li>
-          <li>☐ واژه‌ها هم‌خوان با واژه‌نامه کسب‌وکار</li>
+          <li>☐ واژه‌ها هم‌خوان با Glossary کسب‌وکار</li>
           <li>☐ Non-goals روشن (جلوی scope creep عامل)</li>
           <li>☐ بعد از merge نگه داشته و به‌روز شود</li>
         </ul>
       </div>
     </div>
   </div>
-  <aside class="notes">قالب کامل در samples/templates/WRITE-A-SPEC.md است. مهم‌ترین بخش معیار پذیرش است؛ اگر نتوانید برایش تست بنویسید، معیار مبهم است. Non-goals هم خیلی مهم است چون عامل‌ها تمایل دارند کار اضافه انجام دهند.</aside>
+  <aside class="notes">قالب کامل در samples/templates/WRITE-A-SPEC.md است. مهم‌ترین بخش Acceptance Criteria است؛ اگر نتوانید برایش تست بنویسید، معیار مبهم است. Non-goals هم خیلی مهم است چون عامل‌ها تمایل دارند کار اضافه انجام دهند.</aside>
 </section>
 
 <!-- ============ 25. SPEC SAMPLE ============ -->
 <section class="slide">
-  <h2>نمونه واقعی Spec، پیگیری اقساط معوق</h2>
+  <h2>Sample Spec: Installment Follow-up</h2>
   <div class="content">
     <div class="card spec" style="font-size:17px">
       <p style="font-size:18px"><b>هدف:</b> فروشنده اقساط معوق را شناسایی و اقدام پیگیری ثبت کند تا وضعیت شفاف شود.</p>
-      <p style="font-size:18px; margin-bottom:6px"><b>معیار پذیرش:</b></p>
+      <p style="font-size:18px; margin-bottom:6px"><b>Acceptance Criteria:</b></p>
       <ol class="small" style="padding-right:24px; margin-top:0">
         <li>Given قسط با بیش از ۳۰ روز تأخیر، When لیست درخواست شود، Then با برچسب <code>Overdue</code> بیاید.</li>
         <li>Given قسط معوق، When پیگیری ثبت شود، Then رکورد با <code>CreatedAt</code> و <code>CreatedBy</code> ذخیره شود.</li>
@@ -839,15 +839,15 @@
         <li>Given ورودی نامعتبر، When ثبت شود، Then خطای اعتبارسنجی/NotFound و هیچ ذخیره‌ای.</li>
       </ol>
       <p style="font-size:18px"><b>خارج از محدوده:</b> ارسال خودکار پیامک، محاسبه جریمه، UI وب.</p>
-      <p style="font-size:18px"><b>قانون دامنه (از docs):</b> هر اقدام پیگیری باید قابل ممیزی باشد.</p>
+      <p style="font-size:18px"><b>Domain rule (از docs):</b> هر اقدام پیگیری باید قابل ممیزی باشد.</p>
     </div>
   </div>
-  <aside class="notes">این Spec الهام‌گرفته از فیچر follow-up در agent.portal است. ببینید که قانون کسب‌وکار ۳۰ روز اینجا به شکل معیار پذیرش آمده، نه در Rule.</aside>
+  <aside class="notes">این Spec الهام‌گرفته از فیچر follow-up در agent.portal است. ببینید که Business rule ۳۰ روز اینجا به شکل Acceptance Criteria آمده، نه در Rule.</aside>
 </section>
 
 <!-- ============ 26. HOW TO WRITE A RULE ============ -->
 <section class="slide">
-  <h2>چگونه <span class="pill rule">Rule</span> خوب بنویسیم</h2>
+  <h2>How to Write a Good <span class="pill rule">Rule</span></h2>
   <div class="content">
     <div class="row">
       <div>
@@ -887,7 +887,7 @@ alwaysApply: false
 
 <!-- ============ 27. HOW TO WRITE A SKILL ============ -->
 <section class="slide">
-  <h2>چگونه <span class="pill skill">Skill</span> خوب بنویسیم</h2>
+  <h2>How to Write a Good <span class="pill skill">Skill</span></h2>
   <div class="content">
     <div class="row">
       <div>
@@ -926,7 +926,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 28. PITFALLS ============ -->
 <section class="slide">
-  <h2>دام‌ها و نقدها</h2>
+  <h2>Pitfalls &amp; Critiques</h2>
   <div class="content">
     <div class="grid-2">
       <div class="card"><h3>⚠️ اصطلاحات هنوز سیال است</h3><p>Böckeler: حتی درک مشترکی از «Spec» و تفاوتش با instruction file وجود ندارد.</p></div>
@@ -942,7 +942,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 <section class="slide divider">
   <div class="inner">
     <div class="num">04</div>
-    <h1>تیم از A تا Z</h1>
+    <h1>Team A to Z</h1>
     <p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester، هر نقش با عامل‌ها</p>
   </div>
   <aside class="notes">حالا ببینیم این مفاهیم در جریان واقعی تیم چطور به کار می‌روند.</aside>
@@ -950,7 +950,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 30. SWIMLANE ============ -->
 <section class="slide">
-  <h2>جریان کامل: از نیازمندی تا تست</h2>
+  <h2>End-to-End Flow: Requirement → Test</h2>
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 420" xmlns="http://www.w3.org/2000/svg">
@@ -972,12 +972,12 @@ description: Add a MediatR CQRS feature (Command/Query,
           <text x="1020" y="135">نیاز / مسئله</text>
           <text x="1020" y="170">BRD</text>
           <text x="1020" y="205">قوانین کسب‌وکار</text>
-          <text x="1020" y="240">واژه‌نامه</text>
+          <text x="1020" y="240">Glossary</text>
           <text x="1020" y="370" fill="#b0aea5" direction="ltr">docs/domain/</text>
 
           <rect x="695" y="95" width="200" height="300" rx="12" fill="rgba(106,155,204,0.06)" stroke="rgba(106,155,204,0.4)"/>
           <text x="795" y="135">داستان کاربر</text>
-          <text x="795" y="170">معیار پذیرش</text>
+          <text x="795" y="170">Acceptance Criteria</text>
           <text x="795" y="205">Non-goals</text>
           <text x="795" y="240">اولویت</text>
           <text x="795" y="370" fill="#6a9bcc" direction="ltr">spec.md</text>
@@ -1014,19 +1014,19 @@ description: Add a MediatR CQRS feature (Command/Query,
       </svg>
     </div>
   </div>
-  <aside class="notes">هر نقش یک artifact تولید می‌کند که ورودی نقش بعدی است. کسب‌وکار مستند دامنه، PO Spec، Tech Lead Plan و Rule و Skill، Developer با عامل کد و PR، و Tester با عامل تست‌ها را از معیار پذیرش می‌سازد.</aside>
+  <aside class="notes">هر نقش یک artifact تولید می‌کند که ورودی نقش بعدی است. کسب‌وکار مستند دامنه، PO Spec، Tech Lead Plan و Rule و Skill، Developer با عامل کد و PR، و Tester با عامل تست‌ها را از Acceptance Criteria می‌سازد.</aside>
 </section>
 
 <!-- ============ 31. PO & TECH LEAD ============ -->
 <section class="slide">
-  <h2>PO و Tech Lead با عامل‌ها چه می‌کنند؟</h2>
+  <h2>PO &amp; Tech Lead + Agents</h2>
   <div class="content">
     <div class="row">
       <div class="card spec">
         <h3>Product Owner</h3>
         <ul class="small">
           <li>تبدیل BRD به داستان کاربر با کمک عامل</li>
-          <li>درخواست از عامل: «معیار پذیرش Given/When/Then و لبه‌ها را پیشنهاد بده»</li>
+          <li>درخواست از عامل: «Acceptance Criteria Given/When/Then و لبه‌ها را پیشنهاد بده»</li>
           <li>اتصال MCP به Jira: ساخت تیکت از Spec</li>
           <li>بررسی Spec از نظر ابهام و تناقض</li>
           <li><b>خروجی:</b> <code>spec.md</code> تأییدشده</li>
@@ -1039,7 +1039,7 @@ description: Add a MediatR CQRS feature (Command/Query,
           <li>ساخت و نگهداری Skills تیم</li>
           <li>تأیید Plan و تقسیم Tasks</li>
           <li>طراحی Harness: تست معماری، Hook، CI</li>
-          <li>تعیین سطح خودمختاری عامل برای هر نوع کار</li>
+          <li>تعیین سطح Autonomy عامل برای هر نوع کار</li>
           <li><b>خروجی:</b> plan.md + rules + skills</li>
         </ul>
       </div>
@@ -1050,7 +1050,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 32. DEV & TESTER ============ -->
 <section class="slide">
-  <h2>Developer و Tester با عامل‌ها چه می‌کنند؟</h2>
+  <h2>Developer &amp; Tester + Agents</h2>
   <div class="content">
     <div class="row">
       <div class="card skill">
@@ -1067,7 +1067,7 @@ description: Add a MediatR CQRS feature (Command/Query,
       <div class="card" style="border-color:rgba(217,119,87,0.5)">
         <h3>Tester / QA</h3>
         <ul class="small">
-          <li>تبدیل معیار پذیرش Spec به test case</li>
+          <li>تبدیل Acceptance Criteria Spec به test case</li>
           <li>تولید تست integration / E2E با عامل</li>
           <li>درخواست: «لبه‌هایی که Spec پوشش نداده را پیدا کن»</li>
           <li>عامل مرورگر برای تست UI</li>
@@ -1082,7 +1082,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 33. ORCHESTRATION ============ -->
 <section class="slide">
-  <h2>الگوی ارکستراسیون عامل‌ها</h2>
+  <h2>Agent Orchestration</h2>
   <div class="content">
     <div class="row" style="align-items:center">
       <div class="svg-wrap" style="flex:1.3">
@@ -1128,7 +1128,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 34. IN / ON THE LOOP ============ -->
 <section class="slide">
-  <h2>انسان «درون حلقه» یا «روی حلقه»؟ <span class="en">Kief Morris, martinfowler.com</span></h2>
+  <h2>In the Loop vs On the Loop <span class="en">Kief Morris</span></h2>
   <div class="content">
     <div class="grid-3">
       <div class="card" style="border-color:rgba(191,60,60,0.5)">
@@ -1154,7 +1154,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 35. GATES & AUTONOMY ============ -->
 <section class="slide">
-  <h2>دروازه تأیید و سطح خودمختاری</h2>
+  <h2>Verification Gate &amp; Autonomy</h2>
   <div class="content">
     <div class="row">
       <div class="card">
@@ -1170,7 +1170,7 @@ description: Add a MediatR CQRS feature (Command/Query,
       </div>
       <div>
         <table class="compare">
-          <tr><th>نوع کار</th><th>خودمختاری</th></tr>
+          <tr><th>نوع کار</th><th>Autonomy</th></tr>
           <tr><td>مستندات، تست‌نویسی ماژول پوشش‌دار</td><td style="color:#788c5d">بالا</td></tr>
           <tr><td>ارتقای وابستگی با تست کامل</td><td style="color:#788c5d">بالا</td></tr>
           <tr><td>فیچر معمولی با Spec</td><td style="color:#d97757">متوسط (تأیید Plan)</td></tr>
@@ -1180,14 +1180,14 @@ description: Add a MediatR CQRS feature (Command/Query,
       </div>
     </div>
   </div>
-  <aside class="notes">خودمختاری یک دکمه سراسری نیست؛ به ازای نوع کار و قدرت تست‌ها تعیین می‌شود. برای ما در بیمه، هر چیزی که با پول و بیمه‌نامه سروکار دارد خودمختاری پایین دارد.</aside>
+  <aside class="notes">Autonomy یک دکمه سراسری نیست؛ به ازای نوع کار و قدرت تست‌ها تعیین می‌شود. برای ما در بیمه، هر چیزی که با پول و بیمه‌نامه سروکار دارد Autonomy پایین دارد.</aside>
 </section>
 
 <!-- ============ 36. DIVIDER PART 5 ============ -->
 <section class="slide divider">
   <div class="inner">
     <div class="num">05</div>
-    <h1>مقایسه ابزارها</h1>
+    <h1>Tools Comparison</h1>
     <p class="muted">Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit</p>
   </div>
   <aside class="notes">حالا ابزارهای بازار.</aside>
@@ -1195,7 +1195,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 37. TOOLS MATRIX ============ -->
 <section class="slide">
-  <h2>ماتریس ابزارها (۲۰۲۶)</h2>
+  <h2>Tools Matrix (2026)</h2>
   <div class="content">
     <table class="compare" style="font-size:15.5px">
       <tr><th>ابزار</th><th>رابط</th><th>مدل‌ها</th><th>نقطه قوت</th><th>مناسب برای</th></tr>
@@ -1213,7 +1213,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 38. WHERE EACH TOOL READS ============ -->
 <section class="slide">
-  <h2>هر ابزار Rule و Skill را از کجا می‌خواند؟</h2>
+  <h2>Where Each Tool Reads Rules &amp; Skills</h2>
   <div class="content">
     <table class="compare" style="font-size:15.5px">
       <tr><th>ابزار</th><th>Rules / Instructions</th><th>Skills</th><th>Subagents</th></tr>
@@ -1230,7 +1230,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 39. FOLDER STRUCTURE ============ -->
 <section class="slide">
-  <h2>ساختار پوشه پیشنهادی (همه ابزارها با هم)</h2>
+  <h2>Repo Folder Structure</h2>
   <div class="content">
     <div class="row">
       <pre style="font-size:15px; flex:1.1">repo/
@@ -1270,7 +1270,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 40. WHICH TOOL FOR WHICH JOB ============ -->
 <section class="slide">
-  <h2>کدام ابزار برای کدام کار؟</h2>
+  <h2>Which Tool for Which Job?</h2>
   <div class="content">
     <div class="grid-2">
       <div class="card"><h3>سؤال سریع، توضیح کد</h3><p>چت با LLM یا Ask mode در IDE</p></div>
@@ -1289,7 +1289,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 <section class="slide divider">
   <div class="inner">
     <div class="num">06</div>
-    <h1>عمل و پرسش‌ها</h1>
+    <h1>Practice &amp; FAQ</h1>
     <p class="muted">چطور با عامل صحبت کنیم، ضدالگوها، نقشه راه، FAQ</p>
   </div>
   <aside class="notes">بخش پایانی و عملی.</aside>
@@ -1297,7 +1297,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 42. PROMPT ANATOMY ============ -->
 <section class="slide">
-  <h2>آناتومی یک پرامپت خوب برای عامل</h2>
+  <h2>Prompt Anatomy for Agents</h2>
   <div class="content">
     <div class="grid-3">
       <div class="card"><h3>۱. هدف</h3><p>چه نتیجه‌ای می‌خواهی؟ (نه فقط «درستش کن»)</p></div>
@@ -1314,7 +1314,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 43. BAD vs GOOD PROMPT ============ -->
 <section class="slide">
-  <h2>پرامپت بد در برابر پرامپت خوب</h2>
+  <h2>Bad Prompt vs Good Prompt</h2>
   <div class="content">
     <div class="row">
       <div>
@@ -1330,7 +1330,7 @@ description: Add a MediatR CQRS feature (Command/Query,
           ۲. در Plan Mode فایل‌ها و ترتیب را پیشنهاد بده و صبر کن تا تأیید کنم.<br/>
           ۳. از Skill <code>dotnet-cqrs-feature</code> پیروی کن.<br/>
           ۴. به Domain و جدول‌های موجود دست نزن؛ ارسال پیامک خارج از محدوده است.<br/>
-          ۵. هر معیار پذیرش ۱ تا ۴ باید یک unit test داشته باشد؛ <code>dotnet test</code> سبز.<br/>
+          ۵. هر Acceptance Criteria ۱ تا ۴ باید یک unit test داشته باشد؛ <code>dotnet test</code> سبز.<br/>
           ۶. در پایان خلاصه تغییرات + نگاشت AC به تست بده.
         </div>
       </div>
@@ -1341,7 +1341,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 44. ANTI-PATTERNS ============ -->
 <section class="slide">
-  <h2>ضدالگوها، اینها را نکنید</h2>
+  <h2>Anti-patterns</h2>
   <div class="content">
     <div class="grid-2">
       <div class="card"><h3>❌ یک چت بی‌پایان</h3><p class="small">context پر و آلوده می‌شود؛ برای هر تسک جلسه جدید.</p></div>
@@ -1357,7 +1357,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 45. ROADMAP ============ -->
 <section class="slide">
-  <h2>نقشه راه پیشنهادی برای تیم ما</h2>
+  <h2>30 / 60 / 90 Roadmap</h2>
   <div class="content">
     <div class="grid-3">
       <div class="card">
@@ -1384,7 +1384,7 @@ description: Add a MediatR CQRS feature (Command/Query,
           <li>SDD برای همه فیچرهای جدید</li>
           <li>Spec-anchored برای ماژول‌های اصلی</li>
           <li>کتابخانه Skill تیمی</li>
-          <li>بازنگری داده‌ها و تنظیم خودمختاری</li>
+          <li>بازنگری داده‌ها و تنظیم Autonomy</li>
         </ul>
       </div>
     </div>
@@ -1395,11 +1395,11 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 46. FAQ 1 ============ -->
 <section class="slide">
-  <h2>پرسش‌های پرتکرار (۱)</h2>
+  <h2>FAQ (1)</h2>
   <div class="content">
     <div class="grid-2 small">
       <div class="card"><h3>آیا AI جای توسعه‌دهنده را می‌گیرد؟</h3><p>نه؛ نقش را تغییر می‌دهد: طراحی، Spec، بازبینی، Harness. مالکیت و مسئولیت با انسان است.</p></div>
-      <div class="card"><h3>قانون کسب‌وکار Rule است یا Skill؟</h3><p>معمولاً هیچ‌کدام: مستند دامنه + معیار پذیرش Spec. Rule فقط قرارداد کدنویسی.</p></div>
+      <div class="card"><h3>Business rule Rule است یا Skill؟</h3><p>معمولاً هیچ‌کدام: مستند دامنه + Acceptance Criteria Spec. Rule فقط قرارداد کدنویسی.</p></div>
       <div class="card"><h3>BRD را داخل AGENTS.md بگذاریم؟</h3><p>نه. BRD در <code>docs/</code>؛ خلاصه قابل تست در Spec.</p></div>
       <div class="card"><h3>Spec-first یا Spec-anchored؟</h3><p>شروع با spec-first؛ برای ماژول‌های مهم و پرتغییر spec-anchored.</p></div>
     </div>
@@ -1409,7 +1409,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 47. FAQ 2 ============ -->
 <section class="slide">
-  <h2>پرسش‌های پرتکرار (۲)</h2>
+  <h2>FAQ (2)</h2>
   <div class="content">
     <div class="grid-2 small">
       <div class="card"><h3>امنیت کد شرکت؟</h3><p>Privacy mode، عدم ارسال secret، بررسی سیاست داده هر ابزار، محدودیت دسترسی MCP و ترمینال.</p></div>
@@ -1423,7 +1423,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 48. REFERENCES ============ -->
 <section class="slide">
-  <h2>منابع اصلی</h2>
+  <h2>References</h2>
   <div class="content">
     <ul class="xs ltr" style="direction:ltr; text-align:left; padding-left:24px; padding-right:0">
       <li>Böckeler، Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl، martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html</li>
@@ -1447,7 +1447,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 <!-- ============ 49. THANKS ============ -->
 <section class="slide cover">
   <div class="titlebox">
-    <h1>سپاس<br/><span class="accent">پرسش و پاسخ</span></h1>
+    <h1>Thanks<br/><span class="accent">Q &amp; A</span></h1>
     <p>همه فایل‌ها، نمونه‌ها و قالب‌ها روی گیت‌هاب:</p>
     <p class="ltr" style="font-size:24px; color:#6a9bcc; direction:ltr; text-align:right">github.com/mohammadrezatahmasebi/ai-agentic-meeting</p>
     <p class="small muted">slides.pdf · handbook.pdf · samples/ · templates/</p>
