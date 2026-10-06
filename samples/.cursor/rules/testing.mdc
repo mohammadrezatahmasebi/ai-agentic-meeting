@@ -1,0 +1,15 @@
+---
+description: Unit and integration testing conventions
+globs: "**/*Tests*/**/*.cs"
+alwaysApply: false
+---
+
+# Testing Rules
+
+- Framework: xUnit + NSubstitute (or Moq if already in project).
+- Arrange–Act–Assert clearly separated.
+- Name tests: `Method_Scenario_Expected`.
+- Cover success + at least one failure path for handlers/services.
+- Do not hit real network/DB in unit tests.
+- Prefer testing behavior via public API of the unit under test.
+- After adding tests: `dotnet test` must pass.

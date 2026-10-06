@@ -1,0 +1,22 @@
+---
+description: Clean Architecture boundaries for .NET projects
+globs: "**/*.{cs,csproj}"
+alwaysApply: false
+---
+
+# .NET Clean Architecture
+
+- Domain: entities, value objects, domain events — no EF, no HTTP, no external SDKs.
+- Application: use-cases, handlers, DTOs, validators, repository interfaces.
+- Infrastructure: EF Core, external APIs, CAP/RabbitMQ, file storage.
+- Host/API: controllers, DI wiring, middleware only.
+
+## Do
+- Depend inward (Host → Application → Domain).
+- Put business rules in Domain/Application, not controllers.
+- Use Result / typed errors instead of throwing for expected failures.
+
+## Don't
+- Don't reference Infrastructure from Domain.
+- Don't put SQL or DbContext usage in controllers.
+- Don't invent new folder layouts without an ADR.

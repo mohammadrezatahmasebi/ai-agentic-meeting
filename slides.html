@@ -1,0 +1,1462 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>برنامه‌نویسی عامل‌محور (Agentic Coding) — از نیازمندی تا تست</title>
+<link rel="stylesheet" href="assets/css/theme.css" />
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    overflow: hidden;
+    background: #05080f;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    counter-reset: slide;
+  }
+  .stage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    height: 720px;
+    transform-origin: center center;
+  }
+  .slide {
+    counter-increment: slide;
+    position: absolute;
+    inset: 0;
+    width: 1280px;
+    height: 720px;
+    padding: 56px 72px 48px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+      radial-gradient(1000px 500px at 100% 0%, rgba(91,140,255,0.16), transparent 60%),
+      radial-gradient(800px 500px at 0% 100%, rgba(61,214,198,0.12), transparent 60%),
+      var(--bg);
+  }
+  .slide.active { display: flex; }
+  .slide::after {
+    content: attr(data-n);
+    position: absolute;
+    bottom: 18px;
+    left: 28px;
+    font-size: 14px;
+    color: var(--muted);
+    direction: ltr;
+  }
+  .slide .brand {
+    position: absolute;
+    bottom: 18px;
+    right: 72px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .slide h1 { font-size: 54px; line-height: 1.25; margin: 0 0 18px; font-weight: 700; }
+  .slide h2 {
+    font-size: 38px;
+    margin: 0 0 22px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .slide h2 .en { font-size: 22px; color: var(--muted); font-weight: 400; margin-right: 10px; direction: ltr; unicode-bidi: isolate; }
+  .slide h3 { font-size: 24px; margin: 0 0 10px; color: #d7e3ff; }
+  .slide p, .slide li { font-size: 22px; }
+  .slide ul { margin: 0; padding-right: 26px; }
+  .slide li { margin: 6px 0; }
+  .slide .small, .slide .small li { font-size: 18px; }
+  .slide .xs, .slide .xs li { font-size: 16px; }
+  .slide .content { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+  .slide .card p, .slide .card li { font-size: 18px; }
+  .slide table.compare { font-size: 17px; }
+  .slide table.compare th, .slide table.compare td { padding: 9px 12px; }
+  .slide pre { font-size: 14.5px; margin: 0; }
+
+  .cover {
+    background:
+      linear-gradient(90deg, rgba(11,18,32,0) 0%, rgba(11,18,32,0.75) 45%, rgba(11,18,32,0.98) 70%),
+      url("assets/img/cover.jpg") left center / cover no-repeat;
+    justify-content: center;
+  }
+  .cover .titlebox { max-width: 640px; }
+  .cover h1 { font-size: 58px; }
+  .cover .subtitle { font-size: 26px; color: var(--accent); margin-bottom: 26px; }
+
+  .divider { justify-content: center; }
+  .divider .num { font-size: 120px; font-weight: 700; color: rgba(61,214,198,0.25); line-height: 1; direction: ltr; }
+  .divider h1 { font-size: 60px; }
+  .divider .hero {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0.35;
+  }
+  .divider .inner { position: relative; z-index: 1; max-width: 760px; }
+
+  .pill { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 16px; border: 1px solid var(--border); margin-left: 8px; }
+  .pill.spec { color: #7dd3fc; border-color: rgba(125,211,252,0.4); background: rgba(125,211,252,0.08); }
+  .pill.rule { color: #fbbf24; border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+  .pill.skill { color: #86efac; border-color: rgba(134,239,172,0.4); background: rgba(134,239,172,0.08); }
+  .pill.doc { color: #c4b5fd; border-color: rgba(196,181,253,0.4); background: rgba(196,181,253,0.08); }
+
+  .card.spec { border-color: rgba(125,211,252,0.45); }
+  .card.rule { border-color: rgba(251,191,36,0.45); }
+  .card.skill { border-color: rgba(134,239,172,0.45); }
+  .card.doc { border-color: rgba(196,181,253,0.45); }
+
+  .big-quote {
+    font-size: 30px; line-height: 1.6; border-right: 5px solid var(--accent);
+    padding: 10px 24px; margin: 10px 0 20px; background: rgba(61,214,198,0.06); border-radius: 8px;
+  }
+  .stat { font-size: 64px; font-weight: 700; color: var(--accent); line-height: 1.1; direction: ltr; unicode-bidi: isolate; }
+  .stat.bad { color: var(--danger); }
+  .prompt {
+    background: #0a101c; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 18px; font-size: 18px; line-height: 1.75;
+  }
+  .prompt.bad { border-color: rgba(255,107,107,0.55); }
+  .prompt.good { border-color: rgba(74,222,128,0.55); }
+  .label { font-size: 15px; color: var(--muted); margin-bottom: 6px; display: block; }
+  .row { display: flex; gap: 22px; align-items: stretch; }
+  .row > * { flex: 1; }
+  .img-full { width: 100%; border-radius: 14px; border: 1px solid var(--border); }
+  svg text { font-family: "Vazirmatn", Tahoma, sans-serif; }
+
+  .notes { display: none; }
+  .notes-panel {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    max-height: 34vh; overflow: auto;
+    background: rgba(5,8,15,0.96); border-top: 2px solid var(--accent);
+    padding: 16px 28px; font-size: 18px; z-index: 50; line-height: 1.8;
+  }
+  .notes-panel.show { display: block; }
+  .hud {
+    position: fixed; top: 10px; left: 14px; z-index: 40;
+    font-size: 13px; color: var(--muted); opacity: 0.6; direction: rtl;
+  }
+  .progress { position: fixed; top: 0; right: 0; height: 3px; background: var(--accent); z-index: 41; transition: width .2s; }
+
+  @media print {
+    html, body { overflow: visible; height: auto; background: var(--bg); }
+    .stage { position: static; transform: none !important; width: 1280px; height: auto; }
+    .slide { display: flex !important; position: relative; page-break-after: always; break-after: page; }
+    .hud, .notes-panel, .progress { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="hud">← / Space: بعدی · →: قبلی · N: یادداشت سخنران · F: تمام‌صفحه</div>
+<div class="stage" id="stage">
+
+<!-- ============ 1. COVER ============ -->
+<section class="slide cover">
+  <div class="titlebox">
+    <span class="badge">جلسه فنی تیم · ۶۰ دقیقه</span>
+    <h1 style="margin-top:18px">برنامه‌نویسی عامل‌محور<br/><span class="accent">Agentic Coding</span></h1>
+    <div class="subtitle">از نیازمندی کسب‌وکار تا تست — با Spec، Rule و Skill</div>
+    <p class="muted small">Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit</p>
+  </div>
+  <aside class="notes">سلام و خوش‌آمد. امروز درباره این صحبت می‌کنیم که چطور با عامل‌های هوش مصنوعی به‌صورت تیمی و منظم نرم‌افزار بسازیم؛ نه فقط «چت کردن با AI». تمرکز اصلی: Spec، Rule و Skill و اینکه هر نقش تیم چطور از عامل‌ها استفاده کند.</aside>
+</section>
+
+<!-- ============ 2. AGENDA ============ -->
+<section class="slide">
+  <h2>دستور جلسه</h2>
+  <div class="content">
+    <div class="grid-2">
+      <div class="card"><h3>۱. چرا الان؟</h3><p class="muted">داده‌ها، تکامل ابزارها، پارادوکس بهره‌وری</p></div>
+      <div class="card"><h3>۲. مفاهیم پایه</h3><p class="muted">LLM، Agent، Context، Harness، Spec / Rule / Skill</p></div>
+      <div class="card"><h3>۳. توسعه مبتنی بر Spec</h3><p class="muted">دیدگاه Martin Fowler / Birgitta Böckeler و نحوه نوشتن</p></div>
+      <div class="card"><h3>۴. تیم از A تا Z</h3><p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester</p></div>
+      <div class="card"><h3>۵. مقایسه ابزارها</h3><p class="muted">کدام ابزار برای کدام کار، ساختار پوشه‌ها</p></div>
+      <div class="card"><h3>۶. عمل و پرسش‌ها</h3><p class="muted">نحوه صحبت با عامل، ضدالگوها، نقشه راه، FAQ</p></div>
+    </div>
+  </div>
+  <aside class="notes">شش بخش داریم. بخش ۲ و ۳ قلب ارائه است: تفاوت Spec و Rule و Skill و اینکه مستندات کسب‌وکار کجا قرار می‌گیرد.</aside>
+</section>
+
+<!-- ============ 3. HOOK ============ -->
+<section class="slide">
+  <h2>پارادوکس بهره‌وری <span class="en">The Productivity Paradox</span></h2>
+  <div class="content">
+    <div class="row">
+      <div class="card">
+        <h3>گزارش DORA 2025 (گوگل)</h3>
+        <div class="stat">90%</div>
+        <p>از توسعه‌دهندگان از AI استفاده می‌کنند؛ بیش از ۸۰٪ احساس بهره‌وری بیشتر دارند.</p>
+        <p class="small muted">سرعت تحویل ↑ اما پایداری تحویل ↓</p>
+      </div>
+      <div class="card">
+        <h3>مطالعه کنترل‌شده METR</h3>
+        <div class="stat bad">−19%</div>
+        <p>توسعه‌دهندگان باتجربه با AI <b>کندتر</b> شدند — در حالی که فکر می‌کردند ۲۰٪ سریع‌ترند.</p>
+        <p class="small muted">تسک‌های واقعی در ریپوهای بزرگ متن‌باز</p>
+      </div>
+    </div>
+    <div class="big-quote" style="margin-top:24px">«AI یک <b>تقویت‌کننده</b> است: نقاط قوت و ضعف سازمان را بزرگ‌تر می‌کند.» — DORA 2025</div>
+  </div>
+  <aside class="notes">این دو داده با هم تناقض ظاهری دارند. پیام: ابزار به‌تنهایی کافی نیست؛ فرایند، context و verification تعیین‌کننده است. امروز درباره همین فرایند صحبت می‌کنیم.</aside>
+</section>
+
+<!-- ============ 4. EVOLUTION ============ -->
+<section class="slide">
+  <h2>تکامل ابزارها <span class="en">From Autocomplete to Agent Teams</span></h2>
+  <div class="content">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1130 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker>
+        </defs>
+        <g font-size="22" fill="#e8eefc" text-anchor="middle">
+          <rect x="880" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#5b8cff"/>
+          <text x="995" y="110" font-weight="700">۱. تکمیل خودکار</text>
+          <text x="995" y="145" font-size="17" fill="#9aa8c7">Autocomplete</text>
+          <text x="995" y="178" font-size="16" fill="#9aa8c7">یک خط / یک تابع</text>
+
+          <rect x="600" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#5b8cff"/>
+          <text x="715" y="110" font-weight="700">۲. چت‌بات</text>
+          <text x="715" y="145" font-size="17" fill="#9aa8c7">Chat Assistant</text>
+          <text x="715" y="178" font-size="16" fill="#9aa8c7">سؤال و جواب، کپی‌پیست</text>
+
+          <rect x="320" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#3dd6c6" stroke-width="2"/>
+          <text x="435" y="110" font-weight="700">۳. عامل</text>
+          <text x="435" y="145" font-size="17" fill="#9aa8c7">Coding Agent</text>
+          <text x="435" y="178" font-size="16" fill="#9aa8c7">می‌خواند، می‌نویسد، اجرا می‌کند</text>
+
+          <rect x="40" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#3dd6c6" stroke-width="3"/>
+          <text x="155" y="110" font-weight="700">۴. تیم عامل‌ها</text>
+          <text x="155" y="145" font-size="17" fill="#9aa8c7">Multi-Agent</text>
+          <text x="155" y="178" font-size="16" fill="#9aa8c7">Orchestrator + متخصص‌ها</text>
+        </g>
+        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr1)">
+          <line x1="875" y1="135" x2="838" y2="135"/>
+          <line x1="595" y1="135" x2="558" y2="135"/>
+          <line x1="315" y1="135" x2="278" y2="135"/>
+        </g>
+        <text x="565" y="270" text-anchor="middle" font-size="19" fill="#9aa8c7">نقش انسان: از «تایپ‌کننده» به «طراح و ناظر حلقه»</text>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">ما از تکمیل خودکار به چت، بعد به عامل‌هایی که خودشان فایل می‌خوانند و تست اجرا می‌کنند رسیدیم. حالا عامل‌های متعدد با نقش‌های تخصصی داریم. نقش ما از نوشتن هر خط به طراحی و نظارت بر حلقه کار تغییر می‌کند.</aside>
+</section>
+
+<!-- ============ 5. DIVIDER PART 2 ============ -->
+<section class="slide divider">
+  <div class="inner">
+    <div class="num">02</div>
+    <h1>مفاهیم پایه</h1>
+    <p class="muted">LLM، Agent، Context Engineering، Harness و چهار artifact اصلی</p>
+  </div>
+  <aside class="notes">قبل از ابزارها باید زبان مشترک داشته باشیم.</aside>
+</section>
+
+<!-- ============ 6. LLM vs ASSISTANT vs AGENT ============ -->
+<section class="slide">
+  <h2>LLM، دستیار کدنویسی، عامل — تفاوت چیست؟</h2>
+  <div class="content">
+    <table class="compare">
+      <tr><th style="width:18%"></th><th>LLM (مدل زبانی)</th><th>دستیار کدنویسی AI</th><th>عامل کدنویسی (Agent)</th></tr>
+      <tr><td><b>چیست؟</b></td><td>مغز: پیش‌بینی متن/توکن</td><td>مدل + UI داخل IDE</td><td>مدل + ابزارها + حلقه تصمیم</td></tr>
+      <tr><td><b>مثال</b></td><td class="ltr">Claude, GPT, Gemini</td><td class="ltr">Copilot completions, Chat</td><td class="ltr">Cursor Agent, Claude Code, Codex, Kiro</td></tr>
+      <tr><td><b>دسترسی</b></td><td>فقط متن ورودی</td><td>فایل باز / انتخاب‌شده</td><td>کل ریپو، ترمینال، تست، مرورگر، MCP</td></tr>
+      <tr><td><b>چه کسی اجرا می‌کند؟</b></td><td>شما</td><td>شما (کپی/قبول)</td><td>خود عامل؛ شما بازبینی می‌کنید</td></tr>
+      <tr><td><b>بهترین برای</b></td><td>ایده، توضیح، تحلیل</td><td>تکمیل سریع، سؤال موضعی</td><td>فیچر چندفایلی، رفع باگ، refactor، تست</td></tr>
+    </table>
+    <div class="big-quote" style="font-size:24px; margin-top:22px">Agent = Model + Harness &nbsp;—&nbsp; یعنی «مدل» فقط بخشی از ماجراست.</div>
+  </div>
+  <aside class="notes">سؤال رایج: کدام بهتر است؟ جواب: این‌ها لایه‌های یک سیستم هستند. مدل مغز است؛ عامل مدلی است که ابزار و حلقه دارد. فرمول Agent = Model + Harness از Birgitta Böckeler در سایت Martin Fowler است.</aside>
+</section>
+
+<!-- ============ 7. AGENT LOOP ============ -->
+<section class="slide">
+  <h2>حلقه عامل <span class="en">The Agent Loop</span></h2>
+  <div class="content">
+    <div class="row" style="align-items:center">
+      <div class="svg-wrap" style="flex:1.2">
+        <svg viewBox="0 0 620 460" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+          <circle cx="310" cy="230" r="85" fill="#162033" stroke="#5b8cff" stroke-width="2"/>
+          <text x="310" y="222" text-anchor="middle" fill="#e8eefc" font-size="24" font-weight="700">LLM</text>
+          <text x="310" y="255" text-anchor="middle" fill="#9aa8c7" font-size="17" direction="ltr">+ Context</text>
+          <g font-size="19" fill="#e8eefc" text-anchor="middle">
+            <rect x="225" y="10" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <text x="310" y="49">۱. هدف / پرامپت</text>
+            <rect x="440" y="198" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <text x="525" y="237">۲. برنامه‌ریزی</text>
+            <rect x="225" y="386" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <text x="310" y="425">۳. اجرای ابزار</text>
+            <rect x="10" y="198" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <text x="95" y="237">۴. مشاهده نتیجه</text>
+          </g>
+          <g stroke="#3dd6c6" stroke-width="3" fill="none" marker-end="url(#arr2)">
+            <path d="M400,60 Q500,90 520,190"/>
+            <path d="M520,270 Q500,370 400,405"/>
+            <path d="M220,405 Q120,370 100,270"/>
+            <path d="M100,190 Q120,90 220,60"/>
+          </g>
+        </svg>
+      </div>
+      <div style="flex:1">
+        <ul class="small">
+          <li><b>ابزارها:</b> خواندن/جستجوی فایل، ویرایش، ترمینال، تست، مرورگر، MCP</li>
+          <li><b>مشاهده:</b> خروجی build، خطای تست، lint</li>
+          <li>حلقه تا رسیدن به هدف یا توقف تکرار می‌شود</li>
+          <li class="warn">بدون معیار «موفقیت» قابل‌اندازه‌گیری، عامل خودش به خودش نمره می‌دهد!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">عامل در یک حلقه کار می‌کند: هدف را می‌گیرد، برنامه می‌ریزد، ابزار اجرا می‌کند، نتیجه را می‌بیند و تکرار می‌کند. مهم‌ترین نکته: باید یک سیگنال قطعی مثل تست داشته باشد؛ ارزیابی خود مدل از «تمام شد» کم‌اعتمادترین سیگنال است.</aside>
+</section>
+
+<!-- ============ 8. CONTEXT ENGINEERING ============ -->
+<section class="slide">
+  <h2>مهندسی زمینه <span class="en">Context Engineering</span></h2>
+  <div class="content">
+    <div class="big-quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»<br/><span class="small muted">— Bharani Subramaniam، نقل‌شده در مقاله Birgitta Böckeler، martinfowler.com (فوریه ۲۰۲۶)</span></div>
+    <div class="grid-3">
+      <div class="card rule"><h3><span class="pill rule">Rules</span></h3><p>دستورالعمل‌های دائمی پروژه</p></div>
+      <div class="card skill"><h3><span class="pill skill">Skills</span></h3><p>رویه‌های قابل بارگذاری در صورت نیاز</p></div>
+      <div class="card spec"><h3><span class="pill spec">Specs</span></h3><p>قرارداد فیچر فعلی</p></div>
+      <div class="card"><h3>MCP</h3><p>اتصال به Jira، DB، مستندات، مرورگر</p></div>
+      <div class="card"><h3>Subagents</h3><p>context جدا برای تحقیق و بازبینی</p></div>
+      <div class="card"><h3>خود کدبیس</h3><p>کد تمیز = بهترین context</p></div>
+    </div>
+  </div>
+  <aside class="notes">Context پنجره محدودی است. هرچه بی‌ربط‌تر پرش کنید، کیفیت پایین‌تر. Böckeler تأکید می‌کند که طراحی خود کدبیس هم بخشی از context است؛ کد بی‌نظم، عامل بی‌نظم تولید می‌کند.</aside>
+</section>
+
+<!-- ============ 9. HARNESS ============ -->
+<section class="slide">
+  <h2>مهار عامل: راهنماها و حسگرها <span class="en">Harness: Guides &amp; Sensors</span></h2>
+  <div class="content">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1130 410" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+        <rect x="790" y="30" width="320" height="280" rx="16" fill="#162033" stroke="#fbbf24"/>
+        <text x="950" y="72" text-anchor="middle" fill="#fbbf24" font-size="24" font-weight="700">راهنماها (قبل از عمل)</text>
+        <g fill="#e8eefc" font-size="19" text-anchor="middle">
+          <text x="950" y="118">AGENTS.md / Rules</text>
+          <text x="950" y="155">Spec + معیار پذیرش</text>
+          <text x="950" y="192">Skills</text>
+          <text x="950" y="229">ADR / معماری</text>
+          <text x="950" y="266">نمونه کد خوب</text>
+        </g>
+        <rect x="435" y="100" width="260" height="140" rx="70" fill="#0a101c" stroke="#3dd6c6" stroke-width="3"/>
+        <text x="565" y="162" text-anchor="middle" fill="#e8eefc" font-size="26" font-weight="700">عامل</text>
+        <text x="565" y="196" text-anchor="middle" fill="#9aa8c7" font-size="17">Model</text>
+        <rect x="20" y="30" width="320" height="280" rx="16" fill="#162033" stroke="#4ade80"/>
+        <text x="180" y="72" text-anchor="middle" fill="#4ade80" font-size="24" font-weight="700">حسگرها (بعد از عمل)</text>
+        <g fill="#e8eefc" font-size="19" text-anchor="middle">
+          <text x="180" y="118">Build / Compiler</text>
+          <text x="180" y="155">Unit + Integration Tests</text>
+          <text x="180" y="192">Linter / Format</text>
+          <text x="180" y="229">Architecture Tests</text>
+          <text x="180" y="266">Review Agent (read-only)</text>
+        </g>
+        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr3)" fill="none">
+          <line x1="785" y1="170" x2="702" y2="170"/>
+          <line x1="430" y1="170" x2="347" y2="170"/>
+          <path d="M180,315 Q565,365 950,318"/>
+        </g>
+        <text x="565" y="398" text-anchor="middle" fill="#9aa8c7" font-size="17">بازخورد: اگر نتیجه بد بود، Harness را اصلاح کن — نه فقط خروجی را</text>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">از مقاله Harness Engineering در martinfowler.com: هدف این است که احتمال درست انجام دادن بار اول بالا برود و یک حلقه بازخورد خودکار خطاها را قبل از رسیدن به انسان بگیرد. راهنماها قبل از عمل، حسگرها بعد از عمل.</aside>
+</section>
+
+<!-- ============ 10. FOUR ARTIFACTS ============ -->
+<section class="slide">
+  <h2>چهار artifact که نباید قاطی شوند</h2>
+  <div class="content">
+    <div class="row" style="align-items:center">
+      <img class="img-full" src="assets/img/spec-rule-skill.jpg" alt="Spec Rule Skill Docs" style="flex:1; max-width:520px"/>
+      <div style="flex:1">
+        <p><span class="pill spec">Spec</span> = <b>این بار چه بسازیم</b></p>
+        <p><span class="pill rule">Rule</span> = <b>همیشه اینجا چطور کار می‌کنیم</b></p>
+        <p><span class="pill skill">Skill</span> = <b>این نوع کار را چطور انجام بدهیم</b></p>
+        <p><span class="pill doc">Business Doc</span> = <b>کسب‌وکار چه معنایی دارد</b></p>
+        <p class="small muted" style="margin-top:20px">اشتباه شماره ۱ تیم‌ها: کپی کردن کل BRD داخل فایل Rule.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">این مهم‌ترین اسلاید ارائه است. اگر فقط یک چیز یادتان بماند: Spec برای یک فیچر است، Rule دائمی است، Skill یک رویه است، و مستندات کسب‌وکار ماده خام است نه پیکربندی عامل.</aside>
+</section>
+
+<!-- ============ 11. WHAT IS A SPEC ============ -->
+<section class="slide">
+  <h2><span class="pill spec">Spec</span> چیست؟ <span class="en">Specification</span></h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <p>توصیف <b>یک فیچر یا تغییر مشخص</b>: هدف، داستان کاربر، معیار پذیرش، خارج از محدوده، لبه‌ها.</p>
+        <ul class="small">
+          <li><b>عمر:</b> برای یک فیچر/تسک (در حالت spec-anchored نگه داشته می‌شود)</li>
+          <li><b>کی بارگذاری می‌شود:</b> فقط وقتی روی همان فیچر کار می‌شود</li>
+          <li><b>نویسنده:</b> PO + Tech Lead</li>
+          <li><b>مصرف‌کننده:</b> عامل توسعه، Developer، Tester</li>
+          <li><b>محل:</b> <code>specs/001-feature/spec.md</code></li>
+        </ul>
+      </div>
+      <div class="card spec">
+        <h3>مثال جمله Spec</h3>
+        <p>«Given قسطی با بیش از ۳۰ روز تأخیر، When لیست پیگیری درخواست شود، Then آن قسط با برچسب Overdue نمایش داده شود.»</p>
+        <p class="muted small">قابل تست ✓ · مختص این فیچر ✓</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Spec قرارداد بین کسب‌وکار، فنی و عامل است. معیار پذیرش باید قابل تست باشد؛ همین معیارها بعداً حسگرهای عامل می‌شوند.</aside>
+</section>
+
+<!-- ============ 12. WHAT IS A RULE ============ -->
+<section class="slide">
+  <h2><span class="pill rule">Rule</span> چیست؟ <span class="en">Rules / Instructions</span></h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <p>سیاست <b>دائمی</b> پروژه که عامل در تقریباً هر ویرایش مرتبط باید رعایت کند.</p>
+        <ul class="small">
+          <li>مرزهای معماری (Clean Architecture)</li>
+          <li>نام‌گذاری و ساختار پوشه</li>
+          <li>حداقل‌های تست، امنیت، دستورهای build</li>
+          <li><b>محل:</b> <code>AGENTS.md</code>، <code>.cursor/rules/*.mdc</code>، <code>CLAUDE.md</code>، <code>.github/copilot-instructions.md</code></li>
+          <li><b>مالک:</b> Tech Lead — مثل کد review شود</li>
+        </ul>
+      </div>
+      <div class="card rule">
+        <h3>مثال Rule</h3>
+        <pre>- Domain must not reference Infrastructure.
+- Money fields use decimal, never double.
+- Never hardcode secrets.
+- Run: dotnet build &amp;&amp; dotnet test</pre>
+        <p class="muted small">دائمی ✓ · کوتاه و دستوری ✓</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Rule ها همیشه یا با glob بارگذاری می‌شوند؛ پس هر کلمه اضافه هزینه context دارد. کوتاه، دستوری، و دائمی بنویسید.</aside>
+</section>
+
+<!-- ============ 13. WHAT IS A SKILL ============ -->
+<section class="slide">
+  <h2><span class="pill skill">Skill</span> چیست؟ <span class="en">Agent Skills (agentskills.io)</span></h2>
+  <div class="content">
+    <div class="row" style="align-items:center">
+      <div>
+        <p>یک <b>رویه قابل‌استفاده مجدد</b> که عامل فقط وقتی لازم است بارگذاری می‌کند. استاندارد باز (اصالتاً از Anthropic) که Cursor، Claude Code، Copilot و Codex پشتیبانی می‌کنند.</p>
+        <pre>.agents/skills/dotnet-cqrs-feature/
+  SKILL.md        # name + description + steps
+  references/     # optional docs
+  scripts/        # optional helpers
+  assets/         # optional templates</pre>
+      </div>
+      <div class="svg-wrap" style="max-width:470px">
+        <svg viewBox="0 0 470 330" xmlns="http://www.w3.org/2000/svg">
+          <rect x="135" y="10" width="200" height="70" rx="12" fill="rgba(134,239,172,0.18)" stroke="#86efac"/>
+          <text x="235" y="42" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۱. کشف</text>
+          <text x="235" y="66" text-anchor="middle" fill="#9aa8c7" font-size="14">name + description (~100 توکن)</text>
+          <rect x="85" y="110" width="300" height="80" rx="12" fill="rgba(134,239,172,0.12)" stroke="#86efac"/>
+          <text x="235" y="145" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۲. فعال‌سازی</text>
+          <text x="235" y="172" text-anchor="middle" fill="#9aa8c7" font-size="14">کل SKILL.md (&lt; ۵۰۰۰ توکن)</text>
+          <rect x="25" y="220" width="420" height="90" rx="12" fill="rgba(134,239,172,0.06)" stroke="#86efac"/>
+          <text x="235" y="258" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۳. اجرا</text>
+          <text x="235" y="286" text-anchor="middle" fill="#9aa8c7" font-size="14">references / scripts فقط در صورت نیاز</text>
+        </svg>
+        <p class="xs muted" style="text-align:center">Progressive Disclosure</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">نکته کلیدی Skill: بارگذاری تدریجی. عامل در شروع فقط نام و توضیح همه Skill ها را می‌بیند؛ وقتی کار مرتبط بود کل متن را می‌خواند. پس می‌توانید ده‌ها Skill داشته باشید بدون شلوغ کردن context. فیلد description همه بار trigger را به دوش می‌کشد.</aside>
+</section>
+
+<!-- ============ 14. BUSINESS DOCS ============ -->
+<section class="slide">
+  <h2><span class="pill doc">Business Doc</span> — و چرا «قانون کسب‌وکار» ≠ Rule عامل</h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <p>مستندات کسب‌وکار = دانش دامنه برای انسان‌ها (و گاهی عامل): واژه‌نامه، روایت فرایند، BRD، نقشه فرایند.</p>
+        <p class="small">به‌طور خودکار بارگذاری <b>نمی‌شود</b>؛ از Spec به آن لینک بدهید یا خلاصه‌اش را در Skill/references بگذارید.</p>
+        <p class="small muted">محل پیشنهادی: <code>docs/domain/glossary.md</code>، <code>docs/domain/installments.md</code></p>
+      </div>
+      <div class="card doc">
+        <h3>قانون کسب‌وکار: «اقساط معوق بیش از ۳۰ روز باید پیگیری شوند»</h3>
+        <ul class="small">
+          <li>✓ در <b>مستند دامنه</b> (حقیقت برای انسان)</li>
+          <li>✓ در <b>Spec</b> فیچر مربوطه، به‌شکل معیار پذیرش</li>
+          <li>✓ اختیاری: در <b>references یک Skill</b> اگر مکرر لازم است</li>
+          <li class="warn">✗ در <code>.cursor/rules</code> — مگر قرارداد دائمی کدنویسی باشد</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">این سؤال را زیاد می‌پرسند: «قوانین کسب‌وکار ما Rule هستند یا Skill؟» جواب: معمولاً هیچ‌کدام! جای آن‌ها در مستندات دامنه و Spec است. Rule عامل یعنی قرارداد کدنویسی، مثل «پول همیشه decimal».</aside>
+</section>
+
+<!-- ============ 15. DECISION TREE ============ -->
+<section class="slide">
+  <h2>درخت تصمیم: این متن را کجا بگذارم؟</h2>
+  <div class="content">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1130 470" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9aa8c7"/></marker></defs>
+        <g font-size="19" text-anchor="middle">
+          <rect x="415" y="5" width="300" height="56" rx="12" fill="#162033" stroke="#5b8cff"/>
+          <text x="565" y="40" fill="#e8eefc" font-weight="700">دانش / متن جدید</text>
+
+          <rect x="730" y="105" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
+          <text x="920" y="140" fill="#e8eefc">فقط برای همین فیچر/تغییر است؟</text>
+          <rect x="730" y="205" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
+          <text x="920" y="240" fill="#e8eefc">قرارداد دائمی کد/معماری/امنیت؟</text>
+          <rect x="730" y="305" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
+          <text x="920" y="340" fill="#e8eefc">رویه تکراری «چطور انجام بده»؟</text>
+
+          <rect x="330" y="105" width="300" height="56" rx="12" fill="rgba(125,211,252,0.12)" stroke="#7dd3fc"/>
+          <text x="480" y="140" fill="#7dd3fc" font-weight="700" direction="ltr">Spec  →  specs/</text>
+          <rect x="330" y="205" width="300" height="56" rx="12" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
+          <text x="480" y="240" fill="#fbbf24" font-weight="700" direction="ltr">Rule  →  AGENTS.md / rules</text>
+          <rect x="330" y="305" width="300" height="56" rx="12" fill="rgba(134,239,172,0.12)" stroke="#86efac"/>
+          <text x="480" y="340" fill="#86efac" font-weight="700" direction="ltr">Skill  →  .agents/skills/</text>
+          <rect x="730" y="400" width="380" height="56" rx="12" fill="rgba(196,181,253,0.12)" stroke="#c4b5fd"/>
+          <text x="920" y="435" fill="#c4b5fd" font-weight="700" direction="ltr">Business Doc  →  docs/domain/</text>
+        </g>
+        <g stroke="#9aa8c7" stroke-width="2.5" marker-end="url(#arr4)" fill="none">
+          <path d="M715,33 L920,33 L920,98"/>
+          <line x1="725" y1="133" x2="637" y2="133"/>
+          <line x1="725" y1="233" x2="637" y2="233"/>
+          <line x1="725" y1="333" x2="637" y2="333"/>
+          <line x1="920" y1="163" x2="920" y2="198"/>
+          <line x1="920" y1="263" x2="920" y2="298"/>
+          <line x1="920" y1="363" x2="920" y2="393"/>
+        </g>
+        <g font-size="16" fill="#4ade80"><text x="680" y="124">بله</text><text x="680" y="224">بله</text><text x="680" y="324">بله</text></g>
+        <g font-size="16" fill="#ff6b6b" text-anchor="start" direction="ltr"><text x="935" y="186">خیر</text><text x="935" y="286">خیر</text><text x="935" y="386">خیر</text></g>
+        <text x="170" y="200" text-anchor="middle" font-size="17" fill="#9aa8c7">سه مورد اول به عامل</text>
+        <text x="170" y="226" text-anchor="middle" font-size="17" fill="#9aa8c7">داده می‌شوند؛ Doc را</text>
+        <text x="170" y="252" text-anchor="middle" font-size="17" fill="#9aa8c7">از Spec لینک کنید</text>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">این درخت را در پوشه samples/templates هم گذاشته‌ام. سه سؤال: آیا فقط برای این فیچر است؟ آیا قرارداد دائمی است؟ آیا رویه تکراری است؟ اگر هیچ‌کدام، مستند کسب‌وکار باقی بماند و از Spec به آن لینک بدهید.</aside>
+</section>
+
+<!-- ============ 16. SKILLS vs RULES ============ -->
+<section class="slide">
+  <h2>Skills در برابر Rules</h2>
+  <div class="content">
+    <table class="compare">
+      <tr><th style="width:20%"></th><th><span class="pill rule">Rules</span></th><th><span class="pill skill">Skills</span></th></tr>
+      <tr><td><b>هدف</b></td><td>استاندارد و قرارداد کدنویسی</td><td>آموزش یک قابلیت یا گردش‌کار تخصصی</td></tr>
+      <tr><td><b>بارگذاری</b></td><td>همیشه یا با glob (کل متن)</td><td>در صورت نیاز (تدریجی)</td></tr>
+      <tr><td><b>محتوا</b></td><td>فقط دستورالعمل</td><td>دستورالعمل + اسکریپت + مثال + منابع</td></tr>
+      <tr><td><b>طول مناسب</b></td><td>کوتاه (هزینه context دائمی)</td><td>می‌تواند بلندتر باشد</td></tr>
+      <tr><td><b>قابلیت حمل</b></td><td>فرمت‌های مختلف به ازای هر ابزار</td><td>استاندارد باز واحد (agentskills.io)</td></tr>
+      <tr><td><b>مثال</b></td><td>«Domain به Infrastructure وابسته نباشد»</td><td>«مراحل افزودن فیچر CQRS» / «ساخت migration»</td></tr>
+      <tr><td><b>سیگنال جابه‌جایی</b></td><td>اگر Rule شبیه آموزش گام‌به‌گام شد ← Skill کن</td><td>اگر Skill همیشه لازم است و کوتاه ← Rule کن</td></tr>
+    </table>
+  </div>
+  <aside class="notes">این مقایسه بر اساس مستندات VS Code و Cursor است. قاعده سرانگشتی: Rule همیشه هزینه دارد چون همیشه در context است؛ پس کوتاه. Skill فقط وقتی لازم است بارگذاری می‌شود؛ پس می‌تواند مفصل باشد.</aside>
+</section>
+
+<!-- ============ 17. MCP / SUBAGENTS / HOOKS ============ -->
+<section class="slide">
+  <h2>MCP، Subagent و Hook</h2>
+  <div class="content">
+    <div class="grid-3">
+      <div class="card">
+        <h3>MCP</h3>
+        <p class="small">Model Context Protocol — پروتکل استاندارد اتصال عامل به سیستم‌های بیرونی.</p>
+        <p class="small muted">Jira، GitLab، دیتابیس، مستندات، مرورگر</p>
+      </div>
+      <div class="card">
+        <h3>Subagent</h3>
+        <p class="small">عامل کمکی با <b>context جدا</b> و ابزار محدود؛ فقط خلاصه برمی‌گرداند.</p>
+        <p class="small muted">تحقیق کدبیس، بازبینی read-only، تست</p>
+      </div>
+      <div class="card">
+        <h3>Hook</h3>
+        <p class="small">اسکریپت قطعی در رویدادهای عامل (قبل/بعد ابزار، پایان).</p>
+        <p class="small muted">«Rule توصیه است؛ Hook تضمین است.»</p>
+      </div>
+    </div>
+    <p class="small" style="margin-top:24px">مثال: بعد از هر ویرایش فایل <code>.cs</code> ← Hook اجرای <code>dotnet build</code>؛ قبل از commit ← subagent بازبین.</p>
+  </div>
+  <aside class="notes">Anthropic می‌گوید CLAUDE.md توصیه‌ای است ولی Hook قطعی است. چیزهایی که حتماً باید اتفاق بیفتد را Hook کنید. Subagent ها context اصلی را تمیز نگه می‌دارند.</aside>
+</section>
+
+<!-- ============ 18. DIVIDER PART 3 ============ -->
+<section class="slide divider">
+  <div class="hero" style="background-image:url('assets/img/sdd-levels.jpg')"></div>
+  <div class="inner">
+    <div class="num">03</div>
+    <h1>توسعه مبتنی بر Spec</h1>
+    <p class="muted">Spec-Driven Development — دیدگاه martinfowler.com و نحوه نوشتن Spec، Rule و Skill</p>
+  </div>
+  <aside class="notes">حالا به بحث داغ این روزها می‌رسیم: SDD.</aside>
+</section>
+
+<!-- ============ 19. WHY SPECS ============ -->
+<section class="slide">
+  <h2>چرا Spec؟ Vibe Coding در برابر کار ساختاریافته</h2>
+  <div class="content">
+    <div class="row">
+      <div class="card" style="border-color:rgba(255,107,107,0.5)">
+        <h3 style="color:#ff6b6b">Vibe Coding</h3>
+        <ul class="small">
+          <li>پرامپت ← کد ← امید!</li>
+          <li>عامل «چیز اشتباهی» را درست می‌سازد</li>
+          <li>هیچ معیار پذیرشی برای بازبینی نیست</li>
+          <li>دانش در تاریخچه چت گم می‌شود</li>
+          <li>برای نمونه اولیه خوب؛ برای محصول پرریسک</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(74,222,128,0.5)">
+        <h3 style="color:#4ade80">Spec-Driven</h3>
+        <ul class="small">
+          <li>نیازمندی ← Spec ← Plan ← Tasks ← کد</li>
+          <li>هم‌راستایی PO و فنی <b>قبل</b> از مصرف توکن</li>
+          <li>معیار پذیرش = حسگر عامل</li>
+          <li>Spec در ریپو می‌ماند و نسخه‌بندی می‌شود</li>
+          <li>بازبینی در برابر Spec، نه حافظه</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:18px">DX / Laura Tacho: مشکل اصلی تیم‌ها «هم‌راستایی» است — SDD تلاشی برای حل همین است.</p>
+  </div>
+  <aside class="notes">در پادکست Thoughtworks، Birgitta Böckeler و Laura Tacho می‌گویند ارزش اصلی SDD هم‌راستایی است: قبل از اینکه عامل شروع کند، همه درباره «چه» توافق داشته باشند.</aside>
+</section>
+
+<!-- ============ 20. BOCKELER 3 LEVELS ============ -->
+<section class="slide">
+  <h2>سه سطح SDD از نگاه Birgitta Böckeler <span class="en">martinfowler.com</span></h2>
+  <div class="content">
+    <div class="row" style="align-items:center">
+      <div style="flex:1.1">
+        <div class="card spec" style="margin-bottom:12px">
+          <h3>۱. Spec-first</h3>
+          <p class="small">Spec خوب اول نوشته می‌شود و برای همین تسک استفاده می‌شود؛ بعد از تسک ممکن است کنار گذاشته شود.</p>
+        </div>
+        <div class="card spec" style="margin-bottom:12px">
+          <h3>۲. Spec-anchored</h3>
+          <p class="small">Spec بعد از اتمام تسک <b>نگه داشته می‌شود</b> و برای تکامل و نگهداری همان فیچر استفاده می‌شود.</p>
+        </div>
+        <div class="card spec">
+          <h3>۳. Spec-as-source</h3>
+          <p class="small">فقط Spec توسط انسان ویرایش می‌شود؛ کد تولیدی است و دستی ویرایش نمی‌شود. <span class="muted">(هنوز آزمایشی)</span></p>
+        </div>
+      </div>
+      <img class="img-full" src="assets/img/sdd-levels.jpg" alt="SDD levels" style="flex:0.9; max-width:470px"/>
+    </div>
+    <p class="xs muted">منبع: “Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl” — Birgitta Böckeler، martinfowler.com</p>
+  </div>
+  <aside class="notes">Böckeler این سه اصطلاح را خودش ساخته تا آشفتگی بازار را مرتب کند. پیشنهاد من برای تیم ما: برای فیچرهای مهم حداقل spec-anchored؛ یعنی Spec را بعد از merge دور نریزیم و به‌روز نگه داریم.</aside>
+</section>
+
+<!-- ============ 21. HOW SDD HELPS US ============ -->
+<section class="slide">
+  <h2>SDD چطور به تیم ما کمک می‌کند؟</h2>
+  <div class="content">
+    <div class="grid-3">
+      <div class="card"><h3>🎯 هم‌راستایی</h3><p>PO و Tech Lead قبل از کد توافق می‌کنند</p></div>
+      <div class="card"><h3>✅ دروازه کیفیت</h3><p>معیار پذیرش ← تست ← حسگر عامل</p></div>
+      <div class="card"><h3>🔁 کاهش دوباره‌کاری</h3><p>کمتر «عامل چیز اشتباه ساخت»</p></div>
+      <div class="card"><h3>🤝 تحویل شفاف</h3><p>BRD ← Spec ← Plan ← Tasks ← کد ← تست</p></div>
+      <div class="card"><h3>🔍 بازبینی بهتر</h3><p>Reviewer در برابر Spec چک می‌کند</p></div>
+      <div class="card"><h3>🌱 رشد جونیورها</h3><p>Spec = بریف، Skill = روش انجام</p></div>
+    </div>
+  </div>
+  <aside class="notes">این شش مزیت را برای تیم خودمان خلاصه کرده‌ام. مهم‌ترین: معیارهای پذیرش Spec مستقیماً تبدیل به تست می‌شوند و عامل با آن‌ها خودش را اصلاح می‌کند.</aside>
+</section>
+
+<!-- ============ 22. KIRO / SPECKIT / TESSL ============ -->
+<section class="slide">
+  <h2>سه ابزار SDD کنار هم</h2>
+  <div class="content">
+    <table class="compare">
+      <tr><th style="width:16%"></th><th>Kiro (AWS)</th><th>Spec Kit (GitHub)</th><th>Tessl</th></tr>
+      <tr><td><b>نوع</b></td><td>IDE عامل‌محور</td><td>CLI + slash command در ابزار شما</td><td>فریم‌ورک + رجیستری Skill</td></tr>
+      <tr><td><b>جریان</b></td><td>Requirements ← Design ← Tasks</td><td>Constitution ← Specify ← Plan ← Tasks ← Implement</td><td>Spec ← کد تولیدی</td></tr>
+      <tr><td><b>سطح (Böckeler)</b></td><td>سبک، spec-first</td><td>قابل سفارشی‌ترین، عملاً spec-first</td><td>تنها هدف‌گذاری spec-anchored / as-source</td></tr>
+      <tr><td><b>ابزارهای پشتیبان</b></td><td>خود Kiro</td><td>~۳۰ عامل: Copilot، Claude، Cursor، ...</td><td>Claude Code، Codex، Gemini، ...</td></tr>
+      <tr><td><b>مناسب برای</b></td><td>تیم‌های AWS، شروع سریع</td><td>تیم‌هایی که artifact در ریپو می‌خواهند</td><td>آزمایش آینده‌نگر</td></tr>
+    </table>
+    <p class="small muted" style="margin-top:16px">نقد رایج کاربران: «Spec Kit گاهی شبیه آبشار (waterfall) برای عامل‌هاست» — Spec را سبک نگه دارید.</p>
+  </div>
+  <aside class="notes">ارزیابی Böckeler: Kiro ساده‌ترین، Spec Kit قابل سفارشی‌ترین چون همه artifact ها در workspace شماست، و Tessl تنها ابزاری که به سمت spec-as-source می‌رود ولی هنوز beta است.</aside>
+</section>
+
+<!-- ============ 23. SPEC KIT FLOW ============ -->
+<section class="slide">
+  <h2>جریان Spec Kit <span class="en">github/spec-kit</span></h2>
+  <div class="content">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1130 260" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+        <g font-size="19" text-anchor="middle">
+          <rect x="925" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#fbbf24"/>
+          <text x="1020" y="85" fill="#fbbf24" font-weight="700" direction="ltr">/constitution</text>
+          <text x="1020" y="120" fill="#e8eefc" font-size="16">اصول دائمی پروژه</text>
+          <text x="1020" y="145" fill="#9aa8c7" font-size="14">≈ Rules</text>
+
+          <rect x="700" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#7dd3fc"/>
+          <text x="795" y="85" fill="#7dd3fc" font-weight="700" direction="ltr">/specify</text>
+          <text x="795" y="120" fill="#e8eefc" font-size="16">چه و چرا</text>
+          <text x="795" y="145" fill="#9aa8c7" font-size="14">spec.md</text>
+
+          <rect x="475" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#5b8cff"/>
+          <text x="570" y="85" fill="#5b8cff" font-weight="700" direction="ltr">/plan</text>
+          <text x="570" y="120" fill="#e8eefc" font-size="16">چگونه (فنی)</text>
+          <text x="570" y="145" fill="#9aa8c7" font-size="14">plan.md</text>
+
+          <rect x="250" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#5b8cff"/>
+          <text x="345" y="85" fill="#5b8cff" font-weight="700" direction="ltr">/tasks</text>
+          <text x="345" y="120" fill="#e8eefc" font-size="16">تکه‌های کوچک</text>
+          <text x="345" y="145" fill="#9aa8c7" font-size="14">tasks.md</text>
+
+          <rect x="25" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#4ade80"/>
+          <text x="120" y="85" fill="#4ade80" font-weight="700" direction="ltr">/implement</text>
+          <text x="120" y="120" fill="#e8eefc" font-size="16">اجرا + تست</text>
+          <text x="120" y="145" fill="#9aa8c7" font-size="14">code</text>
+        </g>
+        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr5)">
+          <line x1="920" y1="105" x2="897" y2="105"/>
+          <line x1="695" y1="105" x2="672" y2="105"/>
+          <line x1="470" y1="105" x2="447" y2="105"/>
+          <line x1="245" y1="105" x2="222" y2="105"/>
+        </g>
+        <text x="795" y="215" text-anchor="middle" font-size="17" fill="#9aa8c7">⬆ دروازه انسانی: PO + TL تأیید</text>
+        <text x="345" y="215" text-anchor="middle" font-size="17" fill="#9aa8c7">⬆ دروازه انسانی: TL تأیید Plan/Tasks</text>
+      </svg>
+    </div>
+    <p class="small">نمونه کامل در ریپو: <code>samples/specs/001-installment-followup/</code> (spec.md, plan.md, tasks.md)</p>
+  </div>
+  <aside class="notes">Spec Kit این مراحل را با slash command در Cursor یا Copilot یا Claude اجرا می‌کند. دو دروازه انسانی مهم داریم: تأیید Spec و تأیید Plan. بعد از آن عامل می‌تواند با آزادی بیشتری پیاده کند.</aside>
+</section>
+
+<!-- ============ 24. HOW TO WRITE A SPEC ============ -->
+<section class="slide">
+  <h2>چگونه <span class="pill spec">Spec</span> خوب بنویسیم</h2>
+  <div class="content">
+    <div class="row">
+      <div class="card spec">
+        <h3>قالب حداقلی</h3>
+        <ol class="small" style="padding-right:24px; margin:0">
+          <li>هدف (یک پاراگراف)</li>
+          <li>داستان‌های کاربر</li>
+          <li><b>معیار پذیرش قابل تست</b> (Given/When/Then)</li>
+          <li>خارج از محدوده (Non-goals)</li>
+          <li>قوانین دامنه مرتبط (لینک به docs)</li>
+          <li>لبه‌ها و خطاها</li>
+          <li>وابستگی‌ها</li>
+          <li>Definition of Done</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>چک‌لیست کیفیت</h3>
+        <ul class="small">
+          <li>☐ هر معیار با تست یا دمو قابل اثبات است</li>
+          <li>☐ معماری مفصل اینجا نیست (برود در Plan / ADR)</li>
+          <li>☐ اندازه یک PR یا اپیک کوتاه</li>
+          <li>☐ واژه‌ها هم‌خوان با واژه‌نامه کسب‌وکار</li>
+          <li>☐ Non-goals روشن (جلوی scope creep عامل)</li>
+          <li>☐ بعد از merge نگه داشته و به‌روز شود</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">قالب کامل در samples/templates/WRITE-A-SPEC.md است. مهم‌ترین بخش معیار پذیرش است؛ اگر نتوانید برایش تست بنویسید، معیار مبهم است. Non-goals هم خیلی مهم است چون عامل‌ها تمایل دارند کار اضافه انجام دهند.</aside>
+</section>
+
+<!-- ============ 25. SPEC SAMPLE ============ -->
+<section class="slide">
+  <h2>نمونه واقعی Spec — پیگیری اقساط معوق</h2>
+  <div class="content">
+    <div class="card spec" style="font-size:17px">
+      <p style="font-size:18px"><b>هدف:</b> فروشنده اقساط معوق را شناسایی و اقدام پیگیری ثبت کند تا وضعیت شفاف شود.</p>
+      <p style="font-size:18px; margin-bottom:6px"><b>معیار پذیرش:</b></p>
+      <ol class="small" style="padding-right:24px; margin-top:0">
+        <li>Given قسط با بیش از ۳۰ روز تأخیر، When لیست درخواست شود، Then با برچسب <code>Overdue</code> بیاید.</li>
+        <li>Given قسط معوق، When پیگیری ثبت شود، Then رکورد با <code>CreatedAt</code> و <code>CreatedBy</code> ذخیره شود.</li>
+        <li>Given پیگیری‌ها، When جزئیات خوانده شود، Then تاریخچه جدید به قدیم برگردد.</li>
+        <li>Given ورودی نامعتبر، When ثبت شود، Then خطای اعتبارسنجی/NotFound و هیچ ذخیره‌ای.</li>
+      </ol>
+      <p style="font-size:18px"><b>خارج از محدوده:</b> ارسال خودکار پیامک، محاسبه جریمه، UI وب.</p>
+      <p style="font-size:18px"><b>قانون دامنه (از docs):</b> هر اقدام پیگیری باید قابل ممیزی باشد.</p>
+    </div>
+  </div>
+  <aside class="notes">این Spec الهام‌گرفته از فیچر follow-up در agent.portal است. ببینید که قانون کسب‌وکار ۳۰ روز اینجا به شکل معیار پذیرش آمده، نه در Rule.</aside>
+</section>
+
+<!-- ============ 26. HOW TO WRITE A RULE ============ -->
+<section class="slide">
+  <h2>چگونه <span class="pill rule">Rule</span> خوب بنویسیم</h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <ul class="small">
+          <li class="accent"><b>✓ خوب:</b></li>
+          <li>کوتاه، دستوری: Do / Don't</li>
+          <li>دائمی، نه مخصوص یک تیکت</li>
+          <li>با <code>globs</code> محدود شود</li>
+          <li>چند فایل کوچک بهتر از یک فایل غول</li>
+          <li class="warn" style="margin-top:14px"><b>✗ بد:</b></li>
+          <li>مقاله بلند / آموزش گام‌به‌گام (← Skill)</li>
+          <li>دستور مخصوص یک فیچر (← Spec)</li>
+          <li>کپی BRD (← docs)</li>
+        </ul>
+      </div>
+      <div>
+        <span class="label ltr">.cursor/rules/dotnet-clean-architecture.mdc</span>
+        <pre>---
+description: Clean Architecture boundaries
+globs: "**/*.{cs,csproj}"
+alwaysApply: false
+---
+# .NET Clean Architecture
+## Do
+- Depend inward: Host → Application → Domain
+- Business rules in Domain/Application
+- Use Result for expected failures
+## Don't
+- Reference Infrastructure from Domain
+- Use DbContext in controllers
+- Invent folder layouts without an ADR</pre>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">فرمت mdc در Cursor تنها فرمتی است که برای هر Rule فعال‌سازی جدا دارد: همیشه، با glob، یا وقتی عامل لازم بداند. فایل قدیمی cursorrules منسوخ شده.</aside>
+</section>
+
+<!-- ============ 27. HOW TO WRITE A SKILL ============ -->
+<section class="slide">
+  <h2>چگونه <span class="pill skill">Skill</span> خوب بنویسیم</h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <ul class="small">
+          <li><code>name</code>: کوچک، با خط تیره، هم‌نام پوشه</li>
+          <li><code>description</code>: <b>چه می‌کند + کی فعال شود</b> (تمام بار trigger)</li>
+          <li>بدنه: مراحل شماره‌دار، دستور دقیق، چک‌لیست خروجی</li>
+          <li>زیر ~۵۰۰۰ توکن؛ اضافه‌ها در <code>references/</code></li>
+          <li>با یک کار واقعی تیم تست شود</li>
+          <li>رویه تکراری باشد، نه فیچر یک‌باره</li>
+        </ul>
+      </div>
+      <div>
+        <span class="label ltr">.agents/skills/dotnet-cqrs-feature/SKILL.md</span>
+        <pre>---
+name: dotnet-cqrs-feature
+description: Add a MediatR CQRS feature (Command/Query,
+  Handler, Validator, Controller). Use when the user asks
+  to add a new API feature, use-case, command, or query.
+---
+## Steps
+1. Read specs/**/spec.md (acceptance criteria)
+2. Application: Command/Query + Handler + Validator
+3. Infrastructure: repository methods if missing
+4. Host: thin controller → MediatR
+5. Tests: happy path + validation failure
+6. Verify: dotnet build &amp;&amp; dotnet test
+## Output checklist
+- [ ] No business logic in controller
+- [ ] Spec acceptance criteria covered</pre>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">ببینید Skill به Spec ارجاع می‌دهد: مرحله اول «Spec را بخوان». این‌طوری سه artifact با هم کار می‌کنند: Spec می‌گوید چه، Skill می‌گوید چطور، Rule مرزها را نگه می‌دارد.</aside>
+</section>
+
+<!-- ============ 28. PITFALLS ============ -->
+<section class="slide">
+  <h2>دام‌ها و نقدها</h2>
+  <div class="content">
+    <div class="grid-2">
+      <div class="card"><h3>⚠️ اصطلاحات هنوز سیال است</h3><p>Böckeler: حتی درک مشترکی از «Spec» و تفاوتش با instruction file وجود ندارد.</p></div>
+      <div class="card"><h3>⚠️ آبشار برای عامل‌ها</h3><p>Spec سنگین و فرم‌های زیاد = از دست رفتن چابکی. سبک شروع کنید.</p></div>
+      <div class="card"><h3>⚠️ رانش Spec (Drift)</h3><p>Spec-first بدون به‌روزرسانی ← Spec دروغ می‌گوید. فیچرهای مهم را anchored کنید.</p></div>
+      <div class="card"><h3>⚠️ BRD داخل Rules</h3><p>context شلوغ، قوانین مبهم، هزینه توکن بالا، کیفیت پایین.</p></div>
+    </div>
+  </div>
+  <aside class="notes">برای اعتبار ارائه، نقدها را هم بگوییم. Böckeler صریحاً هشدار می‌دهد که SDD هنوز در حال شکل‌گیری است. کاربرانی هم گفته‌اند Spec Kit شبیه آبشار است. راه‌حل: سبک شروع کنید و فقط برای فیچرهای مهم سنگین‌تر شوید.</aside>
+</section>
+
+<!-- ============ 29. DIVIDER PART 4 ============ -->
+<section class="slide divider">
+  <div class="hero" style="background-image:url('assets/img/team-flow.jpg')"></div>
+  <div class="inner">
+    <div class="num">04</div>
+    <h1>تیم از A تا Z</h1>
+    <p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester — هر نقش با عامل‌ها</p>
+  </div>
+  <aside class="notes">حالا ببینیم این مفاهیم در جریان واقعی تیم چطور به کار می‌روند.</aside>
+</section>
+
+<!-- ============ 30. SWIMLANE ============ -->
+<section class="slide">
+  <h2>جریان کامل: از نیازمندی تا تست</h2>
+  <div class="content">
+    <div class="svg-wrap">
+      <svg viewBox="0 0 1130 420" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+        <g text-anchor="middle">
+          <rect x="920" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#c4b5fd"/>
+          <text x="1020" y="48" font-size="20" fill="#c4b5fd" font-weight="700">کسب‌وکار</text>
+          <rect x="695" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#7dd3fc"/>
+          <text x="795" y="48" font-size="20" fill="#7dd3fc" font-weight="700">Product Owner</text>
+          <rect x="470" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#fbbf24"/>
+          <text x="570" y="48" font-size="20" fill="#fbbf24" font-weight="700">Tech Lead</text>
+          <rect x="245" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#86efac"/>
+          <text x="345" y="48" font-size="20" fill="#86efac" font-weight="700">Developer + Agent</text>
+          <rect x="20" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#3dd6c6"/>
+          <text x="120" y="48" font-size="20" fill="#3dd6c6" font-weight="700">Tester + Agent</text>
+        </g>
+        <g font-size="16" fill="#e8eefc" text-anchor="middle">
+          <rect x="920" y="95" width="200" height="300" rx="12" fill="rgba(196,181,253,0.06)" stroke="rgba(196,181,253,0.4)"/>
+          <text x="1020" y="135">نیاز / مسئله</text>
+          <text x="1020" y="170">BRD</text>
+          <text x="1020" y="205">قوانین کسب‌وکار</text>
+          <text x="1020" y="240">واژه‌نامه</text>
+          <text x="1020" y="370" fill="#c4b5fd" direction="ltr">docs/domain/</text>
+
+          <rect x="695" y="95" width="200" height="300" rx="12" fill="rgba(125,211,252,0.06)" stroke="rgba(125,211,252,0.4)"/>
+          <text x="795" y="135">داستان کاربر</text>
+          <text x="795" y="170">معیار پذیرش</text>
+          <text x="795" y="205">Non-goals</text>
+          <text x="795" y="240">اولویت</text>
+          <text x="795" y="370" fill="#7dd3fc" direction="ltr">spec.md</text>
+
+          <rect x="470" y="95" width="200" height="300" rx="12" fill="rgba(251,191,36,0.06)" stroke="rgba(251,191,36,0.4)"/>
+          <text x="570" y="135">Plan / ADR</text>
+          <text x="570" y="170">Constitution</text>
+          <text x="570" y="205">Rules</text>
+          <text x="570" y="240">Skills</text>
+          <text x="570" y="275">تقسیم Tasks</text>
+          <text x="570" y="370" fill="#fbbf24" direction="ltr">plan.md + rules + skills</text>
+
+          <rect x="245" y="95" width="200" height="300" rx="12" fill="rgba(134,239,172,0.06)" stroke="rgba(134,239,172,0.4)"/>
+          <text x="345" y="135">Explore</text>
+          <text x="345" y="170">Plan Mode</text>
+          <text x="345" y="205">Implement</text>
+          <text x="345" y="240">Unit Tests</text>
+          <text x="345" y="275">Self-review</text>
+          <text x="345" y="370" fill="#86efac" direction="ltr">Pull Request</text>
+
+          <rect x="20" y="95" width="200" height="300" rx="12" fill="rgba(61,214,198,0.06)" stroke="rgba(61,214,198,0.4)"/>
+          <text x="120" y="135" direction="ltr">AC → Test Cases</text>
+          <text x="120" y="170">Integration/E2E</text>
+          <text x="120" y="205">Edge cases</text>
+          <text x="120" y="240">گزارش PASS/FAIL</text>
+          <text x="120" y="370" fill="#3dd6c6" direction="ltr">Release</text>
+        </g>
+        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr6)">
+          <line x1="917" y1="245" x2="902" y2="245"/>
+          <line x1="692" y1="245" x2="677" y2="245"/>
+          <line x1="467" y1="245" x2="452" y2="245"/>
+          <line x1="242" y1="245" x2="227" y2="245"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">هر نقش یک artifact تولید می‌کند که ورودی نقش بعدی است. کسب‌وکار مستند دامنه، PO Spec، Tech Lead Plan و Rule و Skill، Developer با عامل کد و PR، و Tester با عامل تست‌ها را از معیار پذیرش می‌سازد.</aside>
+</section>
+
+<!-- ============ 31. PO & TECH LEAD ============ -->
+<section class="slide">
+  <h2>PO و Tech Lead با عامل‌ها چه می‌کنند؟</h2>
+  <div class="content">
+    <div class="row">
+      <div class="card spec">
+        <h3>Product Owner</h3>
+        <ul class="small">
+          <li>تبدیل BRD به داستان کاربر با کمک عامل</li>
+          <li>درخواست از عامل: «معیار پذیرش Given/When/Then و لبه‌ها را پیشنهاد بده»</li>
+          <li>اتصال MCP به Jira: ساخت تیکت از Spec</li>
+          <li>بررسی Spec از نظر ابهام و تناقض</li>
+          <li><b>خروجی:</b> <code>spec.md</code> تأییدشده</li>
+        </ul>
+      </div>
+      <div class="card rule">
+        <h3>Tech Lead</h3>
+        <ul class="small">
+          <li>مالک <code>AGENTS.md</code>، Rules، Constitution</li>
+          <li>ساخت و نگهداری Skills تیم</li>
+          <li>تأیید Plan و تقسیم Tasks</li>
+          <li>طراحی Harness: تست معماری، Hook، CI</li>
+          <li>تعیین سطح خودمختاری عامل برای هر نوع کار</li>
+          <li><b>خروجی:</b> plan.md + rules + skills</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">نقش Tech Lead در دنیای عامل‌ها مهم‌تر می‌شود: او طراح Harness است. هر بار عامل خطای تکراری کرد، Tech Lead یک Rule یا Skill یا تست اضافه می‌کند.</aside>
+</section>
+
+<!-- ============ 32. DEV & TESTER ============ -->
+<section class="slide">
+  <h2>Developer و Tester با عامل‌ها چه می‌کنند؟</h2>
+  <div class="content">
+    <div class="row">
+      <div class="card skill">
+        <h3>Developer</h3>
+        <ul class="small">
+          <li><b>Explore:</b> «با subagent بررسی کن follow-up فعلی چطور کار می‌کند»</li>
+          <li><b>Plan:</b> Plan Mode، فایل‌ها و ترتیب را تأیید کن</li>
+          <li><b>Implement:</b> با Skill <code>dotnet-cqrs-feature</code></li>
+          <li><b>Verify:</b> build + test تا سبز شدن</li>
+          <li><b>Review:</b> subagent بازبین read-only قبل از PR</li>
+          <li>مالک نهایی کد = انسان</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(61,214,198,0.5)">
+        <h3>Tester / QA</h3>
+        <ul class="small">
+          <li>تبدیل معیار پذیرش Spec به test case</li>
+          <li>تولید تست integration / E2E با عامل</li>
+          <li>درخواست: «لبه‌هایی که Spec پوشش نداده را پیدا کن»</li>
+          <li>عامل مرورگر برای تست UI</li>
+          <li>گزارش شکاف Spec به PO</li>
+          <li><b>خروجی:</b> PASS/FAIL در برابر AC</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Developer از «تایپ کردن» به «هدایت و بازبینی» می‌رود. Tester از معیارهای پذیرش Spec مستقیماً تست می‌سازد؛ این همان حسگر Harness است.</aside>
+</section>
+
+<!-- ============ 33. ORCHESTRATION ============ -->
+<section class="slide">
+  <h2>الگوی ارکستراسیون عامل‌ها</h2>
+  <div class="content">
+    <div class="row" style="align-items:center">
+      <div class="svg-wrap" style="flex:1.3">
+        <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b8cff"/></marker></defs>
+          <rect x="240" y="10" width="220" height="56" rx="12" fill="#162033" stroke="#c4b5fd"/>
+          <text x="350" y="45" text-anchor="middle" fill="#c4b5fd" font-size="19" font-weight="700">انسان (Tech Lead)</text>
+          <rect x="220" y="110" width="260" height="70" rx="14" fill="#0a101c" stroke="#3dd6c6" stroke-width="3"/>
+          <text x="350" y="142" text-anchor="middle" fill="#e8eefc" font-size="20" font-weight="700">Orchestrator</text>
+          <text x="350" y="166" text-anchor="middle" fill="#9aa8c7" font-size="14">برنامه + توزیع کار</text>
+          <g font-size="16" text-anchor="middle" fill="#e8eefc">
+            <rect x="10" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="70" y="280">Explorer</text><text x="70" y="302" font-size="12" fill="#9aa8c7">read-only</text>
+            <rect x="148" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="208" y="280">Implementer A</text><text x="208" y="302" font-size="12" fill="#9aa8c7">worktree 1</text>
+            <rect x="286" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="346" y="280">Implementer B</text><text x="346" y="302" font-size="12" fill="#9aa8c7">worktree 2</text>
+            <rect x="424" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="484" y="280">Tester</text><text x="484" y="302" font-size="12" fill="#9aa8c7">run tests</text>
+            <rect x="562" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="622" y="280">Reviewer</text><text x="622" y="302" font-size="12" fill="#9aa8c7">read-only</text>
+          </g>
+          <g stroke="#5b8cff" stroke-width="2" marker-end="url(#arr7)">
+            <line x1="350" y1="68" x2="350" y2="104"/>
+            <line x1="300" y1="182" x2="80" y2="244"/>
+            <line x1="320" y1="182" x2="210" y2="244"/>
+            <line x1="350" y1="182" x2="346" y2="244"/>
+            <line x1="380" y1="182" x2="484" y2="244"/>
+            <line x1="400" y1="182" x2="615" y2="244"/>
+          </g>
+          <text x="350" y="370" text-anchor="middle" fill="#9aa8c7" font-size="16">دروازه‌های انسانی: تأیید Plan · تأیید Merge</text>
+          <text x="350" y="398" text-anchor="middle" fill="#9aa8c7" font-size="14">PR عامل = همان CI و branch protection مثل PR انسان</text>
+        </svg>
+      </div>
+      <div style="flex:0.8">
+        <ul class="small">
+          <li>Orchestrator خودش کد نمی‌نویسد؛ تقسیم می‌کند</li>
+          <li>هر متخصص context و ابزار محدود دارد</li>
+          <li>کار موازی در <b>git worktree</b> جدا</li>
+          <li>Reviewer و Explorer فقط خواندنی</li>
+          <li>حداکثر ۳ دور اصلاح، بعد ارجاع به انسان</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">این الگو در Cursor با subagent ها و best-of-n، در Claude Code با subagent و agent teams، و در ابزارهایی مثل Devin پیاده می‌شود. کلید: نقش‌های جدا با context جدا و تحویل‌های صریح.</aside>
+</section>
+
+<!-- ============ 34. IN / ON THE LOOP ============ -->
+<section class="slide">
+  <h2>انسان «درون حلقه» یا «روی حلقه»؟ <span class="en">Kief Morris, martinfowler.com</span></h2>
+  <div class="content">
+    <div class="grid-3">
+      <div class="card" style="border-color:rgba(255,107,107,0.5)">
+        <h3>Vibe Coding</h3>
+        <p class="small">انسان بیرون از حلقه؛ هر چه عامل ساخت قبول.</p>
+        <p class="small muted">برای نمونه‌سازی</p>
+      </div>
+      <div class="card" style="border-color:rgba(251,191,36,0.5)">
+        <h3>In the Loop</h3>
+        <p class="small">انسان هر خط را بازبینی و دستی اصلاح می‌کند.</p>
+        <p class="small muted">گلوگاه می‌شود</p>
+      </div>
+      <div class="card" style="border-color:rgba(74,222,128,0.6)">
+        <h3>On the Loop ✓</h3>
+        <p class="small">انسان <b>Harness</b> را می‌سازد و بهبود می‌دهد: Spec، تست، Rule، Skill، Pipeline.</p>
+        <p class="small muted">مقیاس‌پذیر</p>
+      </div>
+    </div>
+    <div class="big-quote" style="font-size:22px; margin-top:22px">وقتی از خروجی راضی نیستید: «درون حلقه» = خروجی را اصلاح کن. «روی حلقه» = <b>چیزی که آن خروجی را تولید کرد</b> اصلاح کن.</div>
+  </div>
+  <aside class="notes">از مقاله Humans and Agents in Software Engineering Loops نوشته Kief Morris در martinfowler.com. پیشنهاد او «روی حلقه» است: به‌جای اصلاح دستی هر خروجی، Harness را اصلاح کنید تا دفعه بعد درست تولید شود.</aside>
+</section>
+
+<!-- ============ 35. GATES & AUTONOMY ============ -->
+<section class="slide">
+  <h2>دروازه تأیید و سطح خودمختاری</h2>
+  <div class="content">
+    <div class="row">
+      <div class="card">
+        <h3>دروازه «انجام شد» (Verification Gate)</h3>
+        <ol class="small" style="padding-right:22px">
+          <li>تست‌های جدید/مرتبط پاس</li>
+          <li>کل suite پاس (بدون regression)</li>
+          <li>Build و lint تمیز</li>
+          <li>معیارهای پذیرش Spec پوشش داده شده</li>
+          <li>برای تغییر پرریسک: تأیید انسان</li>
+        </ol>
+        <p class="xs muted">«ارزیابی خود مدل از اتمام، کم‌اعتمادترین سیگنال است.»</p>
+      </div>
+      <div>
+        <table class="compare">
+          <tr><th>نوع کار</th><th>خودمختاری</th></tr>
+          <tr><td>مستندات، تست‌نویسی ماژول پوشش‌دار</td><td style="color:#4ade80">بالا</td></tr>
+          <tr><td>ارتقای وابستگی با تست کامل</td><td style="color:#4ade80">بالا</td></tr>
+          <tr><td>فیچر معمولی با Spec</td><td style="color:#fbbf24">متوسط (تأیید Plan)</td></tr>
+          <tr><td>احراز هویت، پرداخت، بیمه‌نامه</td><td style="color:#ff6b6b">پایین (پیشنهاد فقط)</td></tr>
+          <tr><td>Migration داده</td><td style="color:#ff6b6b">پایین + تأیید صریح</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">خودمختاری یک دکمه سراسری نیست؛ به ازای نوع کار و قدرت تست‌ها تعیین می‌شود. برای ما در بیمه، هر چیزی که با پول و بیمه‌نامه سروکار دارد خودمختاری پایین دارد.</aside>
+</section>
+
+<!-- ============ 36. DIVIDER PART 5 ============ -->
+<section class="slide divider">
+  <div class="inner">
+    <div class="num">05</div>
+    <h1>مقایسه ابزارها</h1>
+    <p class="muted">Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit</p>
+  </div>
+  <aside class="notes">حالا ابزارهای بازار.</aside>
+</section>
+
+<!-- ============ 37. TOOLS MATRIX ============ -->
+<section class="slide">
+  <h2>ماتریس ابزارها (۲۰۲۶)</h2>
+  <div class="content">
+    <table class="compare" style="font-size:15.5px">
+      <tr><th>ابزار</th><th>رابط</th><th>مدل‌ها</th><th>نقطه قوت</th><th>مناسب برای</th></tr>
+      <tr><td><b class="ltr">Cursor</b></td><td>IDE کامل + عامل پس‌زمینه</td><td>چند مدل</td><td>ویرایش تعاملی، Rules با glob، subagent</td><td>کار روزانه داخل IDE</td></tr>
+      <tr><td><b class="ltr">Claude Code</b></td><td>ترمینال + IDE</td><td>Anthropic</td><td>استدلال عمیق، refactor بزرگ، Hook، Skill</td><td>کارهای چندفایلی سخت</td></tr>
+      <tr><td><b class="ltr">GitHub Copilot</b></td><td>افزونه IDE + GitHub + CLI</td><td>چند مدل</td><td>یکپارچگی GitHub، Issue→PR، code review</td><td>سازمان‌های GitHub-محور</td></tr>
+      <tr><td><b class="ltr">OpenAI Codex</b></td><td>CLI + ابر</td><td>OpenAI</td><td>تسک ناهمگام در sandbox ابری</td><td>«بفرست و فراموش کن»</td></tr>
+      <tr><td><b class="ltr">Kiro</b></td><td>IDE</td><td>چند مدل</td><td>Spec-first داخلی</td><td>تیم‌های AWS، شروع SDD</td></tr>
+      <tr><td><b class="ltr">Spec Kit</b></td><td>CLI روی ابزار شما</td><td>—</td><td>قالب SDD برای ~۳۰ عامل</td><td>افزودن SDD به ابزار فعلی</td></tr>
+    </table>
+    <p class="small muted" style="margin-top:14px">بسیاری از تیم‌ها دو ابزار را ترکیب می‌کنند: یکی برای ویرایش روزانه، یکی برای کارهای سنگین واگذارشده.</p>
+  </div>
+  <aside class="notes">انتخاب بر اساس سبک کار: اگر ویرایشگرمحور هستید Cursor، اگر ترمینال‌محور و کار سنگین Claude Code، اگر همه‌چیز در GitHub است Copilot. قیمت‌ها تقریباً همه ۱۰ تا ۲۰ دلار شروع می‌شوند ولی مصرف واقعی با credit است.</aside>
+</section>
+
+<!-- ============ 38. WHERE EACH TOOL READS ============ -->
+<section class="slide">
+  <h2>هر ابزار Rule و Skill را از کجا می‌خواند؟</h2>
+  <div class="content">
+    <table class="compare" style="font-size:15.5px">
+      <tr><th>ابزار</th><th>Rules / Instructions</th><th>Skills</th><th>Subagents</th></tr>
+      <tr><td class="ltr"><b>Cursor</b></td><td class="ltr">.cursor/rules/*.mdc, AGENTS.md, CLAUDE.md</td><td class="ltr">.agents/skills, .cursor/skills</td><td>✓</td></tr>
+      <tr><td class="ltr"><b>Claude Code</b></td><td class="ltr">CLAUDE.md (+ @AGENTS.md import)</td><td class="ltr">.claude/skills</td><td class="ltr">.claude/agents/*.md</td></tr>
+      <tr><td class="ltr"><b>Copilot</b></td><td class="ltr">.github/copilot-instructions.md, .github/instructions/*.instructions.md, AGENTS.md</td><td class="ltr">.github/skills, .agents/skills</td><td>✓ (agent mode)</td></tr>
+      <tr><td class="ltr"><b>Codex</b></td><td class="ltr">AGENTS.md (nested)</td><td class="ltr">.agents/skills</td><td>✓</td></tr>
+      <tr><td class="ltr"><b>Kiro</b></td><td class="ltr">.kiro/steering/*.md</td><td>—</td><td>—</td></tr>
+    </table>
+    <div class="big-quote" style="font-size:21px; margin-top:18px"><code>AGENTS.md</code> = استاندارد بی‌طرف (بنیاد Linux، ۶۰ هزار+ ریپو) · نزدیک‌ترین فایل به کد ویرایش‌شده برنده است.</div>
+  </div>
+  <aside class="notes">خبر خوب: استانداردها در حال همگرایی‌اند. AGENTS.md را منبع اصلی کنید و فایل‌های مخصوص هر ابزار را کوتاه و ارجاع‌دهنده نگه دارید.</aside>
+</section>
+
+<!-- ============ 39. FOLDER STRUCTURE ============ -->
+<section class="slide">
+  <h2>ساختار پوشه پیشنهادی (همه ابزارها با هم)</h2>
+  <div class="content">
+    <div class="row">
+      <pre style="font-size:15px; flex:1.1">repo/
+├── AGENTS.md                  # single source of truth (rules)
+├── CLAUDE.md                  # "@AGENTS.md" + Claude-only notes
+├── .github/
+│   └── copilot-instructions.md   # short, points to AGENTS.md
+├── .cursor/rules/
+│   ├── dotnet-clean-architecture.mdc  # globs: **/*.cs
+│   └── testing.mdc                    # globs: **/*Tests*/**
+├── .agents/skills/            # cross-tool skills standard
+│   ├── dotnet-cqrs-feature/SKILL.md
+│   └── ef-migration/SKILL.md
+├── .claude/agents/
+│   └── code-reviewer.md       # read-only subagent
+├── specs/
+│   └── 001-installment-followup/
+│       ├── spec.md  plan.md  tasks.md
+├── docs/
+│   ├── domain/glossary.md     # business knowledge
+│   └── adr/                   # architecture decisions
+└── src/ tests/</pre>
+      <div style="flex:0.9">
+        <ul class="small">
+          <li><span class="pill rule">Rule</span> ریشه + <code>.cursor/rules</code></li>
+          <li><span class="pill skill">Skill</span> <code>.agents/skills</code></li>
+          <li><span class="pill spec">Spec</span> <code>specs/</code></li>
+          <li><span class="pill doc">Doc</span> <code>docs/</code></li>
+          <li style="margin-top:16px">همه در git، همه review می‌شوند</li>
+          <li>نمونه کامل در پوشه <code>samples/</code> این ریپو</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">این ساختار را می‌توانید همین امروز در یک سرویس آزمایش کنید. فایل‌های نمونه همه در پوشه samples هست.</aside>
+</section>
+
+<!-- ============ 40. WHICH TOOL FOR WHICH JOB ============ -->
+<section class="slide">
+  <h2>کدام ابزار برای کدام کار؟</h2>
+  <div class="content">
+    <div class="grid-2">
+      <div class="card"><h3>سؤال سریع، توضیح کد</h3><p>چت با LLM یا Ask mode در IDE</p></div>
+      <div class="card"><h3>ویرایش روزانه، فیچر کوچک</h3><p>Cursor Agent / Copilot Agent mode</p></div>
+      <div class="card"><h3>Refactor بزرگ، باگ پیچیده</h3><p>Claude Code / Cursor با Plan Mode + subagent</p></div>
+      <div class="card"><h3>کار موازی ناهمگام</h3><p>Codex cloud / Cursor background agents / Copilot coding agent</p></div>
+      <div class="card"><h3>فیچر جدید با ذی‌نفعان متعدد</h3><p>Spec Kit یا Kiro (SDD)</p></div>
+      <div class="card"><h3>بازبینی PR</h3><p>Copilot code review / Bugbot / subagent read-only</p></div>
+    </div>
+    <p class="small muted" style="margin-top:14px">مهم‌تر از ابزار: Harness شما (Rules، Specs، Skills، تست‌ها) — این‌ها بین ابزارها قابل انتقال‌اند.</p>
+  </div>
+  <aside class="notes">سؤال «کدام بهتر است» جواب واحد ندارد. ولی سرمایه‌گذاری روی AGENTS.md و Skill ها و Spec ها بین همه ابزارها منتقل می‌شود؛ پس وابسته به یک ابزار نمی‌شوید.</aside>
+</section>
+
+<!-- ============ 41. DIVIDER PART 6 ============ -->
+<section class="slide divider">
+  <div class="inner">
+    <div class="num">06</div>
+    <h1>عمل و پرسش‌ها</h1>
+    <p class="muted">چطور با عامل صحبت کنیم، ضدالگوها، نقشه راه، FAQ</p>
+  </div>
+  <aside class="notes">بخش پایانی و عملی.</aside>
+</section>
+
+<!-- ============ 42. PROMPT ANATOMY ============ -->
+<section class="slide">
+  <h2>آناتومی یک پرامپت خوب برای عامل</h2>
+  <div class="content">
+    <div class="grid-3">
+      <div class="card"><h3>۱. هدف</h3><p>چه نتیجه‌ای می‌خواهی؟ (نه فقط «درستش کن»)</p></div>
+      <div class="card"><h3>۲. Context</h3><p>Spec، فایل‌ها، کد مشابه موجود، تیکت</p></div>
+      <div class="card"><h3>۳. محدودیت‌ها</h3><p>چه چیزی را تغییر نده، Non-goals، الگو</p></div>
+      <div class="card"><h3>۴. تأیید</h3><p>چطور بفهمیم درست است؟ تست، build، AC</p></div>
+      <div class="card"><h3>۵. خروجی</h3><p>Plan؟ PR؟ خلاصه؟ قالب مشخص</p></div>
+      <div class="card"><h3>۶. حالت</h3><p>اول Plan Mode، بعد اجرا</p></div>
+    </div>
+    <p class="small muted" style="margin-top:14px">قاعده Anthropic: اگر diff را در یک جمله می‌توانی توصیف کنی، Plan لازم نیست؛ وگرنه اول Plan.</p>
+  </div>
+  <aside class="notes">این شش جزء را حفظ کنید. مهم‌ترین که اغلب جا می‌افتد: معیار تأیید. به عامل بگویید چطور بفهمد کار تمام شده.</aside>
+</section>
+
+<!-- ============ 43. BAD vs GOOD PROMPT ============ -->
+<section class="slide">
+  <h2>پرامپت بد در برابر پرامپت خوب</h2>
+  <div class="content">
+    <div class="row">
+      <div>
+        <span class="label">✗ بد</span>
+        <div class="prompt bad">یه API برای پیگیری اقساط بنویس.</div>
+        <p class="small muted" style="margin-top:12px">بدون Spec، بدون محدودیت، بدون معیار تأیید ← عامل حدس می‌زند.</p>
+      </div>
+      <div>
+        <span class="label">✓ خوب</span>
+        <div class="prompt good">
+          فیچر <code>specs/001-installment-followup/spec.md</code> را پیاده کن.<br/>
+          ۱. اول با subagent بررسی کن InstallmentService فعلی چطور کار می‌کند.<br/>
+          ۲. در Plan Mode فایل‌ها و ترتیب را پیشنهاد بده و صبر کن تا تأیید کنم.<br/>
+          ۳. از Skill <code>dotnet-cqrs-feature</code> پیروی کن.<br/>
+          ۴. به Domain و جدول‌های موجود دست نزن؛ ارسال پیامک خارج از محدوده است.<br/>
+          ۵. هر معیار پذیرش ۱ تا ۴ باید یک unit test داشته باشد؛ <code>dotnet test</code> سبز.<br/>
+          ۶. در پایان خلاصه تغییرات + نگاشت AC به تست بده.
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">ببینید پرامپت خوب به سه artifact ارجاع می‌دهد: Spec برای چه، Skill برای چطور، و Rule ها خودکار بارگذاری می‌شوند. به‌علاوه معیار تأیید و قالب خروجی دارد.</aside>
+</section>
+
+<!-- ============ 44. ANTI-PATTERNS ============ -->
+<section class="slide">
+  <h2>ضدالگوها — اینها را نکنید</h2>
+  <div class="content">
+    <div class="grid-2">
+      <div class="card"><h3>❌ یک چت بی‌پایان</h3><p class="small">context پر و آلوده می‌شود؛ برای هر تسک جلسه جدید.</p></div>
+      <div class="card"><h3>❌ پذیرش بدون خواندن</h3><p class="small">مالک کد شمایید؛ PR عامل = همان review.</p></div>
+      <div class="card"><h3>❌ AGENTS.md هزار خطی</h3><p class="small">هر خط هزینه دائمی context دارد.</p></div>
+      <div class="card"><h3>❌ «درستش کن» بدون تست</h3><p class="small">عامل به خودش نمره می‌دهد.</p></div>
+      <div class="card"><h3>❌ Secret در پرامپت یا Rule</h3><p class="small">رمز و توکن هرگز در متن عامل.</p></div>
+      <div class="card"><h3>❌ اصلاح دستی خطای تکراری</h3><p class="small">به‌جایش Rule/Skill/تست اضافه کن (روی حلقه).</p></div>
+    </div>
+  </div>
+  <aside class="notes">این شش ضدالگو را در تیم‌ها زیاد دیده‌ام. آخری از همه مهم‌تر: اگر عامل یک اشتباه را دو بار تکرار کرد، Harness را اصلاح کنید.</aside>
+</section>
+
+<!-- ============ 45. ROADMAP ============ -->
+<section class="slide">
+  <h2>نقشه راه پیشنهادی برای تیم ما</h2>
+  <div class="content">
+    <div class="grid-3">
+      <div class="card">
+        <h3 class="accent">۳۰ روز اول</h3>
+        <ul class="small">
+          <li>AGENTS.md برای ۲ سرویس</li>
+          <li>۲ Rule (معماری، تست)</li>
+          <li>آموزش Plan Mode</li>
+          <li>اندازه‌گیری پایه: lead time، باگ</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="accent">۶۰ روز</h3>
+        <ul class="small">
+          <li>۳ Skill مشترک (.NET CQRS، migration، تست)</li>
+          <li>اولین فیچر با Spec کامل</li>
+          <li>subagent بازبین در PR</li>
+          <li>Hook برای build/test</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="accent">۹۰ روز</h3>
+        <ul class="small">
+          <li>SDD برای همه فیچرهای جدید</li>
+          <li>Spec-anchored برای ماژول‌های اصلی</li>
+          <li>کتابخانه Skill تیمی</li>
+          <li>بازنگری داده‌ها و تنظیم خودمختاری</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:16px">نقش‌ها: Champion (پیشگام) · Tech Lead (مالک Harness) · Manager (حمایت و اندازه‌گیری)</p>
+  </div>
+  <aside class="notes">پیشنهاد عملی: کوچک شروع کنیم، روی دو سرویس. بعد از ۹۰ روز با داده تصمیم بگیریم. اندازه‌گیری مهم است چون مطالعه METR نشان داد احساس ما از بهره‌وری قابل اعتماد نیست.</aside>
+</section>
+
+<!-- ============ 46. FAQ 1 ============ -->
+<section class="slide">
+  <h2>پرسش‌های پرتکرار (۱)</h2>
+  <div class="content">
+    <div class="grid-2 small">
+      <div class="card"><h3>آیا AI جای توسعه‌دهنده را می‌گیرد؟</h3><p>نه؛ نقش را تغییر می‌دهد: طراحی، Spec، بازبینی، Harness. مالکیت و مسئولیت با انسان است.</p></div>
+      <div class="card"><h3>قانون کسب‌وکار Rule است یا Skill؟</h3><p>معمولاً هیچ‌کدام: مستند دامنه + معیار پذیرش Spec. Rule فقط قرارداد کدنویسی.</p></div>
+      <div class="card"><h3>BRD را داخل AGENTS.md بگذاریم؟</h3><p>نه. BRD در <code>docs/</code>؛ خلاصه قابل تست در Spec.</p></div>
+      <div class="card"><h3>Spec-first یا Spec-anchored؟</h3><p>شروع با spec-first؛ برای ماژول‌های مهم و پرتغییر spec-anchored.</p></div>
+    </div>
+  </div>
+  <aside class="notes">این‌ها سؤال‌هایی است که احتمالاً در جلسه پرسیده می‌شود.</aside>
+</section>
+
+<!-- ============ 47. FAQ 2 ============ -->
+<section class="slide">
+  <h2>پرسش‌های پرتکرار (۲)</h2>
+  <div class="content">
+    <div class="grid-2 small">
+      <div class="card"><h3>امنیت کد شرکت؟</h3><p>Privacy mode، عدم ارسال secret، بررسی سیاست داده هر ابزار، محدودیت دسترسی MCP و ترمینال.</p></div>
+      <div class="card"><h3>توهم (Hallucination)؟</h3><p>با context درست، تست قطعی، و بازبینی کاهش می‌یابد — حذف نمی‌شود.</p></div>
+      <div class="card"><h3>جونیورها چطور یاد بگیرند؟</h3><p>از عامل «توضیح» بخواهند، Plan را بخوانند، و کد را خودشان review کنند؛ نه فقط accept.</p></div>
+      <div class="card"><h3>کدام مدل؟</h3><p>مدل قوی برای Plan و کار سخت؛ مدل سریع/ارزان برای کار تکراری. Harness مهم‌تر از مدل است.</p></div>
+    </div>
+  </div>
+  <aside class="notes">FAQ کامل‌تر با بیش از ۱۵ سؤال در Handbook هست.</aside>
+</section>
+
+<!-- ============ 48. REFERENCES ============ -->
+<section class="slide">
+  <h2>منابع اصلی</h2>
+  <div class="content">
+    <ul class="xs ltr" style="direction:ltr; text-align:left; padding-left:24px; padding-right:0">
+      <li>Böckeler — Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl — martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html</li>
+      <li>Böckeler — Context Engineering for Coding Agents — martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html</li>
+      <li>Böckeler — Harness engineering for coding agent users — martinfowler.com/articles/harness-engineering.html</li>
+      <li>Kief Morris — Humans and Agents in Software Engineering Loops — martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html</li>
+      <li>Thoughtworks Podcast — What is spec-driven development? (Böckeler &amp; Laura Tacho)</li>
+      <li>Agent Skills specification — agentskills.io · github.com/agentskills/agentskills</li>
+      <li>AGENTS.md — agents.md</li>
+      <li>Cursor docs — Rules &amp; Skills — cursor.com/docs</li>
+      <li>Anthropic — Best practices for Claude Code — code.claude.com/docs/en/best-practices</li>
+      <li>VS Code — Agent Skills — code.visualstudio.com/docs/agent-customization/agent-skills</li>
+      <li>GitHub Spec Kit — github.com/github/spec-kit</li>
+      <li>DORA 2025 — State of AI-assisted Software Development — dora.dev/research/2025</li>
+      <li>METR — Impact of Early-2025 AI on Experienced OSS Developer Productivity — metr.org</li>
+    </ul>
+  </div>
+  <aside class="notes">همه لینک‌ها در Handbook قابل کلیک هستند.</aside>
+</section>
+
+<!-- ============ 49. THANKS ============ -->
+<section class="slide cover">
+  <div class="titlebox">
+    <h1>سپاس 🙏<br/><span class="accent">پرسش و پاسخ</span></h1>
+    <p>همه فایل‌ها، نمونه‌ها و قالب‌ها روی گیت‌هاب:</p>
+    <p class="ltr" style="font-size:24px; color:#7dd3fc; direction:ltr; text-align:right">github.com/mohammadrezatahmasebi/ai-agentic-meeting</p>
+    <p class="small muted">slides.pdf · handbook.pdf · samples/ · templates/</p>
+  </div>
+  <aside class="notes">ممنون از توجه شما. لینک گیت‌هاب را در گروه می‌گذارم. حالا سؤال‌ها.</aside>
+</section>
+
+</div>
+
+<div class="notes-panel" id="notesPanel"></div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var notesPanel = document.getElementById('notesPanel');
+  var progress = document.getElementById('progress');
+  var idx = 0;
+  slides.forEach(function (el, k) { el.setAttribute('data-n', (k + 1) + ' / ' + slides.length); });
+
+  function fromHash() {
+    var n = parseInt((location.hash || '').replace('#', ''), 10);
+    return isNaN(n) ? 0 : Math.min(Math.max(n - 1, 0), slides.length - 1);
+  }
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+  }
+
+  function show(i) {
+    idx = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach(function (el, k) { el.classList.toggle('active', k === idx); });
+    var n = slides[idx].querySelector('.notes');
+    notesPanel.innerHTML = n ? '<b>یادداشت سخنران:</b> ' + n.innerHTML : '';
+    progress.style.width = ((idx + 1) / slides.length * 100) + '%';
+    if (location.hash !== '#' + (idx + 1)) history.replaceState(null, '', '#' + (idx + 1));
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (k === 'ArrowLeft' || k === 'ArrowDown' || k === ' ' || k === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    else if (k === 'ArrowRight' || k === 'ArrowUp' || k === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(slides.length - 1);
+    else if (k === 'n' || k === 'N') notesPanel.classList.toggle('show');
+    else if (k === 'f' || k === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a')) return;
+    if (e.clientX < window.innerWidth / 2) show(idx + 1); else show(idx - 1);
+  });
+
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+  fit();
+  show(fromHash());
+})();
+</script>
+</body>
+</html>
