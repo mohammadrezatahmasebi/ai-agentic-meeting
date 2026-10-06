@@ -3,17 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>برنامه‌نویسی عامل‌محور (Agentic Coding) — از نیازمندی تا تست</title>
+<title>برنامه‌نویسی عامل‌محور (Agentic Coding)، از نیازمندی تا تست</title>
 <link rel="stylesheet" href="assets/css/theme.css" />
 <style>
   @page { size: 1280px 720px; margin: 0; }
   html, body { height: 100%; }
   body {
     overflow: hidden;
-    background: #05080f;
+    background: #e8e6dc;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    counter-reset: slide;
   }
   .stage {
     position: absolute;
@@ -24,19 +23,18 @@
     transform-origin: center center;
   }
   .slide {
-    counter-increment: slide;
     position: absolute;
     inset: 0;
     width: 1280px;
     height: 720px;
-    padding: 56px 72px 48px;
+    padding: 52px 68px 44px;
     display: none;
     flex-direction: column;
     overflow: hidden;
     background:
-      radial-gradient(1000px 500px at 100% 0%, rgba(91,140,255,0.16), transparent 60%),
-      radial-gradient(800px 500px at 0% 100%, rgba(61,214,198,0.12), transparent 60%),
-      var(--bg);
+      linear-gradient(180deg, #faf9f5 0%, #f3f1e8 100%);
+    color: #141413;
+    border: 1px solid #e8e6dc;
   }
   .slide.active { display: flex; }
   .slide::after {
@@ -44,84 +42,116 @@
     position: absolute;
     bottom: 18px;
     left: 28px;
-    font-size: 14px;
-    color: var(--muted);
+    font-size: 13px;
+    color: #b0aea5;
     direction: ltr;
+    font-variant-numeric: tabular-nums;
   }
   .slide .brand {
     position: absolute;
     bottom: 18px;
-    right: 72px;
+    right: 68px;
     font-size: 13px;
-    color: var(--muted);
+    color: #b0aea5;
   }
-  .slide h1 { font-size: 54px; line-height: 1.25; margin: 0 0 18px; font-weight: 700; }
+  .slide h1 { font-size: 50px; line-height: 1.28; margin: 0 0 16px; font-weight: 700; letter-spacing: -0.02em; color: #141413; }
   .slide h2 {
-    font-size: 38px;
-    margin: 0 0 22px;
+    font-size: 34px;
+    margin: 0 0 20px;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: #141413;
   }
-  .slide h2 .en { font-size: 22px; color: var(--muted); font-weight: 400; margin-right: 10px; direction: ltr; unicode-bidi: isolate; }
-  .slide h3 { font-size: 24px; margin: 0 0 10px; color: #d7e3ff; }
-  .slide p, .slide li { font-size: 22px; }
-  .slide ul { margin: 0; padding-right: 26px; }
-  .slide li { margin: 6px 0; }
-  .slide .small, .slide .small li { font-size: 18px; }
-  .slide .xs, .slide .xs li { font-size: 16px; }
+  .slide h2 .en {
+    font-size: 18px; color: #5c5a52; font-weight: 500;
+    margin-right: 10px; direction: ltr; unicode-bidi: isolate;
+  }
+  .slide h3 { font-size: 22px; margin: 0 0 8px; color: #141413; font-weight: 700; }
+  .slide p, .slide li { font-size: 20px; color: #141413; }
+  .slide ul { margin: 0; padding-right: 24px; }
+  .slide li { margin: 5px 0; }
+  .slide .small, .slide .small li { font-size: 17px; }
+  .slide .xs, .slide .xs li { font-size: 15px; }
   .slide .content { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
-  .slide .card p, .slide .card li { font-size: 18px; }
-  .slide table.compare { font-size: 17px; }
-  .slide table.compare th, .slide table.compare td { padding: 9px 12px; }
-  .slide pre { font-size: 14.5px; margin: 0; }
+  .slide .card p, .slide .card li { font-size: 17px; }
+  .slide table.compare { font-size: 16px; background: #fff; }
+  .slide table.compare th, .slide table.compare td { padding: 9px 12px; border-color: #d9d6c8; }
+  .slide table.compare th { background: #e8e6dc; color: #141413; }
+  .slide pre {
+    font-size: 13.5px; margin: 0;
+    background: #f3f1e8; border: 1px solid #d9d6c8; color: #141413;
+  }
 
   .cover {
     background:
-      linear-gradient(90deg, rgba(11,18,32,0) 0%, rgba(11,18,32,0.75) 45%, rgba(11,18,32,0.98) 70%),
-      url("assets/img/cover.jpg") left center / cover no-repeat;
+      radial-gradient(900px 480px at 12% 18%, rgba(217,119,87,0.10), transparent 55%),
+      linear-gradient(135deg, #faf9f5 0%, #f3f1e8 55%, #e8e6dc 100%);
     justify-content: center;
   }
-  .cover .titlebox { max-width: 640px; }
-  .cover h1 { font-size: 58px; }
-  .cover .subtitle { font-size: 26px; color: var(--accent); margin-bottom: 26px; }
-
-  .divider { justify-content: center; }
-  .divider .num { font-size: 120px; font-weight: 700; color: rgba(61,214,198,0.25); line-height: 1; direction: ltr; }
-  .divider h1 { font-size: 60px; }
-  .divider .hero {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    opacity: 0.35;
+  .cover .titlebox { max-width: 780px; }
+  .cover h1 { font-size: 56px; }
+  .cover .subtitle { font-size: 24px; color: #5c5a52; margin-bottom: 22px; font-weight: 500; }
+  .cover .accent { color: #d97757; }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: 48px; left: 68px;
+    width: 48px; height: 48px;
+    background: #d97757;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    opacity: 0.95;
   }
-  .divider .inner { position: relative; z-index: 1; max-width: 760px; }
 
-  .pill { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 16px; border: 1px solid var(--border); margin-left: 8px; }
-  .pill.spec { color: #7dd3fc; border-color: rgba(125,211,252,0.4); background: rgba(125,211,252,0.08); }
-  .pill.rule { color: #fbbf24; border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
-  .pill.skill { color: #86efac; border-color: rgba(134,239,172,0.4); background: rgba(134,239,172,0.08); }
-  .pill.doc { color: #c4b5fd; border-color: rgba(196,181,253,0.4); background: rgba(196,181,253,0.08); }
+  .divider {
+    justify-content: center;
+    background:
+      radial-gradient(700px 420px at 85% 20%, rgba(217,119,87,0.12), transparent 60%),
+      linear-gradient(180deg, #faf9f5, #f3f1e8);
+  }
+  .divider .num {
+    font-size: 110px; font-weight: 700; color: rgba(217,119,87,0.22);
+    line-height: 1; direction: ltr; letter-spacing: -0.04em;
+  }
+  .divider h1 { font-size: 54px; }
+  .divider .hero { display: none; }
+  .divider .inner { position: relative; z-index: 1; max-width: 780px; }
 
-  .card.spec { border-color: rgba(125,211,252,0.45); }
-  .card.rule { border-color: rgba(251,191,36,0.45); }
-  .card.skill { border-color: rgba(134,239,172,0.45); }
-  .card.doc { border-color: rgba(196,181,253,0.45); }
+  .pill {
+    display: inline-block; padding: 3px 12px; border-radius: 999px;
+    font-size: 14px; font-weight: 700; border: 1px solid transparent; margin-left: 8px;
+  }
+  .pill.spec { color: #3d6f9c; border-color: rgba(106,155,204,0.45); background: rgba(106,155,204,0.12); }
+  .pill.rule { color: #b85a3d; border-color: rgba(217,119,87,0.45); background: rgba(217,119,87,0.12); }
+  .pill.skill { color: #5a6d45; border-color: rgba(120,140,93,0.45); background: rgba(120,140,93,0.14); }
+  .pill.doc { color: #5c5a52; border-color: rgba(176,174,165,0.7); background: rgba(176,174,165,0.18); }
+
+  .card { background: #fff; border-color: #d9d6c8; }
+  .card.spec { border-color: rgba(106,155,204,0.55); }
+  .card.rule { border-color: rgba(217,119,87,0.55); }
+  .card.skill { border-color: rgba(120,140,93,0.55); }
+  .card.doc { border-color: rgba(176,174,165,0.8); }
 
   .big-quote {
-    font-size: 30px; line-height: 1.6; border-right: 5px solid var(--accent);
-    padding: 10px 24px; margin: 10px 0 20px; background: rgba(61,214,198,0.06); border-radius: 8px;
+    font-size: 26px; line-height: 1.65; border-right: 4px solid #d97757;
+    padding: 12px 22px; margin: 10px 0 18px;
+    background: rgba(217,119,87,0.07); border-radius: 8px; color: #141413;
   }
-  .stat { font-size: 64px; font-weight: 700; color: var(--accent); line-height: 1.1; direction: ltr; unicode-bidi: isolate; }
-  .stat.bad { color: var(--danger); }
+  .stat { font-size: 60px; font-weight: 700; color: #d97757; line-height: 1.1; direction: ltr; unicode-bidi: isolate; }
+  .stat.bad { color: #bf3c3c; }
   .prompt {
-    background: #0a101c; border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 18px; font-size: 18px; line-height: 1.75;
+    background: #fff; border: 1px solid #d9d6c8; border-radius: 10px;
+    padding: 14px 18px; font-size: 17px; line-height: 1.75; color: #141413;
   }
-  .prompt.bad { border-color: rgba(255,107,107,0.55); }
-  .prompt.good { border-color: rgba(74,222,128,0.55); }
-  .label { font-size: 15px; color: var(--muted); margin-bottom: 6px; display: block; }
-  .row { display: flex; gap: 22px; align-items: stretch; }
+  .prompt.bad { border-color: #bf3c3c; background: rgba(191,60,60,0.05); }
+  .prompt.good { border-color: #788c5d; background: rgba(120,140,93,0.08); }
+  .label { font-size: 14px; color: #5c5a52; margin-bottom: 6px; display: block; font-weight: 600; }
+  .row { display: flex; gap: 20px; align-items: stretch; }
   .row > * { flex: 1; }
-  .img-full { width: 100%; border-radius: 14px; border: 1px solid var(--border); }
+  .img-full {
+    width: 100%; border-radius: 10px; border: 1px solid #d9d6c8;
+    box-shadow: 0 8px 24px rgba(20,20,19,0.06);
+  }
   svg text { font-family: "Vazirmatn", Tahoma, sans-serif; }
 
   .notes { display: none; }
@@ -129,20 +159,23 @@
     display: none;
     position: fixed; bottom: 0; left: 0; right: 0;
     max-height: 34vh; overflow: auto;
-    background: rgba(5,8,15,0.96); border-top: 2px solid var(--accent);
-    padding: 16px 28px; font-size: 18px; z-index: 50; line-height: 1.8;
+    background: #141413; color: #faf9f5; border-top: 3px solid #d97757;
+    padding: 16px 28px; font-size: 17px; z-index: 50; line-height: 1.8;
   }
   .notes-panel.show { display: block; }
   .hud {
     position: fixed; top: 10px; left: 14px; z-index: 40;
-    font-size: 13px; color: var(--muted); opacity: 0.6; direction: rtl;
+    font-size: 12px; color: #5c5a52; opacity: 0.75; direction: rtl;
   }
-  .progress { position: fixed; top: 0; right: 0; height: 3px; background: var(--accent); z-index: 41; transition: width .2s; }
+  .progress {
+    position: fixed; top: 0; right: 0; height: 3px;
+    background: #d97757; z-index: 41; transition: width .2s;
+  }
 
   @media print {
-    html, body { overflow: visible; height: auto; background: var(--bg); }
+    html, body { overflow: visible; height: auto; background: #faf9f5; }
     .stage { position: static; transform: none !important; width: 1280px; height: auto; }
-    .slide { display: flex !important; position: relative; page-break-after: always; break-after: page; }
+    .slide { display: flex !important; position: relative; page-break-after: always; break-after: page; border: none; }
     .hud, .notes-panel, .progress { display: none !important; }
   }
 </style>
@@ -156,8 +189,8 @@
 <section class="slide cover">
   <div class="titlebox">
     <span class="badge">جلسه فنی تیم · ۶۰ دقیقه</span>
-    <h1 style="margin-top:18px">برنامه‌نویسی عامل‌محور<br/><span class="accent">Agentic Coding</span></h1>
-    <div class="subtitle">از نیازمندی کسب‌وکار تا تست — با Spec، Rule و Skill</div>
+    <h1 style="margin-top:22px">برنامه‌نویسی عامل‌محور<br/><span class="accent">Agentic Coding</span></h1>
+    <div class="subtitle">از نیازمندی کسب‌وکار تا تست، با Spec، Rule و Skill</div>
     <p class="muted small">Cursor · Claude Code · GitHub Copilot · Codex · Kiro · Spec Kit</p>
   </div>
   <aside class="notes">سلام و خوش‌آمد. امروز درباره این صحبت می‌کنیم که چطور با عامل‌های هوش مصنوعی به‌صورت تیمی و منظم نرم‌افزار بسازیم؛ نه فقط «چت کردن با AI». تمرکز اصلی: Spec، Rule و Skill و اینکه هر نقش تیم چطور از عامل‌ها استفاده کند.</aside>
@@ -193,11 +226,11 @@
       <div class="card">
         <h3>مطالعه کنترل‌شده METR</h3>
         <div class="stat bad">−19%</div>
-        <p>توسعه‌دهندگان باتجربه با AI <b>کندتر</b> شدند — در حالی که فکر می‌کردند ۲۰٪ سریع‌ترند.</p>
+        <p>توسعه‌دهندگان باتجربه با AI <b>کندتر</b> شدند، در حالی که فکر می‌کردند ۲۰٪ سریع‌ترند.</p>
         <p class="small muted">تسک‌های واقعی در ریپوهای بزرگ متن‌باز</p>
       </div>
     </div>
-    <div class="big-quote" style="margin-top:24px">«AI یک <b>تقویت‌کننده</b> است: نقاط قوت و ضعف سازمان را بزرگ‌تر می‌کند.» — DORA 2025</div>
+    <div class="big-quote" style="margin-top:24px">«AI یک <b>تقویت‌کننده</b> است: نقاط قوت و ضعف سازمان را بزرگ‌تر می‌کند.»، DORA 2025</div>
   </div>
   <aside class="notes">این دو داده با هم تناقض ظاهری دارند. پیام: ابزار به‌تنهایی کافی نیست؛ فرایند، context و verification تعیین‌کننده است. امروز درباره همین فرایند صحبت می‌کنیم.</aside>
 </section>
@@ -209,35 +242,35 @@
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 300" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker>
+          <marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker>
         </defs>
-        <g font-size="22" fill="#e8eefc" text-anchor="middle">
-          <rect x="880" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#5b8cff"/>
+        <g font-size="22" fill="#141413" text-anchor="middle">
+          <rect x="880" y="60" width="230" height="150" rx="16" fill="#ffffff" stroke="#6a9bcc"/>
           <text x="995" y="110" font-weight="700">۱. تکمیل خودکار</text>
-          <text x="995" y="145" font-size="17" fill="#9aa8c7">Autocomplete</text>
-          <text x="995" y="178" font-size="16" fill="#9aa8c7">یک خط / یک تابع</text>
+          <text x="995" y="145" font-size="17" fill="#5c5a52">Autocomplete</text>
+          <text x="995" y="178" font-size="16" fill="#5c5a52">یک خط / یک تابع</text>
 
-          <rect x="600" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#5b8cff"/>
+          <rect x="600" y="60" width="230" height="150" rx="16" fill="#ffffff" stroke="#6a9bcc"/>
           <text x="715" y="110" font-weight="700">۲. چت‌بات</text>
-          <text x="715" y="145" font-size="17" fill="#9aa8c7">Chat Assistant</text>
-          <text x="715" y="178" font-size="16" fill="#9aa8c7">سؤال و جواب، کپی‌پیست</text>
+          <text x="715" y="145" font-size="17" fill="#5c5a52">Chat Assistant</text>
+          <text x="715" y="178" font-size="16" fill="#5c5a52">سؤال و جواب، کپی‌پیست</text>
 
-          <rect x="320" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#3dd6c6" stroke-width="2"/>
+          <rect x="320" y="60" width="230" height="150" rx="16" fill="#ffffff" stroke="#d97757" stroke-width="2"/>
           <text x="435" y="110" font-weight="700">۳. عامل</text>
-          <text x="435" y="145" font-size="17" fill="#9aa8c7">Coding Agent</text>
-          <text x="435" y="178" font-size="16" fill="#9aa8c7">می‌خواند، می‌نویسد، اجرا می‌کند</text>
+          <text x="435" y="145" font-size="17" fill="#5c5a52">Coding Agent</text>
+          <text x="435" y="178" font-size="16" fill="#5c5a52">می‌خواند، می‌نویسد، اجرا می‌کند</text>
 
-          <rect x="40" y="60" width="230" height="150" rx="16" fill="#162033" stroke="#3dd6c6" stroke-width="3"/>
+          <rect x="40" y="60" width="230" height="150" rx="16" fill="#ffffff" stroke="#d97757" stroke-width="3"/>
           <text x="155" y="110" font-weight="700">۴. تیم عامل‌ها</text>
-          <text x="155" y="145" font-size="17" fill="#9aa8c7">Multi-Agent</text>
-          <text x="155" y="178" font-size="16" fill="#9aa8c7">Orchestrator + متخصص‌ها</text>
+          <text x="155" y="145" font-size="17" fill="#5c5a52">Multi-Agent</text>
+          <text x="155" y="178" font-size="16" fill="#5c5a52">Orchestrator + متخصص‌ها</text>
         </g>
-        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr1)">
+        <g stroke="#d97757" stroke-width="3" marker-end="url(#arr1)">
           <line x1="875" y1="135" x2="838" y2="135"/>
           <line x1="595" y1="135" x2="558" y2="135"/>
           <line x1="315" y1="135" x2="278" y2="135"/>
         </g>
-        <text x="565" y="270" text-anchor="middle" font-size="19" fill="#9aa8c7">نقش انسان: از «تایپ‌کننده» به «طراح و ناظر حلقه»</text>
+        <text x="565" y="270" text-anchor="middle" font-size="19" fill="#5c5a52">نقش انسان: از «تایپ‌کننده» به «طراح و ناظر حلقه»</text>
       </svg>
     </div>
   </div>
@@ -256,7 +289,7 @@
 
 <!-- ============ 6. LLM vs ASSISTANT vs AGENT ============ -->
 <section class="slide">
-  <h2>LLM، دستیار کدنویسی، عامل — تفاوت چیست؟</h2>
+  <h2>LLM، دستیار کدنویسی، عامل، تفاوت چیست؟</h2>
   <div class="content">
     <table class="compare">
       <tr><th style="width:18%"></th><th>LLM (مدل زبانی)</th><th>دستیار کدنویسی AI</th><th>عامل کدنویسی (Agent)</th></tr>
@@ -266,7 +299,7 @@
       <tr><td><b>چه کسی اجرا می‌کند؟</b></td><td>شما</td><td>شما (کپی/قبول)</td><td>خود عامل؛ شما بازبینی می‌کنید</td></tr>
       <tr><td><b>بهترین برای</b></td><td>ایده، توضیح، تحلیل</td><td>تکمیل سریع، سؤال موضعی</td><td>فیچر چندفایلی، رفع باگ، refactor، تست</td></tr>
     </table>
-    <div class="big-quote" style="font-size:24px; margin-top:22px">Agent = Model + Harness &nbsp;—&nbsp; یعنی «مدل» فقط بخشی از ماجراست.</div>
+    <div class="big-quote" style="font-size:24px; margin-top:22px">Agent = Model + Harness &nbsp;-&nbsp; یعنی «مدل» فقط بخشی از ماجراست.</div>
   </div>
   <aside class="notes">سؤال رایج: کدام بهتر است؟ جواب: این‌ها لایه‌های یک سیستم هستند. مدل مغز است؛ عامل مدلی است که ابزار و حلقه دارد. فرمول Agent = Model + Harness از Birgitta Böckeler در سایت Martin Fowler است.</aside>
 </section>
@@ -278,21 +311,21 @@
     <div class="row" style="align-items:center">
       <div class="svg-wrap" style="flex:1.2">
         <svg viewBox="0 0 620 460" xmlns="http://www.w3.org/2000/svg">
-          <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
-          <circle cx="310" cy="230" r="85" fill="#162033" stroke="#5b8cff" stroke-width="2"/>
-          <text x="310" y="222" text-anchor="middle" fill="#e8eefc" font-size="24" font-weight="700">LLM</text>
-          <text x="310" y="255" text-anchor="middle" fill="#9aa8c7" font-size="17" direction="ltr">+ Context</text>
-          <g font-size="19" fill="#e8eefc" text-anchor="middle">
-            <rect x="225" y="10" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+          <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker></defs>
+          <circle cx="310" cy="230" r="85" fill="#ffffff" stroke="#6a9bcc" stroke-width="2"/>
+          <text x="310" y="222" text-anchor="middle" fill="#141413" font-size="24" font-weight="700">LLM</text>
+          <text x="310" y="255" text-anchor="middle" fill="#5c5a52" font-size="17" direction="ltr">+ Context</text>
+          <g font-size="19" fill="#141413" text-anchor="middle">
+            <rect x="225" y="10" width="170" height="64" rx="12" fill="#f3f1e8" stroke="#d97757"/>
             <text x="310" y="49">۱. هدف / پرامپت</text>
-            <rect x="440" y="198" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <rect x="440" y="198" width="170" height="64" rx="12" fill="#f3f1e8" stroke="#d97757"/>
             <text x="525" y="237">۲. برنامه‌ریزی</text>
-            <rect x="225" y="386" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <rect x="225" y="386" width="170" height="64" rx="12" fill="#f3f1e8" stroke="#d97757"/>
             <text x="310" y="425">۳. اجرای ابزار</text>
-            <rect x="10" y="198" width="170" height="64" rx="12" fill="#0a101c" stroke="#3dd6c6"/>
+            <rect x="10" y="198" width="170" height="64" rx="12" fill="#f3f1e8" stroke="#d97757"/>
             <text x="95" y="237">۴. مشاهده نتیجه</text>
           </g>
-          <g stroke="#3dd6c6" stroke-width="3" fill="none" marker-end="url(#arr2)">
+          <g stroke="#d97757" stroke-width="3" fill="none" marker-end="url(#arr2)">
             <path d="M400,60 Q500,90 520,190"/>
             <path d="M520,270 Q500,370 400,405"/>
             <path d="M220,405 Q120,370 100,270"/>
@@ -317,7 +350,7 @@
 <section class="slide">
   <h2>مهندسی زمینه <span class="en">Context Engineering</span></h2>
   <div class="content">
-    <div class="big-quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»<br/><span class="small muted">— Bharani Subramaniam، نقل‌شده در مقاله Birgitta Böckeler، martinfowler.com (فوریه ۲۰۲۶)</span></div>
+    <div class="big-quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»<br/><span class="small muted">- Bharani Subramaniam، نقل‌شده در مقاله Birgitta Böckeler، martinfowler.com (فوریه ۲۰۲۶)</span></div>
     <div class="grid-3">
       <div class="card rule"><h3><span class="pill rule">Rules</span></h3><p>دستورالعمل‌های دائمی پروژه</p></div>
       <div class="card skill"><h3><span class="pill skill">Skills</span></h3><p>رویه‌های قابل بارگذاری در صورت نیاز</p></div>
@@ -336,34 +369,34 @@
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 410" xmlns="http://www.w3.org/2000/svg">
-        <defs><marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
-        <rect x="790" y="30" width="320" height="280" rx="16" fill="#162033" stroke="#fbbf24"/>
-        <text x="950" y="72" text-anchor="middle" fill="#fbbf24" font-size="24" font-weight="700">راهنماها (قبل از عمل)</text>
-        <g fill="#e8eefc" font-size="19" text-anchor="middle">
+        <defs><marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker></defs>
+        <rect x="790" y="30" width="320" height="280" rx="16" fill="#ffffff" stroke="#d97757"/>
+        <text x="950" y="72" text-anchor="middle" fill="#d97757" font-size="24" font-weight="700">راهنماها (قبل از عمل)</text>
+        <g fill="#141413" font-size="19" text-anchor="middle">
           <text x="950" y="118">AGENTS.md / Rules</text>
           <text x="950" y="155">Spec + معیار پذیرش</text>
           <text x="950" y="192">Skills</text>
           <text x="950" y="229">ADR / معماری</text>
           <text x="950" y="266">نمونه کد خوب</text>
         </g>
-        <rect x="435" y="100" width="260" height="140" rx="70" fill="#0a101c" stroke="#3dd6c6" stroke-width="3"/>
-        <text x="565" y="162" text-anchor="middle" fill="#e8eefc" font-size="26" font-weight="700">عامل</text>
-        <text x="565" y="196" text-anchor="middle" fill="#9aa8c7" font-size="17">Model</text>
-        <rect x="20" y="30" width="320" height="280" rx="16" fill="#162033" stroke="#4ade80"/>
-        <text x="180" y="72" text-anchor="middle" fill="#4ade80" font-size="24" font-weight="700">حسگرها (بعد از عمل)</text>
-        <g fill="#e8eefc" font-size="19" text-anchor="middle">
+        <rect x="435" y="100" width="260" height="140" rx="70" fill="#f3f1e8" stroke="#d97757" stroke-width="3"/>
+        <text x="565" y="162" text-anchor="middle" fill="#141413" font-size="26" font-weight="700">عامل</text>
+        <text x="565" y="196" text-anchor="middle" fill="#5c5a52" font-size="17">Model</text>
+        <rect x="20" y="30" width="320" height="280" rx="16" fill="#ffffff" stroke="#788c5d"/>
+        <text x="180" y="72" text-anchor="middle" fill="#788c5d" font-size="24" font-weight="700">حسگرها (بعد از عمل)</text>
+        <g fill="#141413" font-size="19" text-anchor="middle">
           <text x="180" y="118">Build / Compiler</text>
           <text x="180" y="155">Unit + Integration Tests</text>
           <text x="180" y="192">Linter / Format</text>
           <text x="180" y="229">Architecture Tests</text>
           <text x="180" y="266">Review Agent (read-only)</text>
         </g>
-        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr3)" fill="none">
+        <g stroke="#d97757" stroke-width="3" marker-end="url(#arr3)" fill="none">
           <line x1="785" y1="170" x2="702" y2="170"/>
           <line x1="430" y1="170" x2="347" y2="170"/>
           <path d="M180,315 Q565,365 950,318"/>
         </g>
-        <text x="565" y="398" text-anchor="middle" fill="#9aa8c7" font-size="17">بازخورد: اگر نتیجه بد بود، Harness را اصلاح کن — نه فقط خروجی را</text>
+        <text x="565" y="398" text-anchor="middle" fill="#5c5a52" font-size="17">بازخورد: اگر نتیجه بد بود، Harness را اصلاح کن، نه فقط خروجی را</text>
       </svg>
     </div>
   </div>
@@ -425,7 +458,7 @@
           <li>نام‌گذاری و ساختار پوشه</li>
           <li>حداقل‌های تست، امنیت، دستورهای build</li>
           <li><b>محل:</b> <code>AGENTS.md</code>، <code>.cursor/rules/*.mdc</code>، <code>CLAUDE.md</code>، <code>.github/copilot-instructions.md</code></li>
-          <li><b>مالک:</b> Tech Lead — مثل کد review شود</li>
+          <li><b>مالک:</b> Tech Lead، مثل کد review شود</li>
         </ul>
       </div>
       <div class="card rule">
@@ -456,15 +489,15 @@
       </div>
       <div class="svg-wrap" style="max-width:470px">
         <svg viewBox="0 0 470 330" xmlns="http://www.w3.org/2000/svg">
-          <rect x="135" y="10" width="200" height="70" rx="12" fill="rgba(134,239,172,0.18)" stroke="#86efac"/>
-          <text x="235" y="42" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۱. کشف</text>
-          <text x="235" y="66" text-anchor="middle" fill="#9aa8c7" font-size="14">name + description (~100 توکن)</text>
-          <rect x="85" y="110" width="300" height="80" rx="12" fill="rgba(134,239,172,0.12)" stroke="#86efac"/>
-          <text x="235" y="145" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۲. فعال‌سازی</text>
-          <text x="235" y="172" text-anchor="middle" fill="#9aa8c7" font-size="14">کل SKILL.md (&lt; ۵۰۰۰ توکن)</text>
-          <rect x="25" y="220" width="420" height="90" rx="12" fill="rgba(134,239,172,0.06)" stroke="#86efac"/>
-          <text x="235" y="258" text-anchor="middle" fill="#e8eefc" font-size="18" font-weight="700">۳. اجرا</text>
-          <text x="235" y="286" text-anchor="middle" fill="#9aa8c7" font-size="14">references / scripts فقط در صورت نیاز</text>
+          <rect x="135" y="10" width="200" height="70" rx="12" fill="rgba(120,140,93,0.18)" stroke="#788c5d"/>
+          <text x="235" y="42" text-anchor="middle" fill="#141413" font-size="18" font-weight="700">۱. کشف</text>
+          <text x="235" y="66" text-anchor="middle" fill="#5c5a52" font-size="14">name + description (~100 توکن)</text>
+          <rect x="85" y="110" width="300" height="80" rx="12" fill="rgba(120,140,93,0.12)" stroke="#788c5d"/>
+          <text x="235" y="145" text-anchor="middle" fill="#141413" font-size="18" font-weight="700">۲. فعال‌سازی</text>
+          <text x="235" y="172" text-anchor="middle" fill="#5c5a52" font-size="14">کل SKILL.md (&lt; ۵۰۰۰ توکن)</text>
+          <rect x="25" y="220" width="420" height="90" rx="12" fill="rgba(120,140,93,0.06)" stroke="#788c5d"/>
+          <text x="235" y="258" text-anchor="middle" fill="#141413" font-size="18" font-weight="700">۳. اجرا</text>
+          <text x="235" y="286" text-anchor="middle" fill="#5c5a52" font-size="14">references / scripts فقط در صورت نیاز</text>
         </svg>
         <p class="xs muted" style="text-align:center">Progressive Disclosure</p>
       </div>
@@ -475,7 +508,7 @@
 
 <!-- ============ 14. BUSINESS DOCS ============ -->
 <section class="slide">
-  <h2><span class="pill doc">Business Doc</span> — و چرا «قانون کسب‌وکار» ≠ Rule عامل</h2>
+  <h2><span class="pill doc">Business Doc</span>، و چرا «قانون کسب‌وکار» ≠ Rule عامل</h2>
   <div class="content">
     <div class="row">
       <div>
@@ -489,7 +522,7 @@
           <li>✓ در <b>مستند دامنه</b> (حقیقت برای انسان)</li>
           <li>✓ در <b>Spec</b> فیچر مربوطه، به‌شکل معیار پذیرش</li>
           <li>✓ اختیاری: در <b>references یک Skill</b> اگر مکرر لازم است</li>
-          <li class="warn">✗ در <code>.cursor/rules</code> — مگر قرارداد دائمی کدنویسی باشد</li>
+          <li class="warn">✗ در <code>.cursor/rules</code>، مگر قرارداد دائمی کدنویسی باشد</li>
         </ul>
       </div>
     </div>
@@ -503,28 +536,28 @@
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 470" xmlns="http://www.w3.org/2000/svg">
-        <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9aa8c7"/></marker></defs>
+        <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5c5a52"/></marker></defs>
         <g font-size="19" text-anchor="middle">
-          <rect x="415" y="5" width="300" height="56" rx="12" fill="#162033" stroke="#5b8cff"/>
-          <text x="565" y="40" fill="#e8eefc" font-weight="700">دانش / متن جدید</text>
+          <rect x="415" y="5" width="300" height="56" rx="12" fill="#ffffff" stroke="#6a9bcc"/>
+          <text x="565" y="40" fill="#141413" font-weight="700">دانش / متن جدید</text>
 
-          <rect x="730" y="105" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
-          <text x="920" y="140" fill="#e8eefc">فقط برای همین فیچر/تغییر است؟</text>
-          <rect x="730" y="205" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
-          <text x="920" y="240" fill="#e8eefc">قرارداد دائمی کد/معماری/امنیت؟</text>
-          <rect x="730" y="305" width="380" height="56" rx="28" fill="#0a101c" stroke="#9aa8c7"/>
-          <text x="920" y="340" fill="#e8eefc">رویه تکراری «چطور انجام بده»؟</text>
+          <rect x="730" y="105" width="380" height="56" rx="28" fill="#f3f1e8" stroke="#5c5a52"/>
+          <text x="920" y="140" fill="#141413">فقط برای همین فیچر/تغییر است؟</text>
+          <rect x="730" y="205" width="380" height="56" rx="28" fill="#f3f1e8" stroke="#5c5a52"/>
+          <text x="920" y="240" fill="#141413">قرارداد دائمی کد/معماری/امنیت؟</text>
+          <rect x="730" y="305" width="380" height="56" rx="28" fill="#f3f1e8" stroke="#5c5a52"/>
+          <text x="920" y="340" fill="#141413">رویه تکراری «چطور انجام بده»؟</text>
 
-          <rect x="330" y="105" width="300" height="56" rx="12" fill="rgba(125,211,252,0.12)" stroke="#7dd3fc"/>
-          <text x="480" y="140" fill="#7dd3fc" font-weight="700" direction="ltr">Spec  →  specs/</text>
-          <rect x="330" y="205" width="300" height="56" rx="12" fill="rgba(251,191,36,0.12)" stroke="#fbbf24"/>
-          <text x="480" y="240" fill="#fbbf24" font-weight="700" direction="ltr">Rule  →  AGENTS.md / rules</text>
-          <rect x="330" y="305" width="300" height="56" rx="12" fill="rgba(134,239,172,0.12)" stroke="#86efac"/>
-          <text x="480" y="340" fill="#86efac" font-weight="700" direction="ltr">Skill  →  .agents/skills/</text>
-          <rect x="730" y="400" width="380" height="56" rx="12" fill="rgba(196,181,253,0.12)" stroke="#c4b5fd"/>
-          <text x="920" y="435" fill="#c4b5fd" font-weight="700" direction="ltr">Business Doc  →  docs/domain/</text>
+          <rect x="330" y="105" width="300" height="56" rx="12" fill="rgba(106,155,204,0.12)" stroke="#6a9bcc"/>
+          <text x="480" y="140" fill="#6a9bcc" font-weight="700" direction="ltr">Spec  →  specs/</text>
+          <rect x="330" y="205" width="300" height="56" rx="12" fill="rgba(217,119,87,0.12)" stroke="#d97757"/>
+          <text x="480" y="240" fill="#d97757" font-weight="700" direction="ltr">Rule  →  AGENTS.md / rules</text>
+          <rect x="330" y="305" width="300" height="56" rx="12" fill="rgba(120,140,93,0.12)" stroke="#788c5d"/>
+          <text x="480" y="340" fill="#788c5d" font-weight="700" direction="ltr">Skill  →  .agents/skills/</text>
+          <rect x="730" y="400" width="380" height="56" rx="12" fill="rgba(176,174,165,0.12)" stroke="#b0aea5"/>
+          <text x="920" y="435" fill="#b0aea5" font-weight="700" direction="ltr">Business Doc  →  docs/domain/</text>
         </g>
-        <g stroke="#9aa8c7" stroke-width="2.5" marker-end="url(#arr4)" fill="none">
+        <g stroke="#5c5a52" stroke-width="2.5" marker-end="url(#arr4)" fill="none">
           <path d="M715,33 L920,33 L920,98"/>
           <line x1="725" y1="133" x2="637" y2="133"/>
           <line x1="725" y1="233" x2="637" y2="233"/>
@@ -533,11 +566,11 @@
           <line x1="920" y1="263" x2="920" y2="298"/>
           <line x1="920" y1="363" x2="920" y2="393"/>
         </g>
-        <g font-size="16" fill="#4ade80"><text x="680" y="124">بله</text><text x="680" y="224">بله</text><text x="680" y="324">بله</text></g>
-        <g font-size="16" fill="#ff6b6b" text-anchor="start" direction="ltr"><text x="935" y="186">خیر</text><text x="935" y="286">خیر</text><text x="935" y="386">خیر</text></g>
-        <text x="170" y="200" text-anchor="middle" font-size="17" fill="#9aa8c7">سه مورد اول به عامل</text>
-        <text x="170" y="226" text-anchor="middle" font-size="17" fill="#9aa8c7">داده می‌شوند؛ Doc را</text>
-        <text x="170" y="252" text-anchor="middle" font-size="17" fill="#9aa8c7">از Spec لینک کنید</text>
+        <g font-size="16" fill="#788c5d"><text x="680" y="124">بله</text><text x="680" y="224">بله</text><text x="680" y="324">بله</text></g>
+        <g font-size="16" fill="#bf3c3c" text-anchor="start" direction="ltr"><text x="935" y="186">خیر</text><text x="935" y="286">خیر</text><text x="935" y="386">خیر</text></g>
+        <text x="170" y="200" text-anchor="middle" font-size="17" fill="#5c5a52">سه مورد اول به عامل</text>
+        <text x="170" y="226" text-anchor="middle" font-size="17" fill="#5c5a52">داده می‌شوند؛ Doc را</text>
+        <text x="170" y="252" text-anchor="middle" font-size="17" fill="#5c5a52">از Spec لینک کنید</text>
       </svg>
     </div>
   </div>
@@ -569,7 +602,7 @@
     <div class="grid-3">
       <div class="card">
         <h3>MCP</h3>
-        <p class="small">Model Context Protocol — پروتکل استاندارد اتصال عامل به سیستم‌های بیرونی.</p>
+        <p class="small">Model Context Protocol، پروتکل استاندارد اتصال عامل به سیستم‌های بیرونی.</p>
         <p class="small muted">Jira، GitLab، دیتابیس، مستندات، مرورگر</p>
       </div>
       <div class="card">
@@ -590,11 +623,10 @@
 
 <!-- ============ 18. DIVIDER PART 3 ============ -->
 <section class="slide divider">
-  <div class="hero" style="background-image:url('assets/img/sdd-levels.jpg')"></div>
   <div class="inner">
     <div class="num">03</div>
     <h1>توسعه مبتنی بر Spec</h1>
-    <p class="muted">Spec-Driven Development — دیدگاه martinfowler.com و نحوه نوشتن Spec، Rule و Skill</p>
+    <p class="muted">Spec-Driven Development، دیدگاه martinfowler.com و نحوه نوشتن Spec، Rule و Skill</p>
   </div>
   <aside class="notes">حالا به بحث داغ این روزها می‌رسیم: SDD.</aside>
 </section>
@@ -604,8 +636,8 @@
   <h2>چرا Spec؟ Vibe Coding در برابر کار ساختاریافته</h2>
   <div class="content">
     <div class="row">
-      <div class="card" style="border-color:rgba(255,107,107,0.5)">
-        <h3 style="color:#ff6b6b">Vibe Coding</h3>
+      <div class="card" style="border-color:rgba(191,60,60,0.5)">
+        <h3 style="color:#bf3c3c">Vibe Coding</h3>
         <ul class="small">
           <li>پرامپت ← کد ← امید!</li>
           <li>عامل «چیز اشتباهی» را درست می‌سازد</li>
@@ -614,8 +646,8 @@
           <li>برای نمونه اولیه خوب؛ برای محصول پرریسک</li>
         </ul>
       </div>
-      <div class="card" style="border-color:rgba(74,222,128,0.5)">
-        <h3 style="color:#4ade80">Spec-Driven</h3>
+      <div class="card" style="border-color:rgba(120,140,93,0.5)">
+        <h3 style="color:#788c5d">Spec-Driven</h3>
         <ul class="small">
           <li>نیازمندی ← Spec ← Plan ← Tasks ← کد</li>
           <li>هم‌راستایی PO و فنی <b>قبل</b> از مصرف توکن</li>
@@ -625,7 +657,7 @@
         </ul>
       </div>
     </div>
-    <p class="small muted" style="margin-top:18px">DX / Laura Tacho: مشکل اصلی تیم‌ها «هم‌راستایی» است — SDD تلاشی برای حل همین است.</p>
+    <p class="small muted" style="margin-top:18px">DX / Laura Tacho: مشکل اصلی تیم‌ها «هم‌راستایی» است، SDD تلاشی برای حل همین است.</p>
   </div>
   <aside class="notes">در پادکست Thoughtworks، Birgitta Böckeler و Laura Tacho می‌گویند ارزش اصلی SDD هم‌راستایی است: قبل از اینکه عامل شروع کند، همه درباره «چه» توافق داشته باشند.</aside>
 </section>
@@ -651,7 +683,7 @@
       </div>
       <img class="img-full" src="assets/img/sdd-levels.jpg" alt="SDD levels" style="flex:0.9; max-width:470px"/>
     </div>
-    <p class="xs muted">منبع: “Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl” — Birgitta Böckeler، martinfowler.com</p>
+    <p class="xs muted">منبع: “Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl”، Birgitta Böckeler، martinfowler.com</p>
   </div>
   <aside class="notes">Böckeler این سه اصطلاح را خودش ساخته تا آشفتگی بازار را مرتب کند. پیشنهاد من برای تیم ما: برای فیچرهای مهم حداقل spec-anchored؛ یعنی Spec را بعد از merge دور نریزیم و به‌روز نگه داریم.</aside>
 </section>
@@ -684,7 +716,7 @@
       <tr><td><b>ابزارهای پشتیبان</b></td><td>خود Kiro</td><td>~۳۰ عامل: Copilot، Claude، Cursor، ...</td><td>Claude Code، Codex، Gemini، ...</td></tr>
       <tr><td><b>مناسب برای</b></td><td>تیم‌های AWS، شروع سریع</td><td>تیم‌هایی که artifact در ریپو می‌خواهند</td><td>آزمایش آینده‌نگر</td></tr>
     </table>
-    <p class="small muted" style="margin-top:16px">نقد رایج کاربران: «Spec Kit گاهی شبیه آبشار (waterfall) برای عامل‌هاست» — Spec را سبک نگه دارید.</p>
+    <p class="small muted" style="margin-top:16px">نقد رایج کاربران: «Spec Kit گاهی شبیه آبشار (waterfall) برای عامل‌هاست»، Spec را سبک نگه دارید.</p>
   </div>
   <aside class="notes">ارزیابی Böckeler: Kiro ساده‌ترین، Spec Kit قابل سفارشی‌ترین چون همه artifact ها در workspace شماست، و Tessl تنها ابزاری که به سمت spec-as-source می‌رود ولی هنوز beta است.</aside>
 </section>
@@ -695,41 +727,41 @@
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 260" xmlns="http://www.w3.org/2000/svg">
-        <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+        <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker></defs>
         <g font-size="19" text-anchor="middle">
-          <rect x="925" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#fbbf24"/>
-          <text x="1020" y="85" fill="#fbbf24" font-weight="700" direction="ltr">/constitution</text>
-          <text x="1020" y="120" fill="#e8eefc" font-size="16">اصول دائمی پروژه</text>
-          <text x="1020" y="145" fill="#9aa8c7" font-size="14">≈ Rules</text>
+          <rect x="925" y="40" width="190" height="130" rx="14" fill="#ffffff" stroke="#d97757"/>
+          <text x="1020" y="85" fill="#d97757" font-weight="700" direction="ltr">/constitution</text>
+          <text x="1020" y="120" fill="#141413" font-size="16">اصول دائمی پروژه</text>
+          <text x="1020" y="145" fill="#5c5a52" font-size="14">≈ Rules</text>
 
-          <rect x="700" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#7dd3fc"/>
-          <text x="795" y="85" fill="#7dd3fc" font-weight="700" direction="ltr">/specify</text>
-          <text x="795" y="120" fill="#e8eefc" font-size="16">چه و چرا</text>
-          <text x="795" y="145" fill="#9aa8c7" font-size="14">spec.md</text>
+          <rect x="700" y="40" width="190" height="130" rx="14" fill="#ffffff" stroke="#6a9bcc"/>
+          <text x="795" y="85" fill="#6a9bcc" font-weight="700" direction="ltr">/specify</text>
+          <text x="795" y="120" fill="#141413" font-size="16">چه و چرا</text>
+          <text x="795" y="145" fill="#5c5a52" font-size="14">spec.md</text>
 
-          <rect x="475" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#5b8cff"/>
-          <text x="570" y="85" fill="#5b8cff" font-weight="700" direction="ltr">/plan</text>
-          <text x="570" y="120" fill="#e8eefc" font-size="16">چگونه (فنی)</text>
-          <text x="570" y="145" fill="#9aa8c7" font-size="14">plan.md</text>
+          <rect x="475" y="40" width="190" height="130" rx="14" fill="#ffffff" stroke="#6a9bcc"/>
+          <text x="570" y="85" fill="#6a9bcc" font-weight="700" direction="ltr">/plan</text>
+          <text x="570" y="120" fill="#141413" font-size="16">چگونه (فنی)</text>
+          <text x="570" y="145" fill="#5c5a52" font-size="14">plan.md</text>
 
-          <rect x="250" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#5b8cff"/>
-          <text x="345" y="85" fill="#5b8cff" font-weight="700" direction="ltr">/tasks</text>
-          <text x="345" y="120" fill="#e8eefc" font-size="16">تکه‌های کوچک</text>
-          <text x="345" y="145" fill="#9aa8c7" font-size="14">tasks.md</text>
+          <rect x="250" y="40" width="190" height="130" rx="14" fill="#ffffff" stroke="#6a9bcc"/>
+          <text x="345" y="85" fill="#6a9bcc" font-weight="700" direction="ltr">/tasks</text>
+          <text x="345" y="120" fill="#141413" font-size="16">تکه‌های کوچک</text>
+          <text x="345" y="145" fill="#5c5a52" font-size="14">tasks.md</text>
 
-          <rect x="25" y="40" width="190" height="130" rx="14" fill="#162033" stroke="#4ade80"/>
-          <text x="120" y="85" fill="#4ade80" font-weight="700" direction="ltr">/implement</text>
-          <text x="120" y="120" fill="#e8eefc" font-size="16">اجرا + تست</text>
-          <text x="120" y="145" fill="#9aa8c7" font-size="14">code</text>
+          <rect x="25" y="40" width="190" height="130" rx="14" fill="#ffffff" stroke="#788c5d"/>
+          <text x="120" y="85" fill="#788c5d" font-weight="700" direction="ltr">/implement</text>
+          <text x="120" y="120" fill="#141413" font-size="16">اجرا + تست</text>
+          <text x="120" y="145" fill="#5c5a52" font-size="14">code</text>
         </g>
-        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr5)">
+        <g stroke="#d97757" stroke-width="3" marker-end="url(#arr5)">
           <line x1="920" y1="105" x2="897" y2="105"/>
           <line x1="695" y1="105" x2="672" y2="105"/>
           <line x1="470" y1="105" x2="447" y2="105"/>
           <line x1="245" y1="105" x2="222" y2="105"/>
         </g>
-        <text x="795" y="215" text-anchor="middle" font-size="17" fill="#9aa8c7">⬆ دروازه انسانی: PO + TL تأیید</text>
-        <text x="345" y="215" text-anchor="middle" font-size="17" fill="#9aa8c7">⬆ دروازه انسانی: TL تأیید Plan/Tasks</text>
+        <text x="795" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ دروازه انسانی: PO + TL تأیید</text>
+        <text x="345" y="215" text-anchor="middle" font-size="17" fill="#5c5a52">⬆ دروازه انسانی: TL تأیید Plan/Tasks</text>
       </svg>
     </div>
     <p class="small">نمونه کامل در ریپو: <code>samples/specs/001-installment-followup/</code> (spec.md, plan.md, tasks.md)</p>
@@ -773,7 +805,7 @@
 
 <!-- ============ 25. SPEC SAMPLE ============ -->
 <section class="slide">
-  <h2>نمونه واقعی Spec — پیگیری اقساط معوق</h2>
+  <h2>نمونه واقعی Spec، پیگیری اقساط معوق</h2>
   <div class="content">
     <div class="card spec" style="font-size:17px">
       <p style="font-size:18px"><b>هدف:</b> فروشنده اقساط معوق را شناسایی و اقدام پیگیری ثبت کند تا وضعیت شفاف شود.</p>
@@ -886,11 +918,10 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 29. DIVIDER PART 4 ============ -->
 <section class="slide divider">
-  <div class="hero" style="background-image:url('assets/img/team-flow.jpg')"></div>
   <div class="inner">
     <div class="num">04</div>
     <h1>تیم از A تا Z</h1>
-    <p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester — هر نقش با عامل‌ها</p>
+    <p class="muted">کسب‌وکار ← PO ← Tech Lead ← Developer ← Tester، هر نقش با عامل‌ها</p>
   </div>
   <aside class="notes">حالا ببینیم این مفاهیم در جریان واقعی تیم چطور به کار می‌روند.</aside>
 </section>
@@ -901,58 +932,58 @@ description: Add a MediatR CQRS feature (Command/Query,
   <div class="content">
     <div class="svg-wrap">
       <svg viewBox="0 0 1130 420" xmlns="http://www.w3.org/2000/svg">
-        <defs><marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3dd6c6"/></marker></defs>
+        <defs><marker id="arr6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97757"/></marker></defs>
         <g text-anchor="middle">
-          <rect x="920" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#c4b5fd"/>
-          <text x="1020" y="48" font-size="20" fill="#c4b5fd" font-weight="700">کسب‌وکار</text>
-          <rect x="695" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#7dd3fc"/>
-          <text x="795" y="48" font-size="20" fill="#7dd3fc" font-weight="700">Product Owner</text>
-          <rect x="470" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#fbbf24"/>
-          <text x="570" y="48" font-size="20" fill="#fbbf24" font-weight="700">Tech Lead</text>
-          <rect x="245" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#86efac"/>
-          <text x="345" y="48" font-size="20" fill="#86efac" font-weight="700">Developer + Agent</text>
-          <rect x="20" y="10" width="200" height="60" rx="12" fill="#162033" stroke="#3dd6c6"/>
-          <text x="120" y="48" font-size="20" fill="#3dd6c6" font-weight="700">Tester + Agent</text>
+          <rect x="920" y="10" width="200" height="60" rx="12" fill="#ffffff" stroke="#b0aea5"/>
+          <text x="1020" y="48" font-size="20" fill="#b0aea5" font-weight="700">کسب‌وکار</text>
+          <rect x="695" y="10" width="200" height="60" rx="12" fill="#ffffff" stroke="#6a9bcc"/>
+          <text x="795" y="48" font-size="20" fill="#6a9bcc" font-weight="700">Product Owner</text>
+          <rect x="470" y="10" width="200" height="60" rx="12" fill="#ffffff" stroke="#d97757"/>
+          <text x="570" y="48" font-size="20" fill="#d97757" font-weight="700">Tech Lead</text>
+          <rect x="245" y="10" width="200" height="60" rx="12" fill="#ffffff" stroke="#788c5d"/>
+          <text x="345" y="48" font-size="20" fill="#788c5d" font-weight="700">Developer + Agent</text>
+          <rect x="20" y="10" width="200" height="60" rx="12" fill="#ffffff" stroke="#d97757"/>
+          <text x="120" y="48" font-size="20" fill="#d97757" font-weight="700">Tester + Agent</text>
         </g>
-        <g font-size="16" fill="#e8eefc" text-anchor="middle">
-          <rect x="920" y="95" width="200" height="300" rx="12" fill="rgba(196,181,253,0.06)" stroke="rgba(196,181,253,0.4)"/>
+        <g font-size="16" fill="#141413" text-anchor="middle">
+          <rect x="920" y="95" width="200" height="300" rx="12" fill="rgba(176,174,165,0.06)" stroke="rgba(176,174,165,0.4)"/>
           <text x="1020" y="135">نیاز / مسئله</text>
           <text x="1020" y="170">BRD</text>
           <text x="1020" y="205">قوانین کسب‌وکار</text>
           <text x="1020" y="240">واژه‌نامه</text>
-          <text x="1020" y="370" fill="#c4b5fd" direction="ltr">docs/domain/</text>
+          <text x="1020" y="370" fill="#b0aea5" direction="ltr">docs/domain/</text>
 
-          <rect x="695" y="95" width="200" height="300" rx="12" fill="rgba(125,211,252,0.06)" stroke="rgba(125,211,252,0.4)"/>
+          <rect x="695" y="95" width="200" height="300" rx="12" fill="rgba(106,155,204,0.06)" stroke="rgba(106,155,204,0.4)"/>
           <text x="795" y="135">داستان کاربر</text>
           <text x="795" y="170">معیار پذیرش</text>
           <text x="795" y="205">Non-goals</text>
           <text x="795" y="240">اولویت</text>
-          <text x="795" y="370" fill="#7dd3fc" direction="ltr">spec.md</text>
+          <text x="795" y="370" fill="#6a9bcc" direction="ltr">spec.md</text>
 
-          <rect x="470" y="95" width="200" height="300" rx="12" fill="rgba(251,191,36,0.06)" stroke="rgba(251,191,36,0.4)"/>
+          <rect x="470" y="95" width="200" height="300" rx="12" fill="rgba(217,119,87,0.06)" stroke="rgba(217,119,87,0.4)"/>
           <text x="570" y="135">Plan / ADR</text>
           <text x="570" y="170">Constitution</text>
           <text x="570" y="205">Rules</text>
           <text x="570" y="240">Skills</text>
           <text x="570" y="275">تقسیم Tasks</text>
-          <text x="570" y="370" fill="#fbbf24" direction="ltr">plan.md + rules + skills</text>
+          <text x="570" y="370" fill="#d97757" direction="ltr">plan.md + rules + skills</text>
 
-          <rect x="245" y="95" width="200" height="300" rx="12" fill="rgba(134,239,172,0.06)" stroke="rgba(134,239,172,0.4)"/>
+          <rect x="245" y="95" width="200" height="300" rx="12" fill="rgba(120,140,93,0.06)" stroke="rgba(120,140,93,0.4)"/>
           <text x="345" y="135">Explore</text>
           <text x="345" y="170">Plan Mode</text>
           <text x="345" y="205">Implement</text>
           <text x="345" y="240">Unit Tests</text>
           <text x="345" y="275">Self-review</text>
-          <text x="345" y="370" fill="#86efac" direction="ltr">Pull Request</text>
+          <text x="345" y="370" fill="#788c5d" direction="ltr">Pull Request</text>
 
-          <rect x="20" y="95" width="200" height="300" rx="12" fill="rgba(61,214,198,0.06)" stroke="rgba(61,214,198,0.4)"/>
+          <rect x="20" y="95" width="200" height="300" rx="12" fill="rgba(217,119,87,0.06)" stroke="rgba(217,119,87,0.4)"/>
           <text x="120" y="135" direction="ltr">AC → Test Cases</text>
           <text x="120" y="170">Integration/E2E</text>
           <text x="120" y="205">Edge cases</text>
           <text x="120" y="240">گزارش PASS/FAIL</text>
-          <text x="120" y="370" fill="#3dd6c6" direction="ltr">Release</text>
+          <text x="120" y="370" fill="#d97757" direction="ltr">Release</text>
         </g>
-        <g stroke="#3dd6c6" stroke-width="3" marker-end="url(#arr6)">
+        <g stroke="#d97757" stroke-width="3" marker-end="url(#arr6)">
           <line x1="917" y1="245" x2="902" y2="245"/>
           <line x1="692" y1="245" x2="677" y2="245"/>
           <line x1="467" y1="245" x2="452" y2="245"/>
@@ -1011,7 +1042,7 @@ description: Add a MediatR CQRS feature (Command/Query,
           <li>مالک نهایی کد = انسان</li>
         </ul>
       </div>
-      <div class="card" style="border-color:rgba(61,214,198,0.5)">
+      <div class="card" style="border-color:rgba(217,119,87,0.5)">
         <h3>Tester / QA</h3>
         <ul class="small">
           <li>تبدیل معیار پذیرش Spec به test case</li>
@@ -1034,20 +1065,20 @@ description: Add a MediatR CQRS feature (Command/Query,
     <div class="row" style="align-items:center">
       <div class="svg-wrap" style="flex:1.3">
         <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
-          <defs><marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b8cff"/></marker></defs>
-          <rect x="240" y="10" width="220" height="56" rx="12" fill="#162033" stroke="#c4b5fd"/>
-          <text x="350" y="45" text-anchor="middle" fill="#c4b5fd" font-size="19" font-weight="700">انسان (Tech Lead)</text>
-          <rect x="220" y="110" width="260" height="70" rx="14" fill="#0a101c" stroke="#3dd6c6" stroke-width="3"/>
-          <text x="350" y="142" text-anchor="middle" fill="#e8eefc" font-size="20" font-weight="700">Orchestrator</text>
-          <text x="350" y="166" text-anchor="middle" fill="#9aa8c7" font-size="14">برنامه + توزیع کار</text>
-          <g font-size="16" text-anchor="middle" fill="#e8eefc">
-            <rect x="10" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="70" y="280">Explorer</text><text x="70" y="302" font-size="12" fill="#9aa8c7">read-only</text>
-            <rect x="148" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="208" y="280">Implementer A</text><text x="208" y="302" font-size="12" fill="#9aa8c7">worktree 1</text>
-            <rect x="286" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="346" y="280">Implementer B</text><text x="346" y="302" font-size="12" fill="#9aa8c7">worktree 2</text>
-            <rect x="424" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="484" y="280">Tester</text><text x="484" y="302" font-size="12" fill="#9aa8c7">run tests</text>
-            <rect x="562" y="250" width="120" height="70" rx="10" fill="#162033" stroke="#5b8cff"/><text x="622" y="280">Reviewer</text><text x="622" y="302" font-size="12" fill="#9aa8c7">read-only</text>
+          <defs><marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6a9bcc"/></marker></defs>
+          <rect x="240" y="10" width="220" height="56" rx="12" fill="#ffffff" stroke="#b0aea5"/>
+          <text x="350" y="45" text-anchor="middle" fill="#b0aea5" font-size="19" font-weight="700">انسان (Tech Lead)</text>
+          <rect x="220" y="110" width="260" height="70" rx="14" fill="#f3f1e8" stroke="#d97757" stroke-width="3"/>
+          <text x="350" y="142" text-anchor="middle" fill="#141413" font-size="20" font-weight="700">Orchestrator</text>
+          <text x="350" y="166" text-anchor="middle" fill="#5c5a52" font-size="14">برنامه + توزیع کار</text>
+          <g font-size="16" text-anchor="middle" fill="#141413">
+            <rect x="10" y="250" width="120" height="70" rx="10" fill="#ffffff" stroke="#6a9bcc"/><text x="70" y="280">Explorer</text><text x="70" y="302" font-size="12" fill="#5c5a52">read-only</text>
+            <rect x="148" y="250" width="120" height="70" rx="10" fill="#ffffff" stroke="#6a9bcc"/><text x="208" y="280">Implementer A</text><text x="208" y="302" font-size="12" fill="#5c5a52">worktree 1</text>
+            <rect x="286" y="250" width="120" height="70" rx="10" fill="#ffffff" stroke="#6a9bcc"/><text x="346" y="280">Implementer B</text><text x="346" y="302" font-size="12" fill="#5c5a52">worktree 2</text>
+            <rect x="424" y="250" width="120" height="70" rx="10" fill="#ffffff" stroke="#6a9bcc"/><text x="484" y="280">Tester</text><text x="484" y="302" font-size="12" fill="#5c5a52">run tests</text>
+            <rect x="562" y="250" width="120" height="70" rx="10" fill="#ffffff" stroke="#6a9bcc"/><text x="622" y="280">Reviewer</text><text x="622" y="302" font-size="12" fill="#5c5a52">read-only</text>
           </g>
-          <g stroke="#5b8cff" stroke-width="2" marker-end="url(#arr7)">
+          <g stroke="#6a9bcc" stroke-width="2" marker-end="url(#arr7)">
             <line x1="350" y1="68" x2="350" y2="104"/>
             <line x1="300" y1="182" x2="80" y2="244"/>
             <line x1="320" y1="182" x2="210" y2="244"/>
@@ -1055,8 +1086,8 @@ description: Add a MediatR CQRS feature (Command/Query,
             <line x1="380" y1="182" x2="484" y2="244"/>
             <line x1="400" y1="182" x2="615" y2="244"/>
           </g>
-          <text x="350" y="370" text-anchor="middle" fill="#9aa8c7" font-size="16">دروازه‌های انسانی: تأیید Plan · تأیید Merge</text>
-          <text x="350" y="398" text-anchor="middle" fill="#9aa8c7" font-size="14">PR عامل = همان CI و branch protection مثل PR انسان</text>
+          <text x="350" y="370" text-anchor="middle" fill="#5c5a52" font-size="16">دروازه‌های انسانی: تأیید Plan · تأیید Merge</text>
+          <text x="350" y="398" text-anchor="middle" fill="#5c5a52" font-size="14">PR عامل = همان CI و branch protection مثل PR انسان</text>
         </svg>
       </div>
       <div style="flex:0.8">
@@ -1078,17 +1109,17 @@ description: Add a MediatR CQRS feature (Command/Query,
   <h2>انسان «درون حلقه» یا «روی حلقه»؟ <span class="en">Kief Morris, martinfowler.com</span></h2>
   <div class="content">
     <div class="grid-3">
-      <div class="card" style="border-color:rgba(255,107,107,0.5)">
+      <div class="card" style="border-color:rgba(191,60,60,0.5)">
         <h3>Vibe Coding</h3>
         <p class="small">انسان بیرون از حلقه؛ هر چه عامل ساخت قبول.</p>
         <p class="small muted">برای نمونه‌سازی</p>
       </div>
-      <div class="card" style="border-color:rgba(251,191,36,0.5)">
+      <div class="card" style="border-color:rgba(217,119,87,0.5)">
         <h3>In the Loop</h3>
         <p class="small">انسان هر خط را بازبینی و دستی اصلاح می‌کند.</p>
         <p class="small muted">گلوگاه می‌شود</p>
       </div>
-      <div class="card" style="border-color:rgba(74,222,128,0.6)">
+      <div class="card" style="border-color:rgba(120,140,93,0.6)">
         <h3>On the Loop ✓</h3>
         <p class="small">انسان <b>Harness</b> را می‌سازد و بهبود می‌دهد: Spec، تست، Rule، Skill، Pipeline.</p>
         <p class="small muted">مقیاس‌پذیر</p>
@@ -1118,11 +1149,11 @@ description: Add a MediatR CQRS feature (Command/Query,
       <div>
         <table class="compare">
           <tr><th>نوع کار</th><th>خودمختاری</th></tr>
-          <tr><td>مستندات، تست‌نویسی ماژول پوشش‌دار</td><td style="color:#4ade80">بالا</td></tr>
-          <tr><td>ارتقای وابستگی با تست کامل</td><td style="color:#4ade80">بالا</td></tr>
-          <tr><td>فیچر معمولی با Spec</td><td style="color:#fbbf24">متوسط (تأیید Plan)</td></tr>
-          <tr><td>احراز هویت، پرداخت، بیمه‌نامه</td><td style="color:#ff6b6b">پایین (پیشنهاد فقط)</td></tr>
-          <tr><td>Migration داده</td><td style="color:#ff6b6b">پایین + تأیید صریح</td></tr>
+          <tr><td>مستندات، تست‌نویسی ماژول پوشش‌دار</td><td style="color:#788c5d">بالا</td></tr>
+          <tr><td>ارتقای وابستگی با تست کامل</td><td style="color:#788c5d">بالا</td></tr>
+          <tr><td>فیچر معمولی با Spec</td><td style="color:#d97757">متوسط (تأیید Plan)</td></tr>
+          <tr><td>احراز هویت، پرداخت، بیمه‌نامه</td><td style="color:#bf3c3c">پایین (پیشنهاد فقط)</td></tr>
+          <tr><td>Migration داده</td><td style="color:#bf3c3c">پایین + تأیید صریح</td></tr>
         </table>
       </div>
     </div>
@@ -1151,7 +1182,7 @@ description: Add a MediatR CQRS feature (Command/Query,
       <tr><td><b class="ltr">GitHub Copilot</b></td><td>افزونه IDE + GitHub + CLI</td><td>چند مدل</td><td>یکپارچگی GitHub، Issue→PR، code review</td><td>سازمان‌های GitHub-محور</td></tr>
       <tr><td><b class="ltr">OpenAI Codex</b></td><td>CLI + ابر</td><td>OpenAI</td><td>تسک ناهمگام در sandbox ابری</td><td>«بفرست و فراموش کن»</td></tr>
       <tr><td><b class="ltr">Kiro</b></td><td>IDE</td><td>چند مدل</td><td>Spec-first داخلی</td><td>تیم‌های AWS، شروع SDD</td></tr>
-      <tr><td><b class="ltr">Spec Kit</b></td><td>CLI روی ابزار شما</td><td>—</td><td>قالب SDD برای ~۳۰ عامل</td><td>افزودن SDD به ابزار فعلی</td></tr>
+      <tr><td><b class="ltr">Spec Kit</b></td><td>CLI روی ابزار شما</td><td>-</td><td>قالب SDD برای ~۳۰ عامل</td><td>افزودن SDD به ابزار فعلی</td></tr>
     </table>
     <p class="small muted" style="margin-top:14px">بسیاری از تیم‌ها دو ابزار را ترکیب می‌کنند: یکی برای ویرایش روزانه، یکی برای کارهای سنگین واگذارشده.</p>
   </div>
@@ -1168,7 +1199,7 @@ description: Add a MediatR CQRS feature (Command/Query,
       <tr><td class="ltr"><b>Claude Code</b></td><td class="ltr">CLAUDE.md (+ @AGENTS.md import)</td><td class="ltr">.claude/skills</td><td class="ltr">.claude/agents/*.md</td></tr>
       <tr><td class="ltr"><b>Copilot</b></td><td class="ltr">.github/copilot-instructions.md, .github/instructions/*.instructions.md, AGENTS.md</td><td class="ltr">.github/skills, .agents/skills</td><td>✓ (agent mode)</td></tr>
       <tr><td class="ltr"><b>Codex</b></td><td class="ltr">AGENTS.md (nested)</td><td class="ltr">.agents/skills</td><td>✓</td></tr>
-      <tr><td class="ltr"><b>Kiro</b></td><td class="ltr">.kiro/steering/*.md</td><td>—</td><td>—</td></tr>
+      <tr><td class="ltr"><b>Kiro</b></td><td class="ltr">.kiro/steering/*.md</td><td>-</td><td>-</td></tr>
     </table>
     <div class="big-quote" style="font-size:21px; margin-top:18px"><code>AGENTS.md</code> = استاندارد بی‌طرف (بنیاد Linux، ۶۰ هزار+ ریپو) · نزدیک‌ترین فایل به کد ویرایش‌شده برنده است.</div>
   </div>
@@ -1227,7 +1258,7 @@ description: Add a MediatR CQRS feature (Command/Query,
       <div class="card"><h3>فیچر جدید با ذی‌نفعان متعدد</h3><p>Spec Kit یا Kiro (SDD)</p></div>
       <div class="card"><h3>بازبینی PR</h3><p>Copilot code review / Bugbot / subagent read-only</p></div>
     </div>
-    <p class="small muted" style="margin-top:14px">مهم‌تر از ابزار: Harness شما (Rules، Specs، Skills، تست‌ها) — این‌ها بین ابزارها قابل انتقال‌اند.</p>
+    <p class="small muted" style="margin-top:14px">مهم‌تر از ابزار: Harness شما (Rules، Specs، Skills، تست‌ها)، این‌ها بین ابزارها قابل انتقال‌اند.</p>
   </div>
   <aside class="notes">سؤال «کدام بهتر است» جواب واحد ندارد. ولی سرمایه‌گذاری روی AGENTS.md و Skill ها و Spec ها بین همه ابزارها منتقل می‌شود؛ پس وابسته به یک ابزار نمی‌شوید.</aside>
 </section>
@@ -1288,7 +1319,7 @@ description: Add a MediatR CQRS feature (Command/Query,
 
 <!-- ============ 44. ANTI-PATTERNS ============ -->
 <section class="slide">
-  <h2>ضدالگوها — اینها را نکنید</h2>
+  <h2>ضدالگوها، اینها را نکنید</h2>
   <div class="content">
     <div class="grid-2">
       <div class="card"><h3>❌ یک چت بی‌پایان</h3><p class="small">context پر و آلوده می‌شود؛ برای هر تسک جلسه جدید.</p></div>
@@ -1360,7 +1391,7 @@ description: Add a MediatR CQRS feature (Command/Query,
   <div class="content">
     <div class="grid-2 small">
       <div class="card"><h3>امنیت کد شرکت؟</h3><p>Privacy mode، عدم ارسال secret، بررسی سیاست داده هر ابزار، محدودیت دسترسی MCP و ترمینال.</p></div>
-      <div class="card"><h3>توهم (Hallucination)؟</h3><p>با context درست، تست قطعی، و بازبینی کاهش می‌یابد — حذف نمی‌شود.</p></div>
+      <div class="card"><h3>توهم (Hallucination)؟</h3><p>با context درست، تست قطعی، و بازبینی کاهش می‌یابد، حذف نمی‌شود.</p></div>
       <div class="card"><h3>جونیورها چطور یاد بگیرند؟</h3><p>از عامل «توضیح» بخواهند، Plan را بخوانند، و کد را خودشان review کنند؛ نه فقط accept.</p></div>
       <div class="card"><h3>کدام مدل؟</h3><p>مدل قوی برای Plan و کار سخت؛ مدل سریع/ارزان برای کار تکراری. Harness مهم‌تر از مدل است.</p></div>
     </div>
@@ -1373,19 +1404,19 @@ description: Add a MediatR CQRS feature (Command/Query,
   <h2>منابع اصلی</h2>
   <div class="content">
     <ul class="xs ltr" style="direction:ltr; text-align:left; padding-left:24px; padding-right:0">
-      <li>Böckeler — Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl — martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html</li>
-      <li>Böckeler — Context Engineering for Coding Agents — martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html</li>
-      <li>Böckeler — Harness engineering for coding agent users — martinfowler.com/articles/harness-engineering.html</li>
-      <li>Kief Morris — Humans and Agents in Software Engineering Loops — martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html</li>
-      <li>Thoughtworks Podcast — What is spec-driven development? (Böckeler &amp; Laura Tacho)</li>
-      <li>Agent Skills specification — agentskills.io · github.com/agentskills/agentskills</li>
-      <li>AGENTS.md — agents.md</li>
-      <li>Cursor docs — Rules &amp; Skills — cursor.com/docs</li>
-      <li>Anthropic — Best practices for Claude Code — code.claude.com/docs/en/best-practices</li>
-      <li>VS Code — Agent Skills — code.visualstudio.com/docs/agent-customization/agent-skills</li>
-      <li>GitHub Spec Kit — github.com/github/spec-kit</li>
-      <li>DORA 2025 — State of AI-assisted Software Development — dora.dev/research/2025</li>
-      <li>METR — Impact of Early-2025 AI on Experienced OSS Developer Productivity — metr.org</li>
+      <li>Böckeler، Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl، martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html</li>
+      <li>Böckeler، Context Engineering for Coding Agents، martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html</li>
+      <li>Böckeler، Harness engineering for coding agent users، martinfowler.com/articles/harness-engineering.html</li>
+      <li>Kief Morris، Humans and Agents in Software Engineering Loops، martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html</li>
+      <li>Thoughtworks Podcast، What is spec-driven development? (Böckeler &amp; Laura Tacho)</li>
+      <li>Agent Skills specification، agentskills.io · github.com/agentskills/agentskills</li>
+      <li>AGENTS.md، agents.md</li>
+      <li>Cursor docs، Rules &amp; Skills، cursor.com/docs</li>
+      <li>Anthropic، Best practices for Claude Code، code.claude.com/docs/en/best-practices</li>
+      <li>VS Code، Agent Skills، code.visualstudio.com/docs/agent-customization/agent-skills</li>
+      <li>GitHub Spec Kit، github.com/github/spec-kit</li>
+      <li>DORA 2025، State of AI-assisted Software Development، dora.dev/research/2025</li>
+      <li>METR، Impact of Early-2025 AI on Experienced OSS Developer Productivity، metr.org</li>
     </ul>
   </div>
   <aside class="notes">همه لینک‌ها در Handbook قابل کلیک هستند.</aside>
@@ -1394,9 +1425,9 @@ description: Add a MediatR CQRS feature (Command/Query,
 <!-- ============ 49. THANKS ============ -->
 <section class="slide cover">
   <div class="titlebox">
-    <h1>سپاس 🙏<br/><span class="accent">پرسش و پاسخ</span></h1>
+    <h1>سپاس<br/><span class="accent">پرسش و پاسخ</span></h1>
     <p>همه فایل‌ها، نمونه‌ها و قالب‌ها روی گیت‌هاب:</p>
-    <p class="ltr" style="font-size:24px; color:#7dd3fc; direction:ltr; text-align:right">github.com/mohammadrezatahmasebi/ai-agentic-meeting</p>
+    <p class="ltr" style="font-size:24px; color:#6a9bcc; direction:ltr; text-align:right">github.com/mohammadrezatahmasebi/ai-agentic-meeting</p>
     <p class="small muted">slides.pdf · handbook.pdf · samples/ · templates/</p>
   </div>
   <aside class="notes">ممنون از توجه شما. لینک گیت‌هاب را در گروه می‌گذارم. حالا سؤال‌ها.</aside>

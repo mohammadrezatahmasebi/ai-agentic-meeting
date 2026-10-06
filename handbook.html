@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>راهنمای جامع برنامه‌نویسی عامل‌محور — Spec، Rule، Skill و تیم</title>
+<title>راهنمای جامع برنامه‌نویسی عامل‌محور، Spec، Rule، Skill و تیم</title>
 <link rel="stylesheet" href="assets/css/theme.css" />
 <style>
   @page { size: A4; margin: 16mm 14mm 18mm; }
   @page :first { margin: 0; }
   :root {
-    --bg: #ffffff;
-    --text: #1b2333;
-    --muted: #5d6b85;
-    --border: #dfe5f0;
-    --code-bg: #f4f6fb;
-    --accent: #0f9d8f;
-    --accent-2: #3563e9;
+    --bg: #faf9f5;
+    --text: #141413;
+    --muted: #5c5a52;
+    --border: #d9d6c8;
+    --code-bg: #f3f1e8;
+    --accent: #d97757;
+    --accent-2: #6a9bcc;
   }
   body {
-    background: #eef1f7;
+    background: #e8e6dc;
     color: var(--text);
     font-size: 16px;
     line-height: 1.95;
@@ -28,19 +28,19 @@
   .page {
     max-width: 880px;
     margin: 24px auto;
-    background: #fff;
+    background: #faf9f5;
     padding: 48px 56px;
     border-radius: 14px;
-    box-shadow: 0 6px 30px rgba(20,30,60,0.08);
+    box-shadow: 0 1px 0 rgba(20,20,19,0.04), 0 10px 28px rgba(20,20,19,0.06);
   }
-  h1, h2, h3, h4 { line-height: 1.45; color: #0d1a33; }
+  h1, h2, h3, h4 { line-height: 1.45; color: #141413; }
   h1 { font-size: 34px; margin: 0 0 8px; }
   h2 {
     font-size: 26px; margin: 46px 0 14px; padding-bottom: 8px;
     border-bottom: 3px solid var(--accent);
     break-after: avoid;
   }
-  h3 { font-size: 20px; margin: 28px 0 10px; color: #1e3a8a; break-after: avoid; }
+  h3 { font-size: 20px; margin: 28px 0 10px; color: #b85a3d; break-after: avoid; }
   h4 { font-size: 17px; margin: 18px 0 6px; break-after: avoid; }
   p { margin: 8px 0 12px; }
   ul, ol { padding-right: 24px; margin: 6px 0 14px; }
@@ -52,41 +52,41 @@
     background: var(--code-bg); color: #1b2333; border: 1px solid var(--border);
     font-size: 12.5px; break-inside: avoid;
   }
-  code { background: #eef2fa; padding: 1px 6px; border-radius: 5px; font-size: 0.86em; color: #1e3a8a; white-space: nowrap; }
+  code { background: #f3f1e8; padding: 1px 6px; border-radius: 5px; font-size: 0.86em; color: #141413; white-space: nowrap; }
   pre code { background: none; padding: 0; color: inherit; }
 
   table.compare { font-size: 14px; break-inside: avoid; margin: 10px 0 18px; }
-  table.compare th { background: #e9efff; color: #0d1a33; }
+  table.compare th { background: #e8e6dc; color: #141413; }
   table.compare th, table.compare td { border-color: var(--border); }
 
-  .card { background: #fafbfe; border-color: var(--border); break-inside: avoid; }
+  .card { background: #ffffff; border-color: var(--border); break-inside: avoid; }
   .callout {
-    border-right: 5px solid var(--accent); background: #effaf8;
+    border-right: 5px solid var(--accent); background: rgba(217,119,87,0.08);
     padding: 12px 18px; border-radius: 8px; margin: 14px 0; break-inside: avoid;
   }
   .callout.warn { border-right-color: #d97706; background: #fff8eb; }
-  .callout.info { border-right-color: var(--accent-2); background: #eef3ff; }
+  .callout.info { border-right-color: var(--accent-2); background: rgba(106,155,204,0.12); }
   .quote {
     font-size: 18px; border-right: 4px solid #94a3b8; padding: 6px 18px; margin: 14px 0;
-    color: #334155; background: #f8fafc; border-radius: 6px; break-inside: avoid;
+    color: #5c5a52; background: #f3f1e8; border-radius: 6px; break-inside: avoid;
   }
   .pill { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
-  .pill.spec { background: #e0f2fe; color: #0369a1; }
-  .pill.rule { background: #fef3c7; color: #b45309; }
-  .pill.skill { background: #dcfce7; color: #15803d; }
-  .pill.doc { background: #ede9fe; color: #6d28d9; }
+  .pill.spec { background: rgba(106,155,204,0.16); color: #3d6f9c; }
+  .pill.rule { background: rgba(217,119,87,0.14); color: #b85a3d; }
+  .pill.skill { background: rgba(120,140,93,0.16); color: #5a6d45; }
+  .pill.doc { background: rgba(176,174,165,0.28); color: #5c5a52; }
 
   .cover {
     min-height: 920px; display: flex; flex-direction: column; justify-content: flex-end;
     background:
-      linear-gradient(180deg, rgba(11,18,32,0.05) 0%, rgba(11,18,32,0.85) 60%, #0b1220 100%),
+      linear-gradient(180deg, rgba(250,249,245,0.2) 0%, rgba(250,249,245,0.88) 48%, #faf9f5 100%),
       url("assets/img/cover.jpg") center top / cover no-repeat;
-    color: #e8eefc; border-radius: 14px; padding: 56px; margin: -48px -56px 0;
+    color: #141413; border-radius: 14px; padding: 56px; margin: -48px -56px 0;
     break-after: page;
   }
-  .cover h1 { color: #fff; font-size: 40px; }
-  .cover .sub { font-size: 20px; color: #3dd6c6; margin-bottom: 18px; }
-  .cover .meta { color: #9aa8c7; font-size: 15px; }
+  .cover h1 { color: #141413; font-size: 40px; }
+  .cover .sub { font-size: 20px; color: #d97757; margin-bottom: 18px; }
+  .cover .meta { color: #5c5a52; font-size: 15px; }
 
   .toc { break-after: page; }
   .toc ol { padding-right: 22px; font-size: 17px; }
@@ -94,14 +94,14 @@
 
   .chapter-img { width: 100%; border-radius: 12px; margin: 10px 0 16px; break-inside: avoid; }
   .file-title { font-family: var(--mono); font-size: 13px; color: var(--muted); direction: ltr; text-align: left; margin: 14px 0 4px; }
-  .faq h4 { color: #0f766e; }
+  .faq h4 { color: #b85a3d; }
   .faq .item { break-inside: avoid; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
   .refs li { direction: ltr; text-align: left; font-size: 14px; }
   .small { font-size: 14px; }
   .grid-2 { gap: 14px; }
 
   @media print {
-    body { background: #fff; }
+    body { background: #faf9f5; }
     .page { box-shadow: none; margin: 0; padding: 0; max-width: none; border-radius: 0; }
     .cover { margin: 0; height: 297mm; min-height: 0; border-radius: 0; padding: 22mm 18mm; }
     a { color: #1e40af; }
@@ -130,7 +130,7 @@
     <li><a href="#ch1">چرا الان؟ داده‌ها و پارادوکس بهره‌وری</a></li>
     <li><a href="#ch2">مفاهیم پایه: LLM، عامل، Context، Harness</a></li>
     <li><a href="#ch3">چهار artifact: Spec، Rule، Skill و مستندات کسب‌وکار</a></li>
-    <li><a href="#ch4">توسعه مبتنی بر Spec — دیدگاه martinfowler.com</a></li>
+    <li><a href="#ch4">توسعه مبتنی بر Spec، دیدگاه martinfowler.com</a></li>
     <li><a href="#ch5">راهنمای عملی نوشتن Spec، Rule و Skill</a></li>
     <li><a href="#ch6">تیم از A تا Z: نقش‌ها و ارکستراسیون</a></li>
     <li><a href="#ch7">مقایسه ابزارها و ساختار پوشه</a></li>
@@ -157,7 +157,7 @@
   <tr><td>METR (ژوئیه ۲۰۲۵)</td><td>توسعه‌دهندگان باتجربه در ریپوهای بزرگ خودشان با AI <b>۱۹٪ کندتر</b> شدند، در حالی که باور داشتند ۲۰٪ سریع‌ترند.</td><td>آزمایش کنترل‌شده تصادفی، ۲۴۶ تسک واقعی</td></tr>
 </table>
 
-<div class="quote">«نقش اصلی AI در توسعه نرم‌افزار، نقش یک <b>تقویت‌کننده</b> است: نقاط قوت سازمان‌های پرعملکرد و اختلال‌های سازمان‌های ناکارآمد را بزرگ‌تر می‌کند.» — DORA 2025</div>
+<div class="quote">«نقش اصلی AI در توسعه نرم‌افزار، نقش یک <b>تقویت‌کننده</b> است: نقاط قوت سازمان‌های پرعملکرد و اختلال‌های سازمان‌های ناکارآمد را بزرگ‌تر می‌کند.»، DORA 2025</div>
 
 <div class="callout">
   <b>درس برای تیم ما:</b> خرید ابزار به‌تنهایی بهره‌وری نمی‌آورد. آنچه تفاوت ایجاد می‌کند <b>فرایند</b> است: context درست (Spec، Rule، Skill)، حلقه بازخورد قطعی (تست، build) و بازبینی. احساس ما از سریع‌تر شدن قابل اعتماد نیست؛ باید اندازه بگیریم.
@@ -182,7 +182,7 @@
 <div class="callout warn"><b>هشدار:</b> اگر معیار موفقیت قطعی (تست، build، lint) ندهید، عامل خودش به کار خودش نمره می‌دهد. ارزیابی خود مدل از «تمام شد» کم‌اعتمادترین سیگنال در حلقه است؛ نتیجه تست قابل‌اعتمادترین.</div>
 
 <h3>۲.۳ مهندسی زمینه (Context Engineering)</h3>
-<div class="quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.» — Bharani Subramaniam، در مقاله «Context Engineering for Coding Agents» نوشته Birgitta Böckeler، martinfowler.com، فوریه ۲۰۲۶</div>
+<div class="quote">«Context engineering یعنی گزینش آنچه مدل می‌بیند، تا نتیجه بهتری بگیرید.»، Bharani Subramaniam، در مقاله «Context Engineering for Coding Agents» نوشته Birgitta Böckeler، martinfowler.com، فوریه ۲۰۲۶</div>
 <p>پنجره context محدود است و هر چیز بی‌ربط کیفیت را پایین می‌آورد. ابزارهای پیکربندی context در عامل‌ها:</p>
 <ul>
   <li><span class="pill rule">Rules</span> دستورالعمل‌های دائمی پروژه (همیشه یا با الگوی مسیر بارگذاری می‌شوند)</li>
@@ -190,14 +190,14 @@
   <li><span class="pill spec">Specs</span> قرارداد فیچر در حال ساخت</li>
   <li><b>MCP</b> اتصال به سیستم‌های بیرونی (Jira، GitLab، دیتابیس، مستندات، مرورگر)</li>
   <li><b>Subagents</b> عامل‌های کمکی با context جداگانه</li>
-  <li><b>خود کدبیس</b> — Böckeler تأکید می‌کند که طراحی کد هم بخشی از context است؛ کد تمیز و یکدست، خروجی بهتر عامل.</li>
+  <li><b>خود کدبیس</b>، Böckeler تأکید می‌کند که طراحی کد هم بخشی از context است؛ کد تمیز و یکدست، خروجی بهتر عامل.</li>
 </ul>
 
 <h3>۲.۴ مهار (Harness): راهنماها و حسگرها</h3>
 <p>در مقاله «Harness engineering for coding agent users» در martinfowler.com، Harness هر چیزی در عامل است جز خود مدل. Harness بیرونی که ما می‌سازیم دو هدف دارد: بالا بردن احتمال درست انجام دادن کار در بار اول، و ایجاد حلقه بازخوردی که تا حد ممکن خطاها را قبل از رسیدن به انسان اصلاح کند.</p>
 <div class="grid-2">
-  <div class="card"><h4>راهنماها (Guides) — قبل از عمل</h4><ul class="small"><li>AGENTS.md و Rules</li><li>Spec و معیار پذیرش</li><li>Skills</li><li>ADR و اسناد معماری</li><li>نمونه کد خوب در ریپو</li></ul></div>
-  <div class="card"><h4>حسگرها (Sensors) — بعد از عمل</h4><ul class="small"><li>Build / Compiler</li><li>Unit و Integration Test</li><li>Linter و Formatter</li><li>تست‌های معماری (مثلاً NetArchTest)</li><li>عامل بازبین read-only</li></ul></div>
+  <div class="card"><h4>راهنماها (Guides)، قبل از عمل</h4><ul class="small"><li>AGENTS.md و Rules</li><li>Spec و معیار پذیرش</li><li>Skills</li><li>ADR و اسناد معماری</li><li>نمونه کد خوب در ریپو</li></ul></div>
+  <div class="card"><h4>حسگرها (Sensors)، بعد از عمل</h4><ul class="small"><li>Build / Compiler</li><li>Unit و Integration Test</li><li>Linter و Formatter</li><li>تست‌های معماری (مثلاً NetArchTest)</li><li>عامل بازبین read-only</li></ul></div>
 </div>
 
 <h3>۲.۵ MCP، Subagent و Hook</h3>
@@ -229,7 +229,7 @@
 </div>
 
 <h3>۳.۱ Spec چیست؟</h3>
-<p>Spec قرارداد بین کسب‌وکار، تیم فنی و عامل است — <b>قبل</b> از نوشتن کد. در محل <code>specs/NNN-feature/spec.md</code> قرار می‌گیرد، در git نسخه‌بندی می‌شود و در PR بازبینی می‌شود. مهم‌ترین بخش آن <b>معیار پذیرش قابل تست</b> است؛ همین معیارها بعداً تست می‌شوند و حسگر عامل را تشکیل می‌دهند.</p>
+<p>Spec قرارداد بین کسب‌وکار، تیم فنی و عامل است، <b>قبل</b> از نوشتن کد. در محل <code>specs/NNN-feature/spec.md</code> قرار می‌گیرد، در git نسخه‌بندی می‌شود و در PR بازبینی می‌شود. مهم‌ترین بخش آن <b>معیار پذیرش قابل تست</b> است؛ همین معیارها بعداً تست می‌شوند و حسگر عامل را تشکیل می‌دهند.</p>
 
 <h3>۳.۲ Rule چیست؟</h3>
 <p>Rule دستورالعمل دائمی است که عامل در تقریباً هر ویرایش مرتبط رعایت می‌کند. چون Rule ها همیشه (یا با هر فایل منطبق) در context بارگذاری می‌شوند، <b>هر کلمه اضافه هزینه دائمی دارد</b>. پس کوتاه، دستوری و دائمی بنویسید. محل‌ها: <code>AGENTS.md</code>، <code>.cursor/rules/*.mdc</code>، <code>CLAUDE.md</code>، <code>.github/copilot-instructions.md</code>.</p>
@@ -244,15 +244,15 @@
 </ol>
 <p>به همین دلیل می‌توانید ده‌ها Skill داشته باشید بدون اینکه context شلوغ شود. فیلد <code>description</code> تمام بار تشخیص «کی فعال شود» را به دوش می‌کشد.</p>
 
-<h3>۳.۴ مستندات کسب‌وکار — و چرا «قانون کسب‌وکار» ≠ Rule عامل</h3>
+<h3>۳.۴ مستندات کسب‌وکار، و چرا «قانون کسب‌وکار» ≠ Rule عامل</h3>
 <p>این پرتکرارترین سؤال است: «قوانین کسب‌وکار ما Rule هستند یا Skill یا سند؟»</p>
 <div class="card">
   <p><b>مثال:</b> «اقساط معوق بیش از ۳۰ روز باید پیگیری شوند.»</p>
   <ul>
-    <li>✓ در <b>مستند دامنه</b> (<code>docs/domain/installments.md</code>) — حقیقت برای انسان‌ها</li>
+    <li>✓ در <b>مستند دامنه</b> (<code>docs/domain/installments.md</code>)، حقیقت برای انسان‌ها</li>
     <li>✓ در <b>Spec</b> فیچر مربوط، به‌شکل معیار پذیرش Given/When/Then</li>
     <li>✓ اختیاری: در <code>references/</code> یک Skill، اگر عامل‌ها مکرر به واژه‌نامه دامنه نیاز دارند</li>
-    <li>✗ در <code>.cursor/rules</code> یا <code>AGENTS.md</code> — <b>مگر</b> اینکه قرارداد دائمی کدنویسی باشد، مثل «فیلدهای پولی همیشه <code>decimal</code>»</li>
+    <li>✗ در <code>.cursor/rules</code> یا <code>AGENTS.md</code>، <b>مگر</b> اینکه قرارداد دائمی کدنویسی باشد، مثل «فیلدهای پولی همیشه <code>decimal</code>»</li>
   </ul>
 </div>
 
@@ -289,7 +289,7 @@
 </table>
 
 <!-- ================= CH4 ================= -->
-<h2 id="ch4">۴. توسعه مبتنی بر Spec — دیدگاه martinfowler.com</h2>
+<h2 id="ch4">۴. توسعه مبتنی بر Spec، دیدگاه martinfowler.com</h2>
 <img class="chapter-img" src="assets/img/sdd-levels.jpg" alt="SDD levels" />
 <p>مرجع اصلی این فصل مقاله <a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">«Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl»</a> نوشته <b>Birgitta Böckeler</b> (Distinguished Engineer در Thoughtworks) در سایت Martin Fowler است، به‌همراه پادکست Thoughtworks با حضور او و Laura Tacho.</p>
 
@@ -319,9 +319,9 @@
 <table class="compare">
   <tr><th>فرمان</th><th>خروجی</th><th>معادل در مدل ما</th><th>دروازه انسانی</th></tr>
   <tr><td><code>/constitution</code></td><td>اصول دائمی پروژه</td><td><span class="pill rule">Rule</span></td><td>Tech Lead</td></tr>
-  <tr><td><code>/specify</code></td><td><code>spec.md</code> — چه و چرا</td><td><span class="pill spec">Spec</span></td><td>PO + Tech Lead تأیید</td></tr>
-  <tr><td><code>/plan</code></td><td><code>plan.md</code> — چگونه (فنی)</td><td>Plan / ADR</td><td>Tech Lead تأیید</td></tr>
-  <tr><td><code>/tasks</code></td><td><code>tasks.md</code> — تکه‌های کوچک</td><td>Task list</td><td>—</td></tr>
+  <tr><td><code>/specify</code></td><td><code>spec.md</code>، چه و چرا</td><td><span class="pill spec">Spec</span></td><td>PO + Tech Lead تأیید</td></tr>
+  <tr><td><code>/plan</code></td><td><code>plan.md</code>، چگونه (فنی)</td><td>Plan / ADR</td><td>Tech Lead تأیید</td></tr>
+  <tr><td><code>/tasks</code></td><td><code>tasks.md</code>، تکه‌های کوچک</td><td>Task list</td><td>-</td></tr>
   <tr><td><code>/implement</code></td><td>کد + تست</td><td>با <span class="pill skill">Skill</span> ها</td><td>بازبینی PR</td></tr>
 </table>
 
@@ -333,7 +333,7 @@
   <li><b>تحویل صریح بین نقش‌ها:</b> BRD ← Spec ← Plan ← Tasks ← کد ← تست.</li>
   <li><b>بازبینی بهتر:</b> بازبین در برابر Spec چک می‌کند، نه حافظه یا حدس.</li>
   <li><b>رشد جونیورها:</b> Spec بریف کار است و Skill روش انجام.</li>
-  <li><b>حافظه سازمانی:</b> چرا یک فیچر این‌طور ساخته شد، در ریپو می‌ماند — نه در تاریخچه چت.</li>
+  <li><b>حافظه سازمانی:</b> چرا یک فیچر این‌طور ساخته شد، در ریپو می‌ماند، نه در تاریخچه چت.</li>
 </ol>
 
 <h3>۴.۷ نقدها و هشدارها</h3>
@@ -348,9 +348,9 @@
 
 <h3>۴.۸ مقالات مرتبط در martinfowler.com</h3>
 <ul>
-  <li><a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a> — Rules، Skills، MCP و context</li>
-  <li><a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users</a> — راهنماها و حسگرها</li>
-  <li><a href="https://www.martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Humans and Agents in Software Engineering Loops</a> — Kief Morris، «روی حلقه»</li>
+  <li><a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a>، Rules، Skills، MCP و context</li>
+  <li><a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users</a>، راهنماها و حسگرها</li>
+  <li><a href="https://www.martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Humans and Agents in Software Engineering Loops</a>، Kief Morris، «روی حلقه»</li>
 </ul>
 
 <!-- ================= CH5 ================= -->
@@ -359,14 +359,14 @@
 <h3>۵.۱ نوشتن <span class="pill spec">Spec</span></h3>
 <h4>قالب حداقلی</h4>
 <ol>
-  <li><b>هدف</b> — یک پاراگراف درباره نتیجه</li>
-  <li><b>داستان‌های کاربر</b> — «به‌عنوان ... می‌خواهم ... تا ...»</li>
-  <li><b>معیار پذیرش</b> — Given/When/Then یا چک‌لیست؛ <u>قابل تست</u></li>
-  <li><b>خارج از محدوده</b> — جلوی کار اضافه عامل را می‌گیرد</li>
-  <li><b>قوانین دامنه مرتبط</b> — نقل کوتاه یا لینک به <code>docs/domain</code></li>
+  <li><b>هدف</b>، یک پاراگراف درباره نتیجه</li>
+  <li><b>داستان‌های کاربر</b>، «به‌عنوان ... می‌خواهم ... تا ...»</li>
+  <li><b>معیار پذیرش</b>، Given/When/Then یا چک‌لیست؛ <u>قابل تست</u></li>
+  <li><b>خارج از محدوده</b>، جلوی کار اضافه عامل را می‌گیرد</li>
+  <li><b>قوانین دامنه مرتبط</b>، نقل کوتاه یا لینک به <code>docs/domain</code></li>
   <li><b>لبه‌ها و خطاها</b></li>
-  <li><b>وابستگی‌ها</b> — API، جدول، رویداد</li>
-  <li><b>Definition of Done</b> — تست، مستند، observability</li>
+  <li><b>وابستگی‌ها</b>، API، جدول، رویداد</li>
+  <li><b>Definition of Done</b>، تست، مستند، observability</li>
 </ol>
 <h4>چک‌لیست کیفیت</h4>
 <ul>
@@ -501,7 +501,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
   <tr><td>In the loop</td><td>انسان هر خط را بازبینی و اصلاح می‌کند</td><td>گلوگاه</td></tr>
   <tr><td><b>On the loop</b></td><td>انسان Harness (Spec، تست، Rule، Skill، pipeline) را می‌سازد و بهبود می‌دهد</td><td>مقیاس‌پذیر</td></tr>
 </table>
-<div class="quote">تفاوت «درون» و «روی» حلقه وقتی دیده می‌شود که از خروجی عامل راضی نیستیم. روش «درون حلقه»: اصلاح همان خروجی. روش «روی حلقه»: <b>اصلاح Harness ای که آن خروجی را تولید کرد</b> تا نتیجه دلخواه را بدهد. — Kief Morris</div>
+<div class="quote">تفاوت «درون» و «روی» حلقه وقتی دیده می‌شود که از خروجی عامل راضی نیستیم. روش «درون حلقه»: اصلاح همان خروجی. روش «روی حلقه»: <b>اصلاح Harness ای که آن خروجی را تولید کرد</b> تا نتیجه دلخواه را بدهد.، Kief Morris</div>
 
 <h3>۶.۵ دروازه «انجام شد» و سطح خودمختاری</h3>
 <p>دروازه تأیید پیشنهادی برای هر تغییر عامل:</p>
@@ -517,8 +517,8 @@ AGENTS.md + .cursor/rules/  # standing agent rules
   <tr><th>نوع کار</th><th>خودمختاری پیشنهادی</th></tr>
   <tr><td>مستندات، تست‌نویسی ماژول‌های پوشش‌دار</td><td>بالا</td></tr>
   <tr><td>ارتقای وابستگی با پوشش تست کامل</td><td>بالا</td></tr>
-  <tr><td>فیچر معمولی با Spec</td><td>متوسط — تأیید Plan قبل از اجرا</td></tr>
-  <tr><td>احراز هویت، پرداخت، صدور بیمه‌نامه</td><td>پایین — فقط پیشنهاد، تأیید انسانی</td></tr>
+  <tr><td>فیچر معمولی با Spec</td><td>متوسط، تأیید Plan قبل از اجرا</td></tr>
+  <tr><td>احراز هویت، پرداخت، صدور بیمه‌نامه</td><td>پایین، فقط پیشنهاد، تأیید انسانی</td></tr>
   <tr><td>Migration داده</td><td>پایین + تأیید صریح</td></tr>
 </table>
 
@@ -532,7 +532,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
   <tr><td><b>GitHub Copilot</b></td><td>افزونه IDE + GitHub + CLI</td><td>چند ارائه‌دهنده</td><td>Issue→PR، code review، یکپارچگی سازمانی</td><td>سازمان‌های GitHub-محور</td></tr>
   <tr><td><b>OpenAI Codex</b></td><td>CLI + ابر</td><td>OpenAI</td><td>تسک ناهمگام در sandbox ابری</td><td>کار موازی «بفرست و فراموش کن»</td></tr>
   <tr><td><b>Kiro</b></td><td>IDE</td><td>چند ارائه‌دهنده</td><td>SDD داخلی (Requirements/Design/Tasks)</td><td>تیم‌های AWS، شروع SDD</td></tr>
-  <tr><td><b>Spec Kit</b></td><td>CLI روی ابزار شما</td><td>—</td><td>قالب SDD برای ~۳۰ عامل</td><td>افزودن SDD به ابزار فعلی</td></tr>
+  <tr><td><b>Spec Kit</b></td><td>CLI روی ابزار شما</td><td>-</td><td>قالب SDD برای ~۳۰ عامل</td><td>افزودن SDD به ابزار فعلی</td></tr>
 </table>
 <p class="small">قیمت‌ها در ۲۰۲۶ عموماً از ۱۰ تا ۲۰ دلار در ماه شروع می‌شوند، ولی مصرف عامل با credit یا پنجره مصرف محاسبه می‌شود؛ قیمت صندلی کف هزینه است. بسیاری از تیم‌ها دو ابزار را ترکیب می‌کنند: یکی برای ویرایش روزانه و یکی برای کار سنگین واگذارشده.</p>
 
@@ -543,7 +543,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
   <tr><td>Claude Code</td><td><code>CLAUDE.md</code> (با <code>@AGENTS.md</code> import)</td><td><code>.claude/skills</code>؛ subagent در <code>.claude/agents</code></td></tr>
   <tr><td>GitHub Copilot</td><td><code>.github/copilot-instructions.md</code>، <code>.github/instructions/*.instructions.md</code>، <code>AGENTS.md</code></td><td><code>.github/skills</code>، <code>.agents/skills</code>، <code>.claude/skills</code></td></tr>
   <tr><td>Codex</td><td><code>AGENTS.md</code> (تودرتو؛ نزدیک‌ترین برنده)</td><td><code>.agents/skills</code></td></tr>
-  <tr><td>Kiro</td><td><code>.kiro/steering/*.md</code></td><td>—</td></tr>
+  <tr><td>Kiro</td><td><code>.kiro/steering/*.md</code></td><td>-</td></tr>
 </table>
 <div class="callout info"><b>AGENTS.md</b> استاندارد بی‌طرف است: تحت مدیریت بنیاد Linux از دسامبر ۲۰۲۵، در بیش از ۶۰ هزار ریپو، و توسط بیش از ۳۰ ابزار خوانده می‌شود. قاعده: نزدیک‌ترین AGENTS.md به فایل ویرایش‌شده برنده است و دستور صریح کاربر در چت بر همه مقدم است.</div>
 
@@ -686,31 +686,31 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 <h2 id="ch12">۱۲. منابع</h2>
 <h3>martinfowler.com / Thoughtworks</h3>
 <ul class="refs">
-  <li>Birgitta Böckeler — <a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl</a></li>
-  <li>Birgitta Böckeler — <a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a> (Feb 2026)</li>
-  <li>Birgitta Böckeler — <a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users</a></li>
-  <li>Birgitta Böckeler — <a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">Harness Engineering — first thoughts</a></li>
-  <li>Kief Morris — <a href="https://www.martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Humans and Agents in Software Engineering Loops</a></li>
-  <li>Thoughtworks Podcast — <a href="https://www.thoughtworks.com/en-gb/insights/podcasts/technology-podcasts/what-is-spec-driven-development">What is spec-driven development?</a> (Böckeler &amp; Laura Tacho)</li>
+  <li>Birgitta Böckeler، <a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl</a></li>
+  <li>Birgitta Böckeler، <a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a> (Feb 2026)</li>
+  <li>Birgitta Böckeler، <a href="https://martinfowler.com/articles/harness-engineering.html">Harness engineering for coding agent users</a></li>
+  <li>Birgitta Böckeler، <a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html">Harness Engineering، first thoughts</a></li>
+  <li>Kief Morris، <a href="https://www.martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html">Humans and Agents in Software Engineering Loops</a></li>
+  <li>Thoughtworks Podcast، <a href="https://www.thoughtworks.com/en-gb/insights/podcasts/technology-podcasts/what-is-spec-driven-development">What is spec-driven development?</a> (Böckeler &amp; Laura Tacho)</li>
 </ul>
 <h3>Standards & tool docs</h3>
 <ul class="refs">
-  <li><a href="https://agentskills.io">Agent Skills specification — agentskills.io</a> · <a href="https://github.com/agentskills/agentskills">github.com/agentskills/agentskills</a></li>
+  <li><a href="https://agentskills.io">Agent Skills specification، agentskills.io</a> · <a href="https://github.com/agentskills/agentskills">github.com/agentskills/agentskills</a></li>
   <li><a href="https://agents.md">AGENTS.md</a></li>
-  <li><a href="https://cursor.com/docs/skills">Cursor — Agent Skills</a> · <a href="https://cursor.com/docs/context/rules">Cursor — Rules</a></li>
-  <li><a href="https://code.claude.com/docs/en/best-practices">Anthropic — Best practices for Claude Code</a></li>
-  <li><a href="https://claude.com/blog/subagents-in-claude-code">Anthropic — How and when to use subagents in Claude Code</a></li>
-  <li><a href="https://code.visualstudio.com/docs/agent-customization/agent-skills">VS Code — Use Agent Skills</a></li>
+  <li><a href="https://cursor.com/docs/skills">Cursor، Agent Skills</a> · <a href="https://cursor.com/docs/context/rules">Cursor، Rules</a></li>
+  <li><a href="https://code.claude.com/docs/en/best-practices">Anthropic، Best practices for Claude Code</a></li>
+  <li><a href="https://claude.com/blog/subagents-in-claude-code">Anthropic، How and when to use subagents in Claude Code</a></li>
+  <li><a href="https://code.visualstudio.com/docs/agent-customization/agent-skills">VS Code، Use Agent Skills</a></li>
   <li><a href="https://github.com/github/spec-kit">GitHub Spec Kit</a></li>
   <li><a href="https://kiro.dev">Kiro</a> · <a href="https://tessl.io">Tessl</a></li>
 </ul>
 <h3>Research & data</h3>
 <ul class="refs">
-  <li><a href="https://dora.dev/research/2025/dora-report">DORA 2025 — State of AI-assisted Software Development</a></li>
-  <li><a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">Google Cloud — Announcing the 2025 DORA Report</a></li>
-  <li><a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR — Impact of Early-2025 AI on Experienced OSS Developer Productivity</a></li>
-  <li><a href="https://www.infoworld.com/article/4171332/4-cutting-edge-tools-for-spec-driven-development.html">InfoWorld — 4 cutting-edge tools for spec-driven development</a> (May 2026)</li>
-  <li><a href="https://www.jainmehul.com/guides/ai-coding-agents">Mehul Jain — AI Coding Agents in 2026: A Practical Implementation Guide</a></li>
+  <li><a href="https://dora.dev/research/2025/dora-report">DORA 2025، State of AI-assisted Software Development</a></li>
+  <li><a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report">Google Cloud، Announcing the 2025 DORA Report</a></li>
+  <li><a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR، Impact of Early-2025 AI on Experienced OSS Developer Productivity</a></li>
+  <li><a href="https://www.infoworld.com/article/4171332/4-cutting-edge-tools-for-spec-driven-development.html">InfoWorld، 4 cutting-edge tools for spec-driven development</a> (May 2026)</li>
+  <li><a href="https://www.jainmehul.com/guides/ai-coding-agents">Mehul Jain، AI Coding Agents in 2026: A Practical Implementation Guide</a></li>
   <li><a href="https://ship-it-with.ai/">Agentic Coding: A Field Manual for Shipping Software With AI Agents</a></li>
 </ul>
 
@@ -719,7 +719,7 @@ AGENTS.md + .cursor/rules/  # standing agent rules
 <p>همه این فایل‌ها در پوشه <code>samples/</code> ریپو هستند. برای خوانایی در PDF، نسخه انگلیسی خلاصه‌شده آمده؛ نسخه ریپو برای AGENTS.md و CLAUDE.md فارسی است.</p>
 
 <div class="file-title">samples/AGENTS.md (English summary)</div>
-<pre># AGENTS.md — .NET Clean Architecture
+<pre># AGENTS.md، .NET Clean Architecture
 
 ## Project overview
 - Stack: .NET / C#, Clean Architecture (Domain / Application / Infrastructure / Host)
@@ -734,7 +734,7 @@ dotnet format
 ## Architecture rules (always)
 - Domain must not depend on Infrastructure or Host.
 - Keep controllers thin; business logic in Handlers/Services.
-- Money fields: decimal only — never double/float.
+- Money fields: decimal only، never double/float.
 - Never hardcode secrets, tokens, or connection strings.
 - For a new feature, read specs/ first; no code without acceptance criteria.
 
@@ -758,7 +758,7 @@ globs: "**/*Tests*/**/*.cs"
 alwaysApply: false
 ---
 # Testing Rules
-- xUnit + NSubstitute; Arrange–Act–Assert.
+- xUnit + NSubstitute; Arrange-Act-Assert.
 - Name tests: Method_Scenario_Expected.
 - Cover success + at least one failure path.
 - No real network/DB in unit tests.
